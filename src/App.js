@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import TitleHook from "./hooks/Common/TitleHook";
 
 // Default Electron (preload.js)
-const { electron } = window;
+// You Can use electron.notification.onNotiClicked
 
 const App = () => {
   // const title = "World - DEV";
@@ -17,11 +17,11 @@ const App = () => {
 
   useEffect(() => {
     // When CLicked
-    electron.onNotiClicked((_, params) => {
+    electron.notificationApi.onNotiClicked((_, params) => {
       setClickedMes("Count " + params.body + " was clicked!!");
     });
     // When Closed
-    electron.onNotiClosed((_, params) => {
+    electron.notificationApi.onNotiClosed((_, params) => {
       setClosedMes("Count " + params.body + " was closed!!");
     });
   }, []);
@@ -33,7 +33,7 @@ const App = () => {
       body: cusMessage,
       icon: `${electron.__imageDir}/fox_noti.png`,
     };
-    electron.sendNotification(messageParams, () => {});
+    electron.notificationApi.sendNotification(messageParams, () => {});
     // Hello
     setCount(count + 1);
   }, [count, setCount]);

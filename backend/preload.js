@@ -1,10 +1,9 @@
 const { ipcRenderer, contextBridge } = require("electron");
 const dotEnv = require("dotenv");
 dotEnv.config();
-
 const { NOTI_CODE } = require("../config/constants");
 
-contextBridge.exposeInMainWorld("electron", {
+const notificationApi = {
   // window.electron.sendNotification()
   sendNotification: (params, cb) => {
     ipcRenderer.send(NOTI_CODE.SEND, params);
@@ -18,6 +17,10 @@ contextBridge.exposeInMainWorld("electron", {
   onNotiClosed: (cb) => {
     ipcRenderer.on(NOTI_CODE.NOTI_WHEN_CLOSED, cb);
   },
+};
+
+contextBridge.exposeInMainWorld("electron", {
+  notificationApi,
   // Some Constants
   __dirname: __dirname,
   __imageDir: __dirname + "/public/assets/images",

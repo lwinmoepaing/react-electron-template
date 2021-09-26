@@ -41,6 +41,7 @@ function createBrowser() {
     title: process.env.APP_NAME || "sample title",
     webPreferences: {
       nodeIntegration: false,
+      contextIsolation: true,
       preload: preloadDir,
     },
   });
