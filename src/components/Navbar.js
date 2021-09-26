@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => (
   <>
@@ -6,9 +7,9 @@ const Navbar = () => (
     <div className="chat-navbar">
       <nav className="chat-navbar-inner">
         <div className="chat-navbar-inner-left">
-          <a href="/" className="btn btn-outline-success ml-2">
+          <Link to="/home" className="btn btn-outline-success ml-2">
             Settings
-          </a>
+          </Link>
         </div>
         <div className="chat-navbar-inner-right">
           <span className="logged-in-user">Hi User</span>

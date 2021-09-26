@@ -1,4 +1,5 @@
 module.exports.NOTI_CODE = {
+  // Icp Renderer Codes
   SEND: "noti:notify",
 
   // Emit to Front end

@@ -2,14 +2,14 @@ const { app, BrowserWindow, ipcMain, Notification } = require("electron");
 const path = require("path");
 const electronReload = require("electron-reload");
 // Constants
-const ipcListener = require("./backend/ipcListner");
+const ipcListener = require("./utils/ipcListner");
 // Call For Env
 
 // Some Constants
 const isDev = !app.isPackaged;
 const isMac = process.platform === "darwin";
 const defaultWindowBackground = "white";
-const preloadDir = path.join(__dirname, "backend", "preload.js");
+const preloadDir = path.join(__dirname, "utils", "preload.js");
 
 // path.join(__dirname, "preload.js");
 
