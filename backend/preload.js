@@ -4,16 +4,16 @@ dotEnv.config();
 const { NOTI_CODE } = require("../config/constants");
 
 const notificationApi = {
-  // window.electron.sendNotification()
+  // electron.notificationApi.sendNotification()
   sendNotification: (params, cb) => {
     ipcRenderer.send(NOTI_CODE.SEND, params);
     if (cb) cb();
   },
-  // window.electron.onNotiClicked()
+  // electron.notificationApi.onNotiClicked()
   onNotiClicked: (cb) => {
     ipcRenderer.on(NOTI_CODE.NOTI_WHEN_CLICK, cb);
   },
-  // window.electron.onNotiClosed()
+  // electron.notificationApi.onNotiClosed()
   onNotiClosed: (cb) => {
     ipcRenderer.on(NOTI_CODE.NOTI_WHEN_CLOSED, cb);
   },
