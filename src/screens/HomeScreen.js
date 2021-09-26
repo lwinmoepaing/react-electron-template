@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import CommonComponent from "../components/common/CommonComponent";
 import SomeComponent from "../components/SomeComponent";
-import TitleHook from "../hooks/common/TitleHook";
+import NotificationHook from "../hooks/common/NotificationHook";
 
 const HomeScreen = () => {
   const notiMessage = "My custom Noti Message";
@@ -11,42 +11,26 @@ const HomeScreen = () => {
   const [closedMes, setClosedMes] = useState("");
 
   // Use Custom Hooks
-  TitleHook();
 
-  useEffect(() => {
-    // When CLicked
-    electron.notificationApi.onNotiClicked((_, params) => {
-      setClickedMes("Count " + params.body + " was clicked!!");
-    });
-    // When Closed
-    electron.notificationApi.onNotiClosed((_, params) => {
-      setClosedMes("Count " + params.body + " was closed!!");
-    });
-  }, []);
+  const { sendNotification } = NotificationHook({});
 
-  const sendNotification = useCallback(() => {
+  const onSendNoti = useCallback(() => {
     const cusMessage = count + 1 + " - " + notiMessage;
-    const messageParams = {
-      title: "React App Noti",
-      body: cusMessage,
-      icon: `${electron.__imageDir}/fox_noti.png`,
-    };
-    electron.notificationApi.sendNotification(messageParams, () => {});
-    // Hello
+    sendNotification({ body: cusMessage }, () => {});
     setCount(count + 1);
   }, [count, setCount]);
 
   return (
-    <>
+    <div>
       <h2>
         {notiMessage} ({count})
       </h2>
-      <button onClick={sendNotification}>Send Notification</button>
+      <button onClick={onSendNoti}>Send Notification</button>
       <CommonComponent />
       <SomeComponent />
       {clickedMes && <p>{clickedMes}</p>}
       {closedMes && <p>{closedMes}</p>}
-    </>
+    </div>
   );
 };
 
