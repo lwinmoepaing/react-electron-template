@@ -4,7 +4,6 @@ import BackButton from "./shared/BackButton";
 
 const Navbar = () => (
   <>
-    {/* ########## NAVBAR START ############ */}
     <div className="chat-navbar">
       <nav className="chat-navbar-inner">
         <div className="chat-navbar-inner-left">
@@ -24,7 +23,6 @@ const Navbar = () => (
         </div>
       </nav>
     </div>
-    {/* ########## NAVBAR END ############ */}
   </>
 );
 

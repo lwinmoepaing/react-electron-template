@@ -1,13 +1,13 @@
 import React from "react";
 import { useHistory } from "react-router";
 
-const BackButton = () => {
+const BackButton = ({ sm }) => {
   const history = useHistory();
 
   return (
     <button
       onClick={() => history.goBack()}
-      className="btn btn-outline-primary"
+      className={"btn btn-primary " + (sm ? "btn-sm" : "")}
     >
       Back
     </button>

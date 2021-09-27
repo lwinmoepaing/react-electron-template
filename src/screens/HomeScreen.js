@@ -1,20 +1,19 @@
 import React from "react";
 
-import AvailableChats from "../components/AvailableChats";
-import JoinedChats from "../components/JoinedChats";
-import Navbar from "../components/Navbar";
+import AvailableChatsList from "../components/AvailableChatsList";
+import JoinedChatsList from "../components/JoinedChatsList";
 import ViewTitle from "../components/shared/ViewTitle";
 
 const HomeScreen = ({ title = "" }) => {
   return (
     <div className="row no-gutters fh">
       <div className="col-3 fh">
-        <JoinedChats />
+        <JoinedChatsList />
       </div>
       <div className="col-9 fh">
         <div className="container-fluid">
           <ViewTitle />
-          <AvailableChats />
+          <AvailableChatsList />
         </div>
       </div>
     </div>
