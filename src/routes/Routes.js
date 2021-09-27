@@ -2,7 +2,7 @@ import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import { ABOUT_SCREEN, HOME_SCREEN } from "./constants";
 
-import Navbar from "../components/common/NaviBar";
+import Navbar from "../components/common/NavBar";
 
 const Routes = () => {
   return (
