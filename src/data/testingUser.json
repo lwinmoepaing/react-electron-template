@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "Lwin Moe Paing",
+    "phone": "+959420059241",
+    "address": "No.32, Tharsu Str.",
+    "email": "lwinmoepaing.dev@gmail.com",
+    "passoword": "123456",
+    "permissions": []
+  },
+  {
+    "id": 2,
+    "name": "Min Arkar Soe",
+    "phone": "+959420054321",
+    "address": "No.50, Min Str.",
+    "email": "minarkarsoe@gmail.com",
+    "passoword": "123456",
+    "permissions": []
+  },
+  {
+    "id": 3,
+    "name": "Htet Naing Lynn",
+    "phone": "+959420012345",
+    "address": "No.32, Tharsu Str.",
+    "email": "htetnainglynn@gmail.com",
+    "passoword": "123456",
+    "permissions": []
+  }
+]

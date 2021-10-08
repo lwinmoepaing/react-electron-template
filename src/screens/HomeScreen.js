@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import CommonComponent from "../components/common/CommonComponent";
-import SomeComponent from "../components/SomeComponent";
+import Container from "../components/common/Container";
 import NotificationHook from "../hooks/common/NotificationHook";
 
 const HomeScreen = () => {
@@ -21,16 +20,14 @@ const HomeScreen = () => {
   }, [count, setCount]);
 
   return (
-    <div>
+    <Container withNavbar>
       <h2>
         {notiMessage} ({count})
       </h2>
-      <button onClick={onSendNoti}>Send Notification</button>
-      <CommonComponent />
-      <SomeComponent />
+      <button onClick={onSendNoti}>Test Notification</button>
       {clickedMes && <p>{clickedMes}</p>}
       {closedMes && <p>{closedMes}</p>}
-    </div>
+    </Container>
   );
 };
 
