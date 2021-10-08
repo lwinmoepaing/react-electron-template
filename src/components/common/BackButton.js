@@ -5,9 +5,8 @@ const BackButton = () => {
   const history = useHistory();
 
   useEffect(() => {
-    console.log("history", history);
-
-    history.listen(console.log);
+    // console.log("history", history);
+    // history.listen(console.log);
   }, []);
 
   return (

@@ -23,7 +23,7 @@ module.exports = (window) => {
     });
 
     notification.on("action", () => {
-      console.log("action");
+      // console.log("action");
     });
 
     notification.on("show", () => {

@@ -4,14 +4,13 @@ import React, { useEffect, useState } from "react";
 const { electron } = window;
 
 const TitleHook = (
-  initialTitle = electron.__APP_NAME || "Default Screen Title"
+  initialTitle = process.env.APP_NAME || "Default Screen Title"
 ) => {
   const [title, setTitle] = useState("");
 
   const changeTitle = (titleText) => {
     if (titleText === title) return;
     setTitle(titleText);
-    console.log("Change Title Text", titleText);
     document.getElementById("title").innerHTML = titleText;
   };
 

@@ -1,8 +1,8 @@
 const path = require("path");
-
+const DotEnv = require("dotenv-webpack");
 // For Package.json
 // "watch": "webpack --config webpack.common.js --watch",
-// yarn add @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader sass sass-loader style-loader webpack webpack-loader dotenv
+// yarn add @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader sass sass-loader style-loader webpack webpack-loader dotenv-webpack
 // yarn add -D webpack-cli electron-reload
 
 const env = {
@@ -58,7 +58,7 @@ module.exports = {
       },
     ],
   },
-  plugins: [],
+  plugins: [new DotEnv()],
   resolve: {
     extensions: [".js"],
   },

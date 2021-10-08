@@ -1,6 +1,4 @@
 const { ipcRenderer, contextBridge } = require("electron");
-const dotEnv = require("dotenv");
-dotEnv.config();
 const { NOTI_CODE } = require("../config/constants");
 
 const notificationApi = {
@@ -24,5 +22,4 @@ contextBridge.exposeInMainWorld("electron", {
   // Some Constants
   __dirname: __dirname,
   __imageDir: __dirname + "/public/assets/images",
-  __APP_NAME: process.env.APP_NAME || "Default App Name",
 });
