@@ -5,6 +5,7 @@
     "editorconfig.editorconfig",
     "dsznajder.es7-react-js-snippets",
     "mgmcdermott.vscode-language-babel",
-    "VisualStudioExptTeam.vscodeintellicode"
+    "visualstudioexptteam.vscodeintellicode",
+    "pkief.material-icon-theme"
   ]
 }
