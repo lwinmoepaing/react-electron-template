@@ -5,6 +5,8 @@ import { profileActions } from "../../store/reducers/profile";
 
 export default function AuthHook() {
   const [loginLoading, setLoginLoading] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
+
   const dispatch = useDispatch();
 
   const delay = (secTimer = 1) =>
@@ -47,8 +49,16 @@ export default function AuthHook() {
     return true;
   };
 
+  const logoutUser = async () => {
+    dispatch({
+      type: profileActions.LOGOUT_PROFILE,
+    });
+  };
+
   return {
     loginLoading,
+    logoutLoading,
     loginUser,
+    logoutUser,
   };
 }

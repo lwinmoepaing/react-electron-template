@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Container from "../components/common/Container";
+import Container from "../components/template/Container";
 import { profileActions } from "../store/reducers/profile";
 
 const AboutScreen = () => {
@@ -13,7 +13,7 @@ const AboutScreen = () => {
 
   const updateProfile = () => {
     const param = {
-      name: "Lwin Moe Paing",
+      name: "Test Name",
       email: "lwinmoepaing.dev@gmail.com",
       phone: "+959420059241",
       address: "No.32 Tharsu Str.",

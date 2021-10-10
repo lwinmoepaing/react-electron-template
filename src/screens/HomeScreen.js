@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Container from "../components/common/Container";
+import Container from "../components/template/Container";
 import NotificationHook from "../hooks/common/NotificationHook";
 
 const HomeScreen = () => {

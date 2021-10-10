@@ -6,11 +6,6 @@ import { profileReducer } from "./reducers/profile";
 export default function configureStore() {
   const middlewares = [reduxThunk];
 
-  const initialStates = {
-    message: "Redux Message",
-    data: { message: "Data Message" },
-  };
-
   const store = createStore(
     combineReducers({
       profile: profileReducer,
