@@ -17,13 +17,13 @@ const Routes = () => {
         />
         <Route
           exact
-          path={ABOUT_SCREEN.path}
-          component={ABOUT_SCREEN.component}
+          path={HOME_SCREEN.path}
+          component={HOME_SCREEN.component}
         />
         <Route
           exact
-          path={HOME_SCREEN.path}
-          component={HOME_SCREEN.component}
+          path={ABOUT_SCREEN.path}
+          component={ABOUT_SCREEN.component}
         />
         <Route>
           <NotFound />
