@@ -1,14 +1,11 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 import * as Yup from "yup";
 import { Form, FormField, FormSubmitButton } from "../form";
-import { HOME_SCREEN } from "../../routes/constants";
 import AuthHook from "../../hooks/auth/AuthHook";
 
 export default function LoginScreen() {
   const { loginLoading, loginUser } = AuthHook();
-  const history = useHistory();
 
   const initialValues = {
     email: "",
@@ -25,8 +22,8 @@ export default function LoginScreen() {
     password: Yup.string().required().min(4).label("Password"),
   });
 
-  const onSubmitLogin = async (values) => {
-    const isLogin = await loginUser(values);
+  const onSubmitLogin = (values) => {
+    loginUser(values);
   };
 
   return (
