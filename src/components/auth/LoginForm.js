@@ -27,7 +27,6 @@ export default function LoginScreen() {
 
   const onSubmitLogin = async (values) => {
     const isLogin = await loginUser(values);
-    if (isLogin) history.push(HOME_SCREEN.path);
   };
 
   return (

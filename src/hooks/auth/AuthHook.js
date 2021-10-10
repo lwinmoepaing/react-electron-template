@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import testingUser from "../../data/testingUser.json";
 import { profileActions } from "../../store/reducers/profile";
+import * as localForage from "localforage";
+import localStoreKeys from "../../store/localforage/localStoreKeys";
 
 export default function AuthHook() {
   const [loginLoading, setLoginLoading] = useState(false);
@@ -37,19 +39,22 @@ export default function AuthHook() {
       return false;
     }
 
+    await localForage.setItem(localStoreKeys.auth, JSON.stringify(user));
+
     delay(0.2);
 
     dispatch({
       type: profileActions.UPDATE_PROFILE,
       param: user,
     });
-
     setLoginLoading(false);
 
     return true;
   };
 
   const logoutUser = async () => {
+    await localForage.removeItem(localStoreKeys.auth);
+
     dispatch({
       type: profileActions.LOGOUT_PROFILE,
     });
