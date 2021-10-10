@@ -15,6 +15,8 @@ const NotificationHook = ({ onClicked, onClosed }) => {
     if (sound) messageParams.sound = sound;
     messageParams.icon = icon ? icon : DEFAULT_ICON;
 
+    console.log(messageParams);
+
     electron.notificationApi.sendNotification(messageParams, cb);
   };
 
