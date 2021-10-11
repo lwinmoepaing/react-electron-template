@@ -18,7 +18,7 @@ const Navbar = () => {
 
   const onLogout = async (values) => {
     await logoutUser();
-    history.push(LOGIN_SCREEN.path);
+    history.replace(LOGIN_SCREEN.path);
   };
 
   return (
@@ -26,7 +26,6 @@ const Navbar = () => {
       <Link to={HOME_SCREEN.path}> Dashboard - ({HOME_SCREEN.path})</Link>
       <Link to={ABOUT_SCREEN.path}> About ({ABOUT_SCREEN.path}) </Link>
       <button onClick={onLogout}>Logout</button>
-      <BackButton />
     </div>
   );
 };

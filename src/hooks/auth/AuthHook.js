@@ -4,6 +4,7 @@ import testingUser from "../../data/testingUser.json";
 import { profileActions } from "../../store/reducers/profile";
 import * as localForage from "localforage";
 import localStoreKeys from "../../store/localforage/localStoreKeys";
+import { cleanAllLocalData } from "../../utils/helper";
 
 export default function AuthHook() {
   const [loginLoading, setLoginLoading] = useState(false);
@@ -53,7 +54,7 @@ export default function AuthHook() {
   };
 
   const logoutUser = async () => {
-    await localForage.removeItem(localStoreKeys.auth);
+    await cleanAllLocalData();
 
     dispatch({
       type: profileActions.LOGOUT_PROFILE,
