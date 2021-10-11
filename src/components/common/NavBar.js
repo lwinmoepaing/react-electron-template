@@ -13,13 +13,16 @@ import AuthHook from "../../hooks/auth/AuthHook";
 // Components
 import BackButton from "../common/BackButton";
 import LanguageToggle from "./LanguageToggle";
+import LanguageHook from "../../hooks/common/LanguageHook";
 
 const Navbar = () => {
   const { logoutUser } = AuthHook();
+  const { setChangeLanguage } = LanguageHook();
   const { t } = useTranslation();
   const history = useHistory();
 
-  const onLogout = async (values) => {
+  const onLogout = async () => {
+    await setChangeLanguage("en");
     await logoutUser();
     history.replace(LOGIN_SCREEN.path);
   };
@@ -30,8 +33,7 @@ const Navbar = () => {
         {t("navbar.home")} - ({HOME_SCREEN.path})
       </Link>
       <Link to={ABOUT_SCREEN.path}>
-        {" "}
-        {t("navbar.about")} ({ABOUT_SCREEN.path}){" "}
+        {t("navbar.about")} ({ABOUT_SCREEN.path})
       </Link>
       <button onClick={onLogout}>Logout</button>
       <LanguageToggle />
