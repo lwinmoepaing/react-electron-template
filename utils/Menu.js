@@ -1,3 +1,8 @@
+const { app } = require("electron");
+
+/**
+ * @param {app} app
+ */
 module.exports.createTemplate = (app) => {
   const isMac = process.platform === "darwin";
   const { shell, BrowserWindow, dialog } = require("electron");
@@ -29,26 +34,26 @@ module.exports.createTemplate = (app) => {
   const ViewMenu = {
     label: "View",
     submenu: [
-      {
-        label: "Reload",
-        accelerator: "CmdOrCtrl+R",
-        click: (_, focusedWindow) => {
-          if (focusedWindow) {
-            // on reload, start fresh and close any old
-            // open secondary windows
-            if (focusedWindow.id === 1) {
-              // console.log('in FOCUS!');
-              BrowserWindow.getAllWindows().forEach((win) => {
-                if (win.id > 1) {
-                  // console.log('Closing!');
-                  win.close();
-                }
-              });
-            }
-            focusedWindow.reload();
-          }
-        },
-      },
+      // {
+      //   label: "Reload",
+      //   accelerator: "CmdOrCtrl+R",
+      //   click: (_, focusedWindow) => {
+      //     if (focusedWindow) {
+      //       // on reload, start fresh and close any old
+      //       // open secondary windows
+      //       if (focusedWindow.id === 1) {
+      //         // console.log('in FOCUS!');
+      //         BrowserWindow.getAllWindows().forEach((win) => {
+      //           if (win.id > 1) {
+      //             // console.log('Closing!');
+      //             win.close();
+      //           }
+      //         });
+      //       }
+      //       focusedWindow.reload();
+      //     }
+      //   },
+      // },
       {
         label: "Toggle Full Screen",
         accelerator: (() => {
@@ -107,7 +112,6 @@ module.exports.createTemplate = (app) => {
       {
         label: "Minimize",
         accelerator: "CmdOrCtrl+M",
-        // nooooop
         role: "minimize",
       },
       {
