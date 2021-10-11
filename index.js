@@ -47,7 +47,7 @@ function createBrowser() {
   });
 
   window.loadFile(`public/index.html`);
-  isDev && window.webContents.openDevTools();
+  // isDev && window.webContents.openDevTools();
 
   ipcListener(window);
 }
