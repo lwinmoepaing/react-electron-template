@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const NotificationHook = ({ onClicked, onClosed }) => {
+const NotificationHook = ({ onClicked, onClosed } = {}) => {
   const DEFAULT_ICON = `${electron.__imageDir}/fox_noti.png`;
 
   const sendNotification = (

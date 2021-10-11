@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import NotFound from "../components/common/NotFound";
+import OnlineStatusHook from "../hooks/common/OnlineStatusHook";
 import IsAuthMiddleware from "../hooks/middleware/IsAuthMiddleware";
 import { ABOUT_SCREEN, HOME_SCREEN, LOGIN_SCREEN } from "./constants";
 
@@ -24,6 +25,7 @@ const AuthRoute = ({ children, ...rest }) => {
 
 const Routes = () => {
   const { isCheckingUser } = IsAuthMiddleware();
+  const { isOnline } = OnlineStatusHook({ showNoti: true });
 
   return (
     <HashRouter>
