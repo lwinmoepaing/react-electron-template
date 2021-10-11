@@ -87,8 +87,8 @@ function createBrowser() {
 
 function createSplashScreen() {
   const window = new BrowserWindow({
-    width: 450,
-    height: 280,
+    width: 350,
+    height: 180,
     frame: false,
     transparent: true,
     title: process.env.APP_NAME || "sample title",
