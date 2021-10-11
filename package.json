@@ -12,7 +12,8 @@
     "dist": "electron-builder",
     "make:linux": "electron-builder --linux",
     "make:macos": "electron-builder --mac",
-    "make:win": "electron-builder --win --x64"
+    "make:win": "electron-builder --win --x64",
+    "make:win-single": "electron-builder --win portable"
   },
   "keywords": [],
   "author": "Lwin Moe Paing",
@@ -67,11 +68,11 @@
   "devDependencies": {
     "electron": "^15.0.0",
     "electron-builder": "^22.13.1",
-    "electron-reload": "^2.0.0-alpha.1",
     "webpack-cli": "^4.8.0",
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "electron-reload": "^2.0.0-alpha.1",
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
     "@babel/preset-react": "^7.14.5",
