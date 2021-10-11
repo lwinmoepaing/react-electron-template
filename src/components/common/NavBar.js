@@ -14,6 +14,7 @@ import AuthHook from "../../hooks/auth/AuthHook";
 import BackButton from "../common/BackButton";
 import LanguageToggle from "./LanguageToggle";
 import LanguageHook from "../../hooks/common/LanguageHook";
+import OnlineStatusHook from "../../hooks/common/OnlineStatusHook";
 
 const Navbar = () => {
   const { logoutUser } = AuthHook();

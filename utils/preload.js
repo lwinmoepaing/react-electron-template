@@ -2,6 +2,8 @@ const { ipcRenderer, contextBridge } = require("electron");
 const path = require("path");
 const { NOTI_CODE } = require("../config/constants");
 
+const __imageDir = path.join(__dirname, "../", "public", "assets", "images");
+
 const notificationApi = {
   // electron.notificationApi.sendNotification()
   sendNotification: (params, cb) => {
@@ -22,5 +24,5 @@ contextBridge.exposeInMainWorld("electron", {
   notificationApi,
   // Some Constants
   __dirname: __dirname,
-  __imageDir: path.join(__dirname, "../", "/public/assets/images"),
+  __imageDir: __imageDir,
 });
