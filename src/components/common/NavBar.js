@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
+import { useTranslation } from "react-i18next";
 
 // All Routes
 import {
@@ -15,6 +16,7 @@ import LanguageToggle from "./LanguageToggle";
 
 const Navbar = () => {
   const { logoutUser } = AuthHook();
+  const { t } = useTranslation();
   const history = useHistory();
 
   const onLogout = async (values) => {
@@ -24,8 +26,13 @@ const Navbar = () => {
 
   return (
     <div>
-      <Link to={HOME_SCREEN.path}> Dashboard - ({HOME_SCREEN.path})</Link>
-      <Link to={ABOUT_SCREEN.path}> About ({ABOUT_SCREEN.path}) </Link>
+      <Link to={HOME_SCREEN.path}>
+        {t("navbar.home")} - ({HOME_SCREEN.path})
+      </Link>
+      <Link to={ABOUT_SCREEN.path}>
+        {" "}
+        {t("navbar.about")} ({ABOUT_SCREEN.path}){" "}
+      </Link>
       <button onClick={onLogout}>Logout</button>
       <LanguageToggle />
     </div>
