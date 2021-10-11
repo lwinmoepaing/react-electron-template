@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import Routes from "./routes/Routes";
 import TitleHook from "./hooks/common/TitleHook";
 import configureStore from "./store";
-
+import "./localization/config";
 // Default Electron (preload.js)
 // You Can use electron.notification.onNotiClicked
 
