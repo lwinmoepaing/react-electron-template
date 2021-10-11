@@ -48,7 +48,7 @@ const IsAuthMiddleware = () => {
 
       dispatch({
         type: languageActions.UPDATE_LANGUAGE,
-        param: JSON.parse(offlineLang),
+        param: offlineLang,
       });
     } catch (e) {
       console.log(e.message);

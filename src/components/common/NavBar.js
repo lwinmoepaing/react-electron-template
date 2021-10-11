@@ -11,6 +11,7 @@ import {
 import AuthHook from "../../hooks/auth/AuthHook";
 // Components
 import BackButton from "../common/BackButton";
+import LanguageToggle from "./LanguageToggle";
 
 const Navbar = () => {
   const { logoutUser } = AuthHook();
@@ -26,6 +27,7 @@ const Navbar = () => {
       <Link to={HOME_SCREEN.path}> Dashboard - ({HOME_SCREEN.path})</Link>
       <Link to={ABOUT_SCREEN.path}> About ({ABOUT_SCREEN.path}) </Link>
       <button onClick={onLogout}>Logout</button>
+      <LanguageToggle />
     </div>
   );
 };
