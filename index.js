@@ -18,7 +18,7 @@ const isMac = process.platform === "darwin";
 const defaultWindowBackground = "white";
 const preloadDir = path.join(__dirname, "utils", "preload.js");
 const imageDir = path.join(__dirname, "public", "assets", "images");
-const dockIcon = path.join(imageDir, "fox_noti.png");
+const dockIcon = path.join(imageDir, "app_logo.png");
 const trayIcon = path.join(imageDir, "react_icon.png");
 
 // path.join(__dirname, "preload.js");

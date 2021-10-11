@@ -1,23 +1,78 @@
 {
   "name": "LMP",
   "version": "1.0.0",
-  "description": "",
+  "description": "This app is frame for react-electorn.",
   "main": "index.js",
   "scripts": {
     "start": "electron .",
     "dev": "npm run watch",
     "watch": "webpack --config webpack.common.js --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --config webpack.prod.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "make:linux": "electron-builder --linux",
+    "make:macos": "electron-builder --mac",
+    "make:win": "electron-builder --win --x64",
+    "make:win-single": "electron-builder --win portable"
   },
   "keywords": [],
-  "author": "",
+  "author": "Lwin Moe Paing",
   "license": "ISC",
+  "build": {
+    "productName": "Lmp Frame",
+    "appId": "com.lmp.frame",
+    "files": [
+      "build/**/*",
+      "config/**/*",
+      "public/**/*",
+      "server/**/*",
+      "src/**/*",
+      "utils/**/*",
+      "index.js"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "public/assets/images/app_logo.png",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 430,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "icon": "public/assets/images/app_logo.png",
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "rpm",
+        "AppImage"
+      ],
+      "category": "Development"
+    }
+  },
   "devDependencies": {
     "electron": "^15.0.0",
-    "electron-reload": "^2.0.0-alpha.1",
-    "webpack-cli": "^4.8.0"
+    "electron-builder": "^22.13.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "electron-reload": "^2.0.0-alpha.1",
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.6",
     "@babel/preset-react": "^7.14.5",
