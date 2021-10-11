@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Notification } = require("electron");
+const { app, BrowserWindow, ipcMain, Notification, Menu } = require("electron");
 const path = require("path");
 const electronReload = require("electron-reload");
 // Constants
@@ -34,6 +34,10 @@ app.on("activate", () => {
 });
 
 function createBrowser() {
+  const menuTemplate = require("./utils/Menu").createTemplate(app);
+  const mainMenu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(mainMenu);
+
   const window = new BrowserWindow({
     width: 1200,
     height: 600,
