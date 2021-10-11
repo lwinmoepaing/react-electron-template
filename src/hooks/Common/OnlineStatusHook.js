@@ -18,10 +18,10 @@ function OnlineStatusHook({ showNoti = false }) {
     window.addEventListener("online", setOnlineStatus);
     window.addEventListener("offline", setOfflineStatus);
 
-    return () => [
-      window.removeEventListener("online", setOnlineStatus),
-      window.removeEventListener("offline", setOfflineStatus),
-    ];
+    return () => {
+      window.removeEventListener("online", setOnlineStatus);
+      window.removeEventListener("offline", setOfflineStatus);
+    };
   }, []);
 
   return {
