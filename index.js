@@ -7,6 +7,7 @@ const {
   Tray,
 } = require("electron");
 const path = require("path");
+const server = require("./server");
 const electronReload = require("electron-reload");
 // Constants
 const ipcListener = require("./utils/ipcListner");
@@ -20,8 +21,6 @@ const preloadDir = path.join(__dirname, "utils", "preload.js");
 const imageDir = path.join(__dirname, "public", "assets", "images");
 const dockIcon = path.join(imageDir, "app_logo.png");
 const trayIcon = path.join(imageDir, "react_icon.png");
-
-// path.join(__dirname, "preload.js");
 
 if (isDev) {
   electronReload(__dirname, {
@@ -38,6 +37,7 @@ app
   .then(() => {
     const splash = createSplashScreen();
     const mainApp = createBrowser();
+    server(); // Call Backend Api default Port 5050
     mainApp.once("ready-to-show", () => {
       setTimeout(() => {
         splash.destroy();
