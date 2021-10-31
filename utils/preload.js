@@ -1,7 +1,7 @@
-const { ipcRenderer, contextBridge } = require("electron");
+const electron = require("electron");
+const { ipcRenderer, contextBridge } = electron;
 const path = require("path");
 const { NOTI_CODE } = require("../config/constants");
-
 const __imageDir = path.join(__dirname, "../", "public", "assets", "images");
 
 const notificationApi = {
