@@ -13,7 +13,7 @@ const LOG_DIRECTORY = isProduction
   : path.join(__dirname, "../", "server", "logs");
 const DATABASE_DIRECTORY = isProduction
   ? path.join(USER_DATA_DIRECTORY, "databases")
-  : path.join(__dirname, "../", "server", "databases");
+  : path.join(__dirname, "../", "server", "data");
 
 console.log("LOG_DIRECTORY", LOG_DIRECTORY);
 console.log("DATABASE_DIRECTORY", DATABASE_DIRECTORY);
