@@ -41,7 +41,7 @@ require("dotenv").config({ path: path.join(__dirname, "../.env") });
 require("./services/passport")(passport);
 
 // Connect To Database
-connectDb();
+// connectDb();
 
 /**
  * HTTP request logger middleware for node.js

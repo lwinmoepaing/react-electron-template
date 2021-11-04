@@ -1,11 +1,17 @@
-const db = require("../services/dbConnect");
-const { successResponse } = require("../lib/responseHandler");
+const knex = require("../services/dbConnect");
+const { successResponse, errorResponse } = require("../lib/responseHandler");
+const User = require("../model/UserModel");
 
 /**
  * User Lists
  */
 
 module.exports.GET_ALL_USERS = async (req, res) => {
-  const users = db.select().from("users");
-  res.status(200).json(users);
+  try {
+    const users = await new User().fetchAll({ withRelated: ["role"] });
+    res.status(200).json(successResponse(users));
+  } catch (e) {
+    console.log("error", e);
+    res.status(401).json(errorResponse(e));
+  }
 };
