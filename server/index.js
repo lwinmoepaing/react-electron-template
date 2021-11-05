@@ -8,11 +8,22 @@ const morgan = require("morgan");
 const path = require("path");
 const routerEndPoints = require("express-list-endpoints");
 const server = require("./bin/www");
-const { LOG_DIRECTORY } = require("../config/index");
+const { LOG_DIRECTORY, DATABASE_DIRECTORY } = require("../config/index");
 const fs = require("fs");
 
+// Check If Exist Directory And Make Directory
 if (!fs.existsSync(LOG_DIRECTORY)) {
   fs.mkdirSync(LOG_DIRECTORY);
+}
+
+if (!fs.existsSync(DATABASE_DIRECTORY)) {
+  fs.mkdirSync(DATABASE_DIRECTORY);
+}
+
+const databasePath = path.join(DATABASE_DIRECTORY, "database.db3");
+if (!fs.existsSync(databasePath)) {
+  console.log("------ DataBase Path --------", databasePath);
+  fs.copyFileSync(path.join(__dirname, "data", "database.db3"), databasePath);
 }
 
 // Finally Handle All UnExpected Errors
@@ -30,15 +41,16 @@ require("dotenv").config({ path: path.join(__dirname, "../.env") });
 require("./services/passport")(passport);
 
 // Connect To Database
-connectDb();
+// connectDb();
 
 /**
  * HTTP request logger middleware for node.js
  * @doc : https://github.com/expressjs/morgan#readme
  */
-// if (process.env.NODE_ENV !== "production") {
-//   app.use(morgan("tiny"));
-// } else {
+if (process.env.ENV !== "PRODUCTION") {
+  app.use(morgan("tiny"));
+}
+// else {
 app.use(Logger);
 app.use(Logger.notFoundLog);
 app.use(Logger.errorLog);
