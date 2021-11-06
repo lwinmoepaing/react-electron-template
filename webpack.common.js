@@ -13,7 +13,7 @@ const env = {
 // Cofig
 const config = {
   env: env.DEV,
-  mainEntry: "./src/index.js",
+  mainEntry: path.resolve(__dirname, "src", "index.js"),
   outputFileName: "bundle.js",
   outputDirectory: path.resolve(__dirname, "build", "js"),
 };
@@ -60,7 +60,7 @@ module.exports = {
   },
   plugins: [new DotEnv()],
   resolve: {
-    extensions: [".js"],
+    extensions: [".js", ".jsx"],
   },
   output: {
     filename: config.outputFileName,
