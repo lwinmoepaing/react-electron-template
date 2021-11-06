@@ -14,14 +14,14 @@
     "make:macos": "electron-builder --mac",
     "make:win": "electron-builder --win --x64",
     "make:win-single": "electron-builder --win portable",
-    "deploy": "electron-builder build --win --x64 --mac --publish always"
+    "deploy": "electron-builder --win --x64 --mac --p always"
   },
   "keywords": [],
   "author": "Lwin Moe Paing",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lwinmoepaing/react-electron-template.git"
+    "url": "git@github.com:lwinmoepaing/react-electron-template.git"
   },
   "bugs": {
     "url": "https://github.com/lwinmoepaing/react-electron-template/issues"
@@ -74,7 +74,11 @@
       "category": "Development"
     },
     "publish": [
-      "github"
+      {
+        "provider": "github",
+        "owner": "lwinmoepaing",
+        "repo": "react-electron-template"
+      }
     ]
   },
   "devDependencies": {
