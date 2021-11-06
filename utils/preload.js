@@ -1,6 +1,7 @@
-const { ipcRenderer, contextBridge } = require("electron");
+const { ipcRenderer, contextBridge, remote } = require("electron");
 const path = require("path");
 const os = require("os");
+const __appVersion = remote.app.getVersion();
 
 let __osAddress = [];
 for (let k in os.networkInterfaces()) {
@@ -38,4 +39,5 @@ contextBridge.exposeInMainWorld("electron", {
   __dirname: __dirname,
   __imageDir: __imageDir,
   __osAddress: __osAddress,
+  __appVersion: __appVersion,
 });
