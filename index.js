@@ -22,7 +22,7 @@ const imageDir = path.join(__dirname, "public", "assets", "images");
 const dockIcon = path.join(imageDir, "app_logo.png");
 const trayIcon = path.join(imageDir, "react_icon.png");
 
-if (isDev) {
+if (!!isDev) {
   electronReload(__dirname, {
     electron: path.join(__dirname, "node_modules", ".bin", "electron"),
   });
@@ -74,11 +74,12 @@ function createBrowser() {
       nodeIntegration: false,
       contextIsolation: true,
       preload: preloadDir,
+      webSecurity: false,
     },
   });
 
   window.loadFile(`public/index.html`);
-  // isDev && window.webContents.openDevTools();
+  isDev && window.webContents.openDevTools();
 
   ipcListener(window);
 

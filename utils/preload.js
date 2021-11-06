@@ -14,7 +14,6 @@ for (let k in os.networkInterfaces()) {
 }
 
 const { NOTI_CODE } = require("../config/constants");
-
 const __imageDir = path.join(__dirname, "../", "public", "assets", "images");
 
 const notificationApi = {

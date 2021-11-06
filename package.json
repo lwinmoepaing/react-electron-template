@@ -92,6 +92,7 @@
     "@babel/preset-env": "^7.15.6",
     "@babel/preset-react": "^7.14.5",
     "@hapi/joi": "^17.1.1",
+    "axios": "^0.24.0",
     "babel-loader": "^8.2.2",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
