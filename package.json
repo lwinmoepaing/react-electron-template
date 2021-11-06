@@ -71,7 +71,10 @@
         "AppImage"
       ],
       "category": "Development"
-    }
+    },
+    "publish": [
+      "github"
+    ]
   },
   "devDependencies": {
     "electron": "^15.0.0",
