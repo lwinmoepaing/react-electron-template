@@ -1,6 +1,6 @@
 {
   "name": "LMP",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "This app is frame for react-electorn.",
   "main": "index.js",
   "scripts": {
@@ -13,11 +13,20 @@
     "make:linux": "electron-builder --linux",
     "make:macos": "electron-builder --mac",
     "make:win": "electron-builder --win --x64",
-    "make:win-single": "electron-builder --win portable"
+    "make:win-single": "electron-builder --win portable",
+    "deploy": "electron-builder --win --x64 --mac --p always"
   },
   "keywords": [],
   "author": "Lwin Moe Paing",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:lwinmoepaing/react-electron-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lwinmoepaing/react-electron-template/issues"
+  },
+  "homepage": "https://github.com/lwinmoepaing/react-electron-template#readme",
   "build": {
     "productName": "Lmp Frame",
     "appId": "com.lmp.frame",
@@ -63,7 +72,14 @@
         "AppImage"
       ],
       "category": "Development"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "lwinmoepaing",
+        "repo": "react-electron-template"
+      }
+    ]
   },
   "devDependencies": {
     "electron": "^15.0.0",
