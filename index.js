@@ -80,7 +80,7 @@ function createBrowser() {
   window.loadFile(`public/index.html`);
   isDev && window.webContents.openDevTools();
 
-  ipcListener(window);
+  ipcListener(window, app);
 
   return window;
 }

@@ -3,7 +3,7 @@ const ipRegex = require("ip-regex");
 const path = require("path");
 const os = require("os");
 require("dotenv");
-const { NOTI_CODE } = require("../config/constants");
+const { NOTI_CODE, VERSION_CODE, COMMON } = require("../config/constants");
 
 const __imageDir = path.join(__dirname, "../", "public", "assets", "images");
 
@@ -42,8 +42,61 @@ const notificationApi = {
   },
 };
 
+// Version Update Api
+// When Version Update Progress Download !!
+const versionApi = {
+  requestUpdate: () => {
+    ipcRenderer.send(VERSION_CODE.REQUEST_UPDATE);
+  },
+
+  onVersionMessage: (cb) => {
+    ipcRenderer.on(VERSION_CODE.VERSION_UPDATE_MESSAGE, cb);
+  },
+
+  onVersionMessageRemoveListener: (cb) => {
+    ipcRenderer.removeListener(VERSION_CODE.VERSION_UPDATE_MESSAGE, cb);
+  },
+
+  onVersionUpdateError: (cb) => {
+    ipcRenderer.on(VERSION_CODE.VERSION_UPDATE_ERROR, cb);
+  },
+
+  onVersionUpdateErrorRemoveListener: (cb) => {
+    ipcRenderer.removeListener(VERSION_CODE.VERSION_UPDATE_ERROR, cb);
+  },
+
+  onVersionUpdatePercentage: (cb) => {
+    ipcRenderer.on(VERSION_CODE.PROGRESS_CHANGES, cb);
+  },
+
+  onVersionUpdatePercentageRemoveListener: (cb) => {
+    ipcRenderer.removeListener(VERSION_CODE.PROGRESS_CHANGES, cb);
+  },
+
+  onFinishedUpdate: (cb) => {
+    ipcRenderer.on(VERSION_CODE.FINISHED_UPDATE, cb);
+  },
+
+  onFinishedUpdateRemoveListener: (cb) => {
+    ipcRenderer.removeListener(VERSION_CODE.FINISHED_UPDATE, cb);
+  },
+};
+
+//
+const commonApi = {
+  onMessage: (cb) => {
+    ipcRenderer.on(COMMON.SEND_MESSAGE_FROM_SERVER, cb);
+  },
+
+  onMessageRemoveListener: (cb) => {
+    ipcRenderer.removeListener(COMMON.SEND_MESSAGE_FROM_SERVER, cb);
+  },
+};
+
 contextBridge.exposeInMainWorld("electron", {
   notificationApi,
+  versionApi,
+  commonApi,
   // Some Constants
   __dirname: __dirname,
   __imageDir: __imageDir,

@@ -7,12 +7,20 @@ import axios from "axios";
 import CheckVersionHook from "../hooks/common/CheckVersionHook";
 
 export default function LoginScreen() {
+  const { electron } = window;
   const [isLogin, setIsLogin] = useState(false);
   const {
     currentVersion,
     nextVersion,
     getVersionLoading,
+    isReleaseNewVersion,
+    versionStatus,
+    versionUpdatePercentage,
+    versionUpdateLoading,
+    isVersionUpdateError,
+    versionUpdateErrorMessage,
     checkVersionRelease,
+    updateVersionRelease,
   } = CheckVersionHook();
 
   const user = useSelector(({ profile }) => profile.data);
@@ -46,11 +54,30 @@ export default function LoginScreen() {
           {getVersionLoading && (
             <SearchLoading className="LoadingContainer" style={{ top: 5 }} />
           )}
+          {versionUpdateLoading &&
+            versionUpdatePercentage &&
+            versionUpdatePercentage + "%"}
         </p>
 
-        <button onClick={checkVersionRelease}>
-          {nextVersion ? "Do you want to update" : "Check Version ?"}
+        <button
+          onClick={nextVersion ? updateVersionRelease : checkVersionRelease}
+        >
+          {nextVersion
+            ? "Do you want to update now ?"
+            : "Check Version to Update?"}
         </button>
+
+        {versionUpdateLoading && (
+          <div>
+            <p> Status: {versionStatus}</p>
+          </div>
+        )}
+
+        {isVersionUpdateError && (
+          <div>
+            <p> {versionUpdateErrorMessage} </p>
+          </div>
+        )}
       </div>
     </div>
   );
