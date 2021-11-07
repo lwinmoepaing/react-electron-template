@@ -8,7 +8,6 @@ const {
 } = require("electron");
 const path = require("path");
 const server = require("./server");
-const electronReload = require("electron-reload");
 // Constants
 const ipcListener = require("./utils/ipcListner");
 // Call For Env
@@ -22,7 +21,8 @@ const imageDir = path.join(__dirname, "public", "assets", "images");
 const dockIcon = path.join(imageDir, "app_logo.png");
 const trayIcon = path.join(imageDir, "react_icon.png");
 
-if (!!isDev) {
+if (isDev) {
+  const electronReload = require("electron-reload");
   electronReload(__dirname, {
     electron: path.join(__dirname, "node_modules", ".bin", "electron"),
   });
