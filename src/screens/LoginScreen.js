@@ -1,28 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
-import SearchLoading from "../components/loading/SearchLoading";
 import LoginForm from "../components/auth/LoginForm";
 import axios from "axios";
-import CheckVersionHook from "../hooks/common/CheckVersionHook";
-import Button from "@mui/material/Button";
+import VersionChecker from "../components/common/VersionChecker";
 
 export default function LoginScreen() {
   const { electron } = window;
   const [isLogin, setIsLogin] = useState(false);
-  const {
-    currentVersion,
-    nextVersion,
-    getVersionLoading,
-    isReleaseNewVersion,
-    versionStatus,
-    versionUpdatePercentage,
-    versionUpdateLoading,
-    isVersionUpdateError,
-    versionUpdateErrorMessage,
-    checkVersionRelease,
-    updateVersionRelease,
-  } = CheckVersionHook();
 
   const user = useSelector(({ profile }) => profile.data);
 
@@ -45,47 +30,8 @@ export default function LoginScreen() {
     <Redirect to={"/home"} />
   ) : (
     <div>
-      <h2> Login Screen </h2>
       <LoginForm />
-      <div>
-        <p style={{ padding: "16px 0", margin: 0 }}>
-          Current Version: {currentVersion}{" "}
-          {(isReleaseNewVersion || getVersionLoading) && " --> "}
-          {!!isReleaseNewVersion && nextVersion + " (New Version) "}
-          {getVersionLoading && (
-            <SearchLoading className="LoadingContainer" style={{ top: 5 }} />
-          )}
-          {versionUpdateLoading &&
-            versionUpdatePercentage &&
-            versionUpdatePercentage + "%"}
-        </p>
-
-        {nextVersion === currentVersion && !getVersionLoading && (
-          <div>Already Updated Version</div>
-        )}
-
-        <Button
-          onClick={
-            isReleaseNewVersion ? updateVersionRelease : checkVersionRelease
-          }
-        >
-          {isReleaseNewVersion
-            ? "Do you want to update now ?"
-            : "Check Version to Update?"}
-        </Button>
-
-        {versionUpdateLoading && (
-          <div>
-            <p> Status: {versionStatus}</p>
-          </div>
-        )}
-
-        {isVersionUpdateError && (
-          <div>
-            <p> {versionUpdateErrorMessage} </p>
-          </div>
-        )}
-      </div>
+      <VersionChecker />
     </div>
   );
 }

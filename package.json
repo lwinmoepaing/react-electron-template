@@ -1,6 +1,6 @@
 {
   "name": "LMP",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This app is frame for react-electorn.",
   "main": "index.js",
   "scripts": {
@@ -97,6 +97,7 @@
     "@emotion/styled": "^11.3.0",
     "@hapi/joi": "^17.1.1",
     "@mui/icons-material": "^5.0.5",
+    "@mui/lab": "^5.0.0-alpha.53",
     "@mui/material": "^5.0.6",
     "axios": "^0.24.0",
     "babel-loader": "^8.2.2",
