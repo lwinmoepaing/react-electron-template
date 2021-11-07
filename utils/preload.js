@@ -16,8 +16,7 @@ if (osInterfaces.en0) {
   __osAddress = __osAddress ? __osAddress.address : null;
 }
 
-// const __appVersion = app.getPath("userData");
-
+// This all method
 const notificationApi = {
   // electron.notificationApi.sendNotification()
   sendNotification: (params, cb) => {
@@ -28,9 +27,18 @@ const notificationApi = {
   onNotiClicked: (cb) => {
     ipcRenderer.on(NOTI_CODE.NOTI_WHEN_CLICK, cb);
   },
+
+  onNotiRemoveListener: (cb) => {
+    ipcRenderer.removeListener(NOTI_CODE.NOTI_WHEN_CLICK, cb);
+  },
+
   // electron.notificationApi.onNotiClosed()
   onNotiClosed: (cb) => {
     ipcRenderer.on(NOTI_CODE.NOTI_WHEN_CLOSED, cb);
+  },
+
+  onNotiClosedRemoveListener: (cb) => {
+    ipcRenderer.removeListener(NOTI_CODE.NOTI_WHEN_CLOSED, cb);
   },
 };
 

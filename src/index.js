@@ -6,6 +6,6 @@ configAxios();
 
 // Add Scss And Bootstrap ( yarn add -D  bootstrap@4.5.2 )
 // import "bootstrap/dist/css/bootstrap.min.css";
-// import "./styles/index.scss";
+import "./styles/index.scss";
 
 ReactDom.render(<App />, document.getElementById("electron-app"));

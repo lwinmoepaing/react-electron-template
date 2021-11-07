@@ -74,7 +74,6 @@ function createBrowser() {
       nodeIntegration: false,
       contextIsolation: true,
       preload: preloadDir,
-      webSecurity: false,
     },
   });
 

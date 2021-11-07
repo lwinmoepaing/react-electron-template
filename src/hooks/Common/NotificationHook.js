@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const { electron } = window;
+
 const grantNoti = () => {
   if (!!("Notification" in window)) {
     return true;
