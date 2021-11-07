@@ -7,7 +7,7 @@ import "./localization/i18n";
 // Default Electron (preload.js)
 // You Can use electron.notification.onNotiClicked
 
-// Redux Store from '../store/index'
+// // Redux Store from '../store/index'
 const store = configureStore();
 
 const App = () => {
@@ -24,3 +24,4 @@ const App = () => {
 };
 
 export default App;
+

@@ -3,12 +3,6 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 
-// All Routes
-import {
-  HOME_SCREEN,
-  ABOUT_SCREEN,
-  LOGIN_SCREEN,
-} from "../../routes/constants";
 import AuthHook from "../../hooks/auth/AuthHook";
 // Components
 import BackButton from "../common/BackButton";
@@ -30,11 +24,11 @@ const Navbar = () => {
 
   return (
     <div>
-      <Link to={HOME_SCREEN.path}>
-        {t("navbar.home")} - ({HOME_SCREEN.path})
+      <Link to={"/"}>
+        {t("navbar.home")} - ({"/"})
       </Link>
-      <Link to={ABOUT_SCREEN.path}>
-        {t("navbar.about")} ({ABOUT_SCREEN.path})
+      <Link to={"/about"}>
+        {t("navbar.about")} ({"/about"})
       </Link>
       <button onClick={onLogout}>Logout</button>
       <LanguageToggle />

@@ -16,7 +16,7 @@ export default function AuthHook() {
     new Promise((res, rej) => setTimeout(() => res(true), secTimer * 1000));
 
   const loginUser = async (body) => {
-    if (loginLoading) reutrn;
+    if (loginLoading) return;
     const { email, password } = body;
     setLoginLoading(true);
 

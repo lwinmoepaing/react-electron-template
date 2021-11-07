@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
-import { electron } from "webpack";
 import LoginForm from "../components/auth/LoginForm";
 import { HOME_SCREEN } from "../routes/constants";
 import axios from "axios";
 
 export default function LoginScreen() {
+  const { electron } = window;
   const [isLogin, setIsLogin] = useState(false);
   const [getVersionLoading, setGetVersionLoading] = useState(false);
   const user = useSelector(({ profile }) => profile.data);
