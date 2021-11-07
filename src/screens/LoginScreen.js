@@ -5,6 +5,7 @@ import SearchLoading from "../components/loading/SearchLoading";
 import LoginForm from "../components/auth/LoginForm";
 import axios from "axios";
 import CheckVersionHook from "../hooks/common/CheckVersionHook";
+import Button from "@mui/material/Button";
 
 export default function LoginScreen() {
   const { electron } = window;
@@ -63,7 +64,7 @@ export default function LoginScreen() {
           <div>Already Updated Version</div>
         )}
 
-        <button
+        <Button
           onClick={
             isReleaseNewVersion ? updateVersionRelease : checkVersionRelease
           }
@@ -71,7 +72,7 @@ export default function LoginScreen() {
           {isReleaseNewVersion
             ? "Do you want to update now ?"
             : "Check Version to Update?"}
-        </button>
+        </Button>
 
         {versionUpdateLoading && (
           <div>
