@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function CheckVersionHook() {
   const { electron } = window;
-
-  const [currentVersion, setCurrentVersion] = useState(process.env.VERSION);
+  const currentVersion = useSelector((state) => state.app.version);
   const [nextVersion, setNextVersion] = useState(0);
   const [getVersionLoading, setGetVersionLoading] = useState(false);
   const [isReleaseNewVersion, setIsReleaseNewVersion] = useState(false);
@@ -16,7 +16,6 @@ export default function CheckVersionHook() {
     useState("");
 
   useEffect(() => {
-    setCurrentVersion(process.env.VERSION);
     electron.versionApi.onVersionMessage(onVersionMessage);
     electron.versionApi.onFinishedUpdate(onFinishedUpdate);
     electron.versionApi.onVersionUpdatePercentage(onVersionProgress);
@@ -64,14 +63,17 @@ export default function CheckVersionHook() {
       const res = await axios.get(process.env.VERSION_URL);
       const nxtVerNumeric = changeNumericFormat(res.data.version);
       const curVerNumeric = changeNumericFormat(currentVersion);
+      setNextVersion(res.data.version);
       if (nxtVerNumeric > curVerNumeric) {
         setTimeout(() => {
-          setNextVersion(res.data.version);
           setGetVersionLoading(false);
           setIsReleaseNewVersion(true);
         }, 2000);
       } else {
-        setIsReleaseNewVersion(false);
+        setTimeout(() => {
+          setIsReleaseNewVersion(false);
+          setGetVersionLoading(false);
+        }, 2000);
       }
     } catch (e) {
       setGetVersionLoading(false);

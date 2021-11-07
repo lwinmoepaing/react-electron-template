@@ -49,6 +49,10 @@ const versionApi = {
     ipcRenderer.send(VERSION_CODE.REQUEST_UPDATE);
   },
 
+  onGetVersion: (cb) => {
+    ipcRenderer.on(VERSION_CODE.SEND_VERSION, cb);
+  },
+
   onVersionMessage: (cb) => {
     ipcRenderer.on(VERSION_CODE.VERSION_UPDATE_MESSAGE, cb);
   },
@@ -101,5 +105,4 @@ contextBridge.exposeInMainWorld("electron", {
   __dirname: __dirname,
   __imageDir: __imageDir,
   __osAddress: __osAddress,
-  __appVersion: process.env.VERSION,
 });

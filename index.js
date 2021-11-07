@@ -7,6 +7,7 @@ const {
   Tray,
 } = require("electron");
 const path = require("path");
+const { VERSION_CODE } = require("./config/constants");
 const server = require("./server");
 // Constants
 const ipcListener = require("./utils/ipcListner");
@@ -81,6 +82,10 @@ function createBrowser() {
   isDev && window.webContents.openDevTools();
 
   ipcListener(window, app);
+
+  window.webContents.on("did-finish-load", () => {
+    window.webContents.send(VERSION_CODE.SEND_VERSION, app.getVersion());
+  });
 
   return window;
 }

@@ -49,8 +49,8 @@ export default function LoginScreen() {
       <div>
         <p style={{ padding: "16px 0", margin: 0 }}>
           Current Version: {currentVersion}{" "}
-          {(nextVersion !== 0 || getVersionLoading) && " --> "}
-          {!!nextVersion && nextVersion + " (New Version) "}
+          {(isReleaseNewVersion || getVersionLoading) && " --> "}
+          {!!isReleaseNewVersion && nextVersion + " (New Version) "}
           {getVersionLoading && (
             <SearchLoading className="LoadingContainer" style={{ top: 5 }} />
           )}
@@ -59,10 +59,16 @@ export default function LoginScreen() {
             versionUpdatePercentage + "%"}
         </p>
 
+        {nextVersion === currentVersion && !getVersionLoading && (
+          <div>Already Updated Version</div>
+        )}
+
         <button
-          onClick={nextVersion ? updateVersionRelease : checkVersionRelease}
+          onClick={
+            isReleaseNewVersion ? updateVersionRelease : checkVersionRelease
+          }
         >
-          {nextVersion
+          {isReleaseNewVersion
             ? "Do you want to update now ?"
             : "Check Version to Update?"}
         </button>

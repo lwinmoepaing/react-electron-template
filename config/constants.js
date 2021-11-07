@@ -12,6 +12,7 @@ module.exports.VERSION_CODE = {
   // Emit to Server
   // Request to Server for updating version
   REQUEST_UPDATE: "version:request_update",
+  SEND_VERSION: "version:current_version",
 
   // Emit to Frontend
   // When Percentage Progress Changes
