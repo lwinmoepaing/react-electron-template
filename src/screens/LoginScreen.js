@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 import LoginForm from "../components/auth/LoginForm";
-import { HOME_SCREEN } from "../routes/constants";
 import axios from "axios";
 
 export default function LoginScreen() {
@@ -39,7 +38,6 @@ export default function LoginScreen() {
         setGetVersionLoading(false);
       }, 1500);
       // const res = await axios.get("http://localhost:5050/api");
-      console.log(res.data);
     } catch (e) {
       setGetVersionLoading(false);
       console.log(e);
@@ -47,7 +45,7 @@ export default function LoginScreen() {
   };
 
   return isLogin ? (
-    <Redirect to={HOME_SCREEN.path} />
+    <Redirect to={"/home"} />
   ) : (
     <div>
       <h2> Login Screen </h2>

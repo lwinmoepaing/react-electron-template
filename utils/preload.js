@@ -1,20 +1,22 @@
-const { ipcRenderer, contextBridge, remote } = require("electron");
+const { ipcRenderer, contextBridge, remote, app } = require("electron");
+const ipRegex = require("ip-regex");
 const path = require("path");
+const os = require("os");
+require("dotenv");
 const { NOTI_CODE } = require("../config/constants");
+
 const __imageDir = path.join(__dirname, "../", "public", "assets", "images");
 
-// const os = require("os");
-// const __appVersion = remote.app.getVersion();
+const osInterfaces = os.networkInterfaces();
+let __osAddress;
+if (osInterfaces.en0) {
+  __osAddress = osInterfaces.en0.find((interObj) => {
+    return ipRegex.v4({ exact: true }).test(interObj.address);
+  });
+  __osAddress = __osAddress ? __osAddress.address : null;
+}
 
-// let __osAddress = [];
-// for (let k in os.networkInterfaces()) {
-//   for (let k2 in interfaces[k]) {
-//     let address = interfaces[k][k2];
-//     if (address.family === "IPv4" && !address.internal) {
-//       __osAddress.push(address.address);
-//     }
-//   }
-// }
+// const __appVersion = app.getPath("userData");
 
 const notificationApi = {
   // electron.notificationApi.sendNotification()
@@ -37,6 +39,6 @@ contextBridge.exposeInMainWorld("electron", {
   // Some Constants
   __dirname: __dirname,
   __imageDir: __imageDir,
-  // __osAddress: __osAddress,
-  // __appVersion: __appVersion,
+  __osAddress: __osAddress,
+  __appVersion: process.env.VERSION,
 });
