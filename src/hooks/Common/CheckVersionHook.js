@@ -12,6 +12,7 @@ export default function CheckVersionHook() {
   const [versionUpdateLoading, setVersionUpdateLoading] = useState(false);
   const [versionUpdatePercentage, setVersionUpdatePercentage] = useState("0");
   const [isVersionUpdateError, setIsVersionUpdateError] = useState(false);
+  const [isNeedDbUpdate, setIsNeedDbUpdate] = useState(false);
   const [versionUpdateErrorMessage, setVersionUpdateErrorMessage] =
     useState("");
 
@@ -62,8 +63,12 @@ export default function CheckVersionHook() {
       setGetVersionLoading(true);
       const res = await axios.get(process.env.VERSION_URL);
       const nxtVerNumeric = changeNumericFormat(res.data.version);
+      const dbVerNumeric = changeNumericFormat(res.data.dbVersion);
       const curVerNumeric = changeNumericFormat(currentVersion);
       setNextVersion(res.data.version);
+      if (dbVerNumeric > curVerNumeric) {
+        setIsNeedDbUpdate(true);
+      }
       if (nxtVerNumeric > curVerNumeric) {
         setTimeout(() => {
           setGetVersionLoading(false);
@@ -83,7 +88,13 @@ export default function CheckVersionHook() {
 
   const updateVersionRelease = async () => {
     setVersionUpdateLoading(true);
-    electron.versionApi.requestUpdate();
+    if (isNeedDbUpdate) {
+      // Db udating and auto update version
+      electron.versionApi.requestDbUpdate(); // After that version call api to be more controllable
+    } else {
+      // If don't need db update no need to update database
+      electron.versionApi.requestUpdate();
+    }
   };
 
   return {

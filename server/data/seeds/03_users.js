@@ -15,16 +15,16 @@ exports.seed = function (knex) {
           profile_picture: "profile_picture",
           role_id: "1",
         },
-        {
-          id: 2,
-          unique_name: "staff",
-          user_name: "Staff",
-          password: "123456",
-          phone_no: "09",
-          address: "",
-          profile_picture: "profile_picture",
-          role_id: "2",
-        },
+        // {
+        //   id: 2,
+        //   unique_name: "staff",
+        //   user_name: "Staff",
+        //   password: "123456",
+        //   phone_no: "09",
+        //   address: "",
+        //   profile_picture: "profile_picture",
+        //   role_id: "2",
+        // },
       ]);
     });
 };

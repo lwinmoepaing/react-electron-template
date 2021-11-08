@@ -1,6 +1,10 @@
+const http = require("http");
+const fs = require("fs");
 const { ipcMain, Notification, BrowserWindow, app } = require("electron");
 const { autoUpdater } = require("electron-updater");
-const { NOTI_CODE, VERSION_CODE, COMMON } = require("../config/constants");
+const { NOTI_CODE, VERSION_CODE } = require("../config/constants");
+const path = require("path");
+const { DATABASE_DIRECTORY } = require("../config");
 
 /**
  * @param {BrowserWindow} window
@@ -38,6 +42,44 @@ module.exports = (window, electronApp) => {
 
   // When Updating Request From Frontend
   ipcMain.on(VERSION_CODE.REQUEST_UPDATE, (_, params) => {
+    versionUpdate();
+  });
+
+  ipcMain.on(VERSION_CODE.REQUEST_DBUPDATE, (_, params) => {
+    sendVersionUpdateMessage("Backup Database.");
+    const databasePath = path.join(DATABASE_DIRECTORY, "database.db3");
+    const backupDatabasePath = path.join(
+      DATABASE_DIRECTORY,
+      "backup_database.db3"
+    );
+    const destination = path.join(DATABASE_DIRECTORY, "database.db3");
+
+    // First Backup Database
+    fs.copyFileSync(databasePath, backupDatabasePath);
+
+    // Delete Current Database
+    fs.unlinkSync(databasePath);
+
+    sendVersionUpdateMessage("Updating Database.");
+
+    download(process.env.DB_URL, destination, (error) => {
+      sendVersionUpdateMessage("");
+      if (error) {
+        window.webContents.send(
+          VERSION_CODE.VERSION_UPDATE_ERROR,
+          "Error in Database Updating. " + error.message
+        );
+
+        // If Error Backup Database , replace real-one
+        fs.copyFileSync(backupDatabasePath, databasePath);
+        return;
+      }
+      // If no error update version
+      versionUpdate();
+    });
+  });
+
+  function versionUpdate() {
     const sendVersionUpdateMessage = (data) => {
       window.webContents.send(VERSION_CODE.VERSION_UPDATE_MESSAGE, data);
     };
@@ -82,5 +124,21 @@ module.exports = (window, electronApp) => {
       window.webContents.send(VERSION_CODE.FINISHED_UPDATE);
       autoUpdater.quitAndInstall();
     });
-  });
+  }
 };
+
+function download(url, dest, cb) {
+  const file = fs.createWriteStream(dest);
+  const request = http
+    .get(url, function (response) {
+      response.pipe(file);
+      file.on("finish", function () {
+        file.close(cb); // close() is async, call cb after close completes.
+      });
+    })
+    .on("error", function (err) {
+      // Handle errors
+      fs.unlink(dest); // Delete the file async. (But we don't check the result)
+      if (cb) cb(err.message);
+    });
+}

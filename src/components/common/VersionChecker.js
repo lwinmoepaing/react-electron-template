@@ -7,6 +7,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import LinearProgress from "@mui/material/LinearProgress";
 
 function VersionChecker() {
   const { electron } = window;
@@ -41,9 +42,35 @@ function VersionChecker() {
               Current Version: {currentVersion} <br />
             </Typography>
 
+            {!!isReleaseNewVersion && (
+              <Typography color="text.secondary">
+                New Version: {nextVersion}
+              </Typography>
+            )}
+
+            {getVersionLoading && (
+              <Typography color="text.secondary" sx={{ fontSize: 12 }}>
+                <SearchLoading
+                  className="LoadingContainer"
+                  style={{ top: 8 }}
+                />
+                <span style={{ inline: "block", marginLeft: 10 }}>
+                  Loading ...
+                </span>
+              </Typography>
+            )}
+
+            {versionUpdateLoading && versionUpdatePercentage && (
+              <LinearProgress
+                variant="determinate"
+                value={versionUpdatePercentage}
+                sx={{ mt: 1 }}
+              />
+            )}
+
             {versionUpdateLoading && (
               <Typography
-                sx={{ fontSize: 14 }}
+                sx={{ fontSize: 14, mt: 1 }}
                 color="text.secondary"
                 gutterBottom
               >
@@ -60,27 +87,6 @@ function VersionChecker() {
                 Error Message: {versionUpdateErrorMessage}
               </Typography>
             )}
-
-            {!!isReleaseNewVersion && (
-              <Typography color="text.secondary">
-                {nextVersion} (New Version)
-              </Typography>
-            )}
-
-            {getVersionLoading && (
-              <Typography color="text.secondary" sx={{ fontSize: 12 }}>
-                <SearchLoading
-                  className="LoadingContainer"
-                  style={{ top: 8 }}
-                />
-                <span style={{ inline: "block", marginLeft: 10 }}>
-                  Loading ...
-                </span>
-              </Typography>
-            )}
-            {versionUpdateLoading &&
-              versionUpdatePercentage &&
-              versionUpdatePercentage + "%"}
 
             {nextVersion === currentVersion && !getVersionLoading && (
               <Typography color="text.secondary" sx={{ fontSize: 12 }}>
