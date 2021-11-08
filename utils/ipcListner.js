@@ -80,10 +80,6 @@ module.exports = (window, electronApp) => {
   });
 
   function versionUpdate() {
-    const sendVersionUpdateMessage = (data) => {
-      window.webContents.send(VERSION_CODE.VERSION_UPDATE_MESSAGE, data);
-    };
-
     autoUpdater.checkForUpdatesAndNotify();
 
     // autoUpdater.on("checking-for-update", () => {
@@ -124,6 +120,10 @@ module.exports = (window, electronApp) => {
       window.webContents.send(VERSION_CODE.FINISHED_UPDATE);
       autoUpdater.quitAndInstall();
     });
+  }
+
+  function sendVersionUpdateMessage(data) {
+    window.webContents.send(VERSION_CODE.VERSION_UPDATE_MESSAGE, data);
   }
 };
 
