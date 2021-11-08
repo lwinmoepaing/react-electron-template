@@ -63,7 +63,7 @@ function VersionChecker() {
             {versionUpdateLoading && versionUpdatePercentage && (
               <LinearProgress
                 variant="determinate"
-                value={versionUpdatePercentage}
+                value={+versionUpdatePercentage}
                 sx={{ mt: 1 }}
               />
             )}

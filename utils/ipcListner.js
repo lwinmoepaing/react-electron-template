@@ -1,4 +1,4 @@
-const http = require("http");
+const https = require("https");
 const fs = require("fs");
 const { ipcMain, Notification, BrowserWindow, app } = require("electron");
 const { autoUpdater } = require("electron-updater");
@@ -129,7 +129,7 @@ module.exports = (window, electronApp) => {
 
 function download(url, dest, cb) {
   const file = fs.createWriteStream(dest);
-  const request = http
+  const request = https
     .get(url, function (response) {
       response.pipe(file);
       file.on("finish", function () {
@@ -138,7 +138,9 @@ function download(url, dest, cb) {
     })
     .on("error", function (err) {
       // Handle errors
-      fs.unlink(dest); // Delete the file async. (But we don't check the result)
+      if (dest) {
+        fs.unlink(dest); // Delete the file async. (But we don't check the result)
+      }
       if (cb) cb(err.message);
     });
 }
