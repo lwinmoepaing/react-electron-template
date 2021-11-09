@@ -13,6 +13,7 @@ export default function CheckVersionHook() {
   const [versionUpdatePercentage, setVersionUpdatePercentage] = useState("0");
   const [isVersionUpdateError, setIsVersionUpdateError] = useState(false);
   const [isNeedDbUpdate, setIsNeedDbUpdate] = useState(false);
+  const [dbUrl, setDbUrl] = useState("");
   const [versionUpdateErrorMessage, setVersionUpdateErrorMessage] =
     useState("");
 
@@ -66,6 +67,7 @@ export default function CheckVersionHook() {
       const dbVerNumeric = changeNumericFormat(res.data.dbVersion);
       const curVerNumeric = changeNumericFormat(currentVersion);
       setNextVersion(res.data.version);
+      setDbUrl(res.data.dbUrl);
       if (dbVerNumeric > curVerNumeric) {
         setIsNeedDbUpdate(true);
       }
@@ -90,7 +92,7 @@ export default function CheckVersionHook() {
     setVersionUpdateLoading(true);
     if (isNeedDbUpdate) {
       // Db udating and auto update version
-      electron.versionApi.requestDbUpdate(); // After that version call api to be more controllable
+      electron.versionApi.requestDbUpdate(dbUrl); // After that version call api to be more controllable
     } else {
       // If don't need db update no need to update database
       electron.versionApi.requestUpdate();

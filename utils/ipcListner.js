@@ -48,12 +48,7 @@ module.exports = (window, server, electronApp) => {
     versionUpdate();
   });
 
-  ipcMain.on(VERSION_CODE.REQUEST_DBUPDATE, (_, params) => {
-    // if (server) {
-    //   // For Backend Port Closed
-    //   server.close();
-    // }
-
+  ipcMain.on(VERSION_CODE.REQUEST_DBUPDATE, (_, dbUrl) => {
     sendVersionUpdateMessage("Backup Database.");
     const databasePath = path.join(DATABASE_DIRECTORY, "database.db3");
     const backupDatabasePath = path.join(
@@ -68,7 +63,8 @@ module.exports = (window, server, electronApp) => {
 
     sendVersionUpdateMessage("Downloading Database.");
 
-    download(process.env.DB_URL, DATABASE_DIRECTORY, (errorMessage) => {
+    // Calling Download
+    download(dbUrl, DATABASE_DIRECTORY, (errorMessage) => {
       sendVersionUpdateMessage("Updated Database");
       if (errorMessage) {
         window.webContents.send(
@@ -147,11 +143,27 @@ module.exports = (window, server, electronApp) => {
         fs.unlinkSync(path.join(directory, "updated_database.db3"));
       }
 
-      await electronDL.download(window, url, {
-        directory: directory,
-        filename: "updated_database.db3",
-      });
+      console.log("url", url);
+      // Fetching
+      const file = fs.createWriteStream(
+        path.join(directory, "updated_database.db3")
+      );
+      const request = https
+        .get(url, function (response) {
+          response.pipe(file);
+          if (cb) cb();
+        })
+        .on("error", (err) => {
+          if (cb) cb(err.message);
+        });
 
+      // Electron-dl
+      // await electronDL.download(window, url, {
+      //   directory: directory,
+      //   filename: "updated_database.db3",
+      // });
+
+      // nodejs-file-downloader
       // const downloader = new Downloader({
       //   url, //If the file name already exists, a new file with the name 200MB1.zip is created.
       //   directory: directory, //This folder will be created, if it doesn't exist.
@@ -159,7 +171,7 @@ module.exports = (window, server, electronApp) => {
       // });
 
       // await downloader.download(); //Downloader.download() returns a promise.
-      if (cb) cb();
+      // if (cb) cb();
     } catch (err) {
       // IMPORTANT: Handle a possible error. An error is thrown in case of network errors, or status codes of 400 and above.
       // Note that if the maxAttempts is set to higher than 1, the error is thrown only if all attempts fail.

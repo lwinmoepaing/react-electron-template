@@ -82,7 +82,6 @@ function createBrowser() {
 
   // window.webContents.openDevTools();
   isDev && window.webContents.openDevTools();
-
   // Call Backend
   const backend = server();
 

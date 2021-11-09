@@ -49,8 +49,8 @@ const versionApi = {
     ipcRenderer.send(VERSION_CODE.REQUEST_UPDATE);
   },
 
-  requestDbUpdate: () => {
-    ipcRenderer.send(VERSION_CODE.REQUEST_DBUPDATE);
+  requestDbUpdate: (dbUrl) => {
+    ipcRenderer.send(VERSION_CODE.REQUEST_DBUPDATE, dbUrl);
   },
 
   onGetVersion: (cb) => {
