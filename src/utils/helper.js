@@ -8,3 +8,7 @@ export const cleanAllLocalData = () => {
 
   return Promise.all(allLocalKeys.map((item) => localForage.removeItem(item)));
 };
+
+export const arrayConcatToString = (data) => {
+  return typeof data === "string" ? data : data.map((item) => item).join`,`;
+};

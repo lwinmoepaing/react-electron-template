@@ -71,7 +71,7 @@ module.exports = (passport) => {
       });
     } catch (e) {
       console.log(e);
-      cb(new Error("Incorrect email or password."), false);
+      cb(new Error("Incorrect name or password."), false);
     }
   };
 

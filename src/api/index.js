@@ -1,4 +1,5 @@
 import axios from "axios";
+const API_URL = "http://localhost:5050/api";
 
 export default () => {
   const axiosOptions = {
@@ -14,6 +15,7 @@ export default () => {
     ...axios.defaults.headers,
     ...axiosOptions.headers,
   };
+  axios.defaults.baseURL = API_URL;
 
   // axios.interceptors.request.use(
   //   (request) => {

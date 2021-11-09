@@ -23,6 +23,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "jwt_secret";
 
 const config = {
   API_VERSION: "/api",
+  API_URL: "http://localhost:5050/api",
   API_KEY: process.env.API_KEY,
   JWT_SECRET,
   DEFAULT_PAGINATE_LIMIT: 10,

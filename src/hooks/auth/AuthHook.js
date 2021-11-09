@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import testingUser from "../../data/testingUser.json";
 import { profileActions } from "../../store/reducers/profile";
+import { requestLogin } from "../../api/auth";
 import * as localForage from "localforage";
 import localStoreKeys from "../../store/localforage/localStoreKeys";
-import { cleanAllLocalData } from "../../utils/helper";
+import { arrayConcatToString, cleanAllLocalData } from "../../utils/helper";
 
 export default function AuthHook() {
   const [loginLoading, setLoginLoading] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
+  const [isLoginError, setIsLoginError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const dispatch = useDispatch();
 
@@ -17,40 +20,52 @@ export default function AuthHook() {
 
   const loginUser = async (body) => {
     if (loginLoading) return;
-    const { email, password } = body;
     setLoginLoading(true);
+    setIsLoginError(false);
 
-    const user = testingUser.find((user) => user.email === email);
+    try {
+      const response = await requestLogin(body);
+      const user = response.data.data;
+      const token = response.data.token;
+      await localForage.setItem(localStoreKeys.auth, JSON.stringify(user));
+      await localForage.setItem(localStoreKeys.token, JSON.stringify(token));
+      dispatch({
+        type: profileActions.UPDATE_PROFILE,
+        param: user,
+      });
+      dispatch({
+        type: profileActions.UPDATE_TOKEN,
+        param: token,
+      });
 
-    await delay(1);
-
-    if (!user) {
       setLoginLoading(false);
-      await delay(0.2);
-      alert("User Not Found with this email address");
-      return false;
-    }
-
-    // If User Found
-    const isPasswordMatch = user.passoword === password;
-    if (!isPasswordMatch) {
+    } catch (err) {
+      setIsLoginError(true);
       setLoginLoading(false);
-      await delay(0.2);
-      alert("Password is Wrong");
-      return false;
+      if (
+        err.response &&
+        err.response.status >= 400 &&
+        err.response.status <= 500
+      ) {
+        if (err.response.data.message) {
+          setErrorMessage(arrayConcatToString(err.response.data.message));
+        } else if (err.response.data.data.length) {
+          setErrorMessage(
+            arrayConcatToString(
+              err.response.data.data.map((item) => item.message)
+            )
+          );
+        }
+      } else if (err.request) {
+        // The request was made but no response was received
+        setErrorMessage("Connection Timeout (plz restart app)");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setErrorMessage(
+          "Something went wrong " + err.message + " (plz restart app)"
+        );
+      }
     }
-
-    await localForage.setItem(localStoreKeys.auth, JSON.stringify(user));
-
-    delay(0.2);
-
-    dispatch({
-      type: profileActions.UPDATE_PROFILE,
-      param: user,
-    });
-    setLoginLoading(false);
-
-    return true;
   };
 
   const logoutUser = async () => {
@@ -64,7 +79,10 @@ export default function AuthHook() {
   return {
     loginLoading,
     logoutLoading,
+    isLoginError,
+    errorMessage,
     loginUser,
     logoutUser,
+    setIsLoginError,
   };
 }
