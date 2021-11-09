@@ -38,7 +38,7 @@ app
   .then(() => {
     const splash = createSplashScreen();
     const mainApp = createBrowser();
-    server(); // Call Backend Api default Port 5050
+    // Call Backend Api default Port 5050
     mainApp.once("ready-to-show", () => {
       setTimeout(() => {
         splash.destroy();
@@ -79,9 +79,14 @@ function createBrowser() {
   });
 
   window.loadFile(`public/index.html`);
+
+  // window.webContents.openDevTools();
   isDev && window.webContents.openDevTools();
 
-  ipcListener(window, app);
+  // Call Backend
+  const backend = server();
+
+  ipcListener(window, backend, app);
 
   window.webContents.on("did-finish-load", () => {
     window.webContents.send(VERSION_CODE.SEND_VERSION, app.getVersion());

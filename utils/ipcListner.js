@@ -2,8 +2,11 @@ const https = require("https");
 const fs = require("fs");
 const { ipcMain, Notification, BrowserWindow, app } = require("electron");
 const { autoUpdater } = require("electron-updater");
-const { NOTI_CODE, VERSION_CODE } = require("../config/constants");
 const path = require("path");
+const Downloader = require("nodejs-file-downloader");
+const electronDL = require("electron-dl");
+
+const { NOTI_CODE, VERSION_CODE } = require("../config/constants");
 const { DATABASE_DIRECTORY } = require("../config");
 
 /**
@@ -11,7 +14,7 @@ const { DATABASE_DIRECTORY } = require("../config");
  * @param {app} electronApp
  * Server
  */
-module.exports = (window, electronApp) => {
+module.exports = (window, server, electronApp) => {
   // When Order Noti Send From Frontend
   ipcMain.on(NOTI_CODE.SEND, (_, params) => {
     const { title, body, icon } = params;
@@ -46,36 +49,48 @@ module.exports = (window, electronApp) => {
   });
 
   ipcMain.on(VERSION_CODE.REQUEST_DBUPDATE, (_, params) => {
+    // if (server) {
+    //   // For Backend Port Closed
+    //   server.close();
+    // }
+
     sendVersionUpdateMessage("Backup Database.");
     const databasePath = path.join(DATABASE_DIRECTORY, "database.db3");
     const backupDatabasePath = path.join(
       DATABASE_DIRECTORY,
       "backup_database.db3"
     );
-    const destination = path.join(DATABASE_DIRECTORY, "database.db3");
 
     // First Backup Database
-    fs.copyFileSync(databasePath, backupDatabasePath);
+    if (fs.existsSync(databasePath)) {
+      fs.copyFileSync(databasePath, backupDatabasePath);
+    }
 
-    // Delete Current Database
-    fs.unlinkSync(databasePath);
+    sendVersionUpdateMessage("Downloading Database.");
 
-    sendVersionUpdateMessage("Updating Database.");
-
-    download(process.env.DB_URL, destination, (error) => {
-      sendVersionUpdateMessage("");
-      if (error) {
+    download(process.env.DB_URL, DATABASE_DIRECTORY, (errorMessage) => {
+      sendVersionUpdateMessage("Updated Database");
+      if (errorMessage) {
         window.webContents.send(
           VERSION_CODE.VERSION_UPDATE_ERROR,
-          "Error in Database Updating. " + error.message
+          errorMessage
         );
+
+        if (fs.existsSync(databasePath)) {
+          fs.unlinkSync(databasePath);
+        }
 
         // If Error Backup Database , replace real-one
         fs.copyFileSync(backupDatabasePath, databasePath);
         return;
       }
-      // If no error update version
-      versionUpdate();
+
+      sendVersionUpdateMessage("Success Database Updaing.");
+
+      setTimeout(() => {
+        // If no error update version
+        versionUpdate();
+      }, 1000);
     });
   });
 
@@ -125,22 +140,36 @@ module.exports = (window, electronApp) => {
   function sendVersionUpdateMessage(data) {
     window.webContents.send(VERSION_CODE.VERSION_UPDATE_MESSAGE, data);
   }
-};
 
-function download(url, dest, cb) {
-  const file = fs.createWriteStream(dest);
-  const request = https
-    .get(url, function (response) {
-      response.pipe(file);
-      file.on("finish", function () {
-        file.close(cb); // close() is async, call cb after close completes.
-      });
-    })
-    .on("error", function (err) {
-      // Handle errors
-      if (dest) {
-        fs.unlink(dest); // Delete the file async. (But we don't check the result)
+  async function download(url, directory, cb) {
+    try {
+      if (fs.existsSync(path.join(directory, "updated_database.db3"))) {
+        fs.unlinkSync(path.join(directory, "updated_database.db3"));
       }
+
+      await electronDL.download(window, url, {
+        directory: directory,
+        filename: "updated_database.db3",
+      });
+
+      // const downloader = new Downloader({
+      //   url, //If the file name already exists, a new file with the name 200MB1.zip is created.
+      //   directory: directory, //This folder will be created, if it doesn't exist.
+      //   fileName: "updated_database.db3",
+      // });
+
+      // await downloader.download(); //Downloader.download() returns a promise.
+      if (cb) cb();
+    } catch (err) {
+      // IMPORTANT: Handle a possible error. An error is thrown in case of network errors, or status codes of 400 and above.
+      // Note that if the maxAttempts is set to higher than 1, the error is thrown only if all attempts fail.
+      // Handle errors
+      window.webContents.send(
+        VERSION_CODE.VERSION_UPDATE_ERROR,
+        "Error in Database Updating. " + err.message
+      );
+      console.log("Download failed", err);
       if (cb) cb(err.message);
-    });
-}
+    }
+  }
+};

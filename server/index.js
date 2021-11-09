@@ -119,5 +119,6 @@ app.use(errorHandler);
 console.log(routerEndPoints(app));
 
 module.exports = () => {
-  return server(app);
+  server(app);
+  return server;
 };
