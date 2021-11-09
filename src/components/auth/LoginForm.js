@@ -8,7 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import { Stack } from "@mui/material";
+import { LinearProgress, Stack } from "@mui/material";
 
 export default function LoginScreen() {
   const {
@@ -54,13 +54,14 @@ export default function LoginScreen() {
       >
         <Grid item xs={10} sm={8} md={4} lg={3}>
           <Card>
+            <LinearProgress variant="determinate" value={100} />
             <CardContent sx={{ pb: 1 }}>
               <Typography
-                sx={{ fontSize: 16, mb: 1 }}
+                sx={{ fontSize: 16, mb: 1, textAlign: "center" }}
                 color="text.secondary"
                 gutterBottom
               >
-                Login
+                Login Form
               </Typography>
 
               <Form
