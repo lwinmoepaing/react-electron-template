@@ -18,7 +18,7 @@ const AuthRoute = ({ children, ...rest }) => {
         user ? (
           React.cloneElement(onlyChildren, { ...rest, ...props })
         ) : (
-          <Redirect to={LOGIN_SCREEN.path} />
+          <Redirect to={"/"} />
         )
       }
     />

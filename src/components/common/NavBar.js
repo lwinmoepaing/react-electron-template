@@ -19,7 +19,7 @@ const Navbar = () => {
   const onLogout = async () => {
     await setChangeLanguage("en");
     await logoutUser();
-    history.replace(LOGIN_SCREEN.path);
+    history.replace("/");
   };
 
   return (
