@@ -39,12 +39,12 @@ function VersionChecker() {
             </Typography>
 
             <Typography color="text.secondary">
-              Current Version: {currentVersion} <br />
+              Current Version: v{currentVersion}
             </Typography>
 
             {!!isReleaseNewVersion && (
               <Typography color="text.secondary">
-                New Version: {nextVersion}
+                New Version: v{nextVersion}
               </Typography>
             )}
 

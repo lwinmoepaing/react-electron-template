@@ -118,6 +118,7 @@
     "ip-regex": "^4.3.0",
     "joi-objectid": "^4.0.2",
     "knex": "^0.95.11",
+    "knex-dump": "^1.0.11",
     "localforage": "^1.10.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",

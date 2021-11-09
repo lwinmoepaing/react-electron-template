@@ -5,6 +5,7 @@ const {
   Notification,
   Menu,
   Tray,
+  screen,
 } = require("electron");
 const path = require("path");
 const { VERSION_CODE } = require("./config/constants");
@@ -43,7 +44,7 @@ app
       setTimeout(() => {
         splash.destroy();
         mainApp.show();
-      }, 2000);
+      }, 10000);
     });
   })
   .then(() => new Notification({ silent: true })); // Fixed First Time Noti Off
@@ -59,6 +60,7 @@ app.on("activate", () => {
 
 let tray = null;
 function createBrowser() {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const menuTemplate = require("./utils/Menu").createTemplate(app);
   const mainMenu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(mainMenu);
@@ -66,8 +68,8 @@ function createBrowser() {
   tray.setContextMenu(mainMenu);
 
   const window = new BrowserWindow({
-    width: 1200,
-    height: 600,
+    width,
+    height,
     backgroundColor: defaultWindowBackground,
     title: process.env.APP_NAME || "sample title",
     show: false,
@@ -96,8 +98,8 @@ function createBrowser() {
 
 function createSplashScreen() {
   const window = new BrowserWindow({
-    width: 350,
-    height: 180,
+    width: 500,
+    height: 280,
     frame: false,
     transparent: true,
     title: process.env.APP_NAME || "sample title",
