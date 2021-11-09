@@ -44,7 +44,7 @@ app
       setTimeout(() => {
         splash.destroy();
         mainApp.show();
-      }, 10000);
+      }, 1000);
     });
   })
   .then(() => new Notification({ silent: true })); // Fixed First Time Noti Off

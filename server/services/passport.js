@@ -5,6 +5,7 @@
 // const User = require("../src/User/UserModel");
 const passportJWT = require("passport-jwt");
 const LocalStrategy = require("passport-local").Strategy;
+const User = require("../model/UserModel");
 const config = require("../../config");
 const bcrypt = require("bcrypt");
 
@@ -18,7 +19,7 @@ const ExtractJWT = passportJWT.ExtractJwt;
 
 module.exports = (passport) => {
   const JWT_MANAGE = async function (jwtPayload, cb) {
-    return jwtPayload._id
+    return jwtPayload.id
       ? cb(null, jwtPayload)
       : cb(new Error("Not Valid User Authenticate"), null, {
           message: "Not Valid User Authenticate",
@@ -39,7 +40,7 @@ module.exports = (passport) => {
    */
 
   const PassportLocalStrategy = {
-    usernameField: "email",
+    usernameField: "unique_name",
     passwordField: "password",
   };
 
@@ -48,13 +49,20 @@ module.exports = (passport) => {
    * @route 'api/v{number}/auth'
    * @method POST
    */
-  const PassportManage = async (email, password, cb) => {
+  const PassportManage = async (unique_name, password, cb) => {
     try {
-      const user = await User.findOne({ email });
+      const user = (
+        await new User({ unique_name }).fetch({
+          withRelated: ["role", "permissions"],
+        })
+      ).toJSON();
+
       if (!user) return cb(new Error("Not Found User"), false);
 
       bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) throw err;
+
+        console.log("password, user.password", password, user.password);
         if (isMatch) {
           return cb(null, user);
         } else {
@@ -62,6 +70,7 @@ module.exports = (passport) => {
         }
       });
     } catch (e) {
+      console.log(e);
       cb(new Error("Incorrect email or password."), false);
     }
   };

@@ -39,6 +39,7 @@ require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 // Require Locale Passport Config
 require("./services/passport")(passport);
+app.use(passport.initialize());
 
 // Connect To Database
 // connectDb();

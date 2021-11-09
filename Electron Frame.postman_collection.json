@@ -1,0 +1,106 @@
+{
+  "info": {
+    "_postman_id": "665e0d6d-d6aa-42cb-a9c1-3fbdac79c9bd",
+    "name": "Electron Frame",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Registered User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"hehe\",\n    \"name\": \"Lwin Moe Paing\",\n    \"email\": \"lwinmoepaing.dev@gmail.com\",\n    \"password\": \"12345678\",\n    \"password_confirmation\": \"12345678\"\n}"
+            },
+            "url": {
+              "raw": "{{url}}/register",
+              "host": ["{{url}}"],
+              "path": ["register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"unique_name\": \"admin\",\n    \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/users/login",
+              "host": ["{{url}}"],
+              "path": ["users", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Myself",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/users/me",
+              "host": ["{{url}}"],
+              "path": ["users", "me"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Hello World",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{url}}",
+          "host": ["{{url}}"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
