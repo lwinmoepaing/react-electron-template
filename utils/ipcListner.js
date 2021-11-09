@@ -139,15 +139,8 @@ module.exports = (window, server, electronApp) => {
 
   async function download(url, directory, cb) {
     try {
-      if (fs.existsSync(path.join(directory, "updated_database.db3"))) {
-        fs.unlinkSync(path.join(directory, "updated_database.db3"));
-      }
-
-      console.log("url", url);
       // Fetching
-      const file = fs.createWriteStream(
-        path.join(directory, "updated_database.db3")
-      );
+      const file = fs.createWriteStream(path.join(directory, "database.db3"));
       const request = https
         .get(url, function (response) {
           response.pipe(file);
