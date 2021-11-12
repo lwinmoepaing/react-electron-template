@@ -7,35 +7,19 @@ const passport = require("passport");
 const morgan = require("morgan");
 const path = require("path");
 const routerEndPoints = require("express-list-endpoints");
-const server = require("./bin/www");
-const { LOG_DIRECTORY, DATABASE_DIRECTORY } = require("../config/index");
-const fs = require("fs");
 
-// Check If Exist Directory And Make Directory
-if (!fs.existsSync(LOG_DIRECTORY)) {
-  fs.mkdirSync(LOG_DIRECTORY);
-}
-
-if (!fs.existsSync(DATABASE_DIRECTORY)) {
-  fs.mkdirSync(DATABASE_DIRECTORY);
-}
-
-const databasePath = path.join(DATABASE_DIRECTORY, "database.db3");
-if (!fs.existsSync(databasePath)) {
-  console.log("------ DataBase Path --------", databasePath);
-  fs.copyFileSync(path.join(__dirname, "data", "database.db3"), databasePath);
-}
-
-// Finally Handle All UnExpected Errors
+// Finally Handle All UnExpected Errors​
 const errorHandler = require("./lib/errorHandler");
 
 // Importing Services
 const routerService = require("./services/routerService");
-const connectDb = require("./services/dbConnect");
 const Logger = require("./services/logger");
+const checkFileExistService = require("./services/checkFileExist");
 
 // Dotenv (.env) Configuration
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
+
+checkFileExistService();
 
 // Require Locale Passport Config
 require("./services/passport")(passport);
@@ -120,5 +104,5 @@ app.use(errorHandler);
 console.log(routerEndPoints(app));
 
 module.exports = (cb) => {
-  server(app, cb);
+  app.listen(5050, cb);
 };

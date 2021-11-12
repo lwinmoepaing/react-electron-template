@@ -42,10 +42,8 @@ app
     // Call Backend Api default Port 5050
     mainApp.once("ready-to-show", () => {
       server(() => {
-        setTimeout(() => {
-          splash.destroy();
-          mainApp.show();
-        }, 1000);
+        splash.destroy();
+        mainApp.show();
       });
     });
   })

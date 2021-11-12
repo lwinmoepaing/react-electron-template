@@ -14,9 +14,13 @@ const LOG_DIRECTORY = isProduction
 const DATABASE_DIRECTORY = isProduction
   ? path.join(USER_DATA_DIRECTORY, "databases")
   : path.join(__dirname, "../", "server", "data");
+const IMAGE_DIRECTORY = isProduction
+  ? path.join(USER_DATA_DIRECTORY, "images")
+  : path.join(__dirname, "../", "storage", "images");
 
 console.log("LOG_DIRECTORY", LOG_DIRECTORY);
 console.log("DATABASE_DIRECTORY", DATABASE_DIRECTORY);
+console.log("IMAGE_DIRECTORY", IMAGE_DIRECTORY);
 
 // const env = process.env.NODE_ENV || 'development'
 const JWT_SECRET = process.env.JWT_SECRET || "jwt_secret";
@@ -30,6 +34,7 @@ const config = {
   LOG_DIRECTORY,
   USER_DATA_DIRECTORY,
   DATABASE_DIRECTORY,
+  IMAGE_DIRECTORY,
 };
 
 module.exports = config;
