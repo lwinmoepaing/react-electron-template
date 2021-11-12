@@ -16,6 +16,10 @@ module.exports = () => {
     fs.mkdirSync(DATABASE_DIRECTORY);
   }
 
+  if (!fs.existsSync(path.join(__dirname, "../../storage"))) {
+    fs.mkdirSync(path.join(__dirname, "../../storage"));
+  }
+
   if (!fs.existsSync(IMAGE_DIRECTORY)) {
     fs.mkdirSync(IMAGE_DIRECTORY);
   }
@@ -25,19 +29,15 @@ module.exports = () => {
     fs.copyFileSync(path.join(__dirname, "data", "database.db3"), databasePath);
   }
 
-  const image404Path = path.join(IMAGE_DIRECTORY, "404.jpg");
-  if (!fs.existsSync(image404Path)) {
-    fs.copyFileSync(
-      path.join(
-        __dirname,
-        "../",
-        "../",
-        "public",
-        "assets",
-        "images",
-        "404.jpg"
-      ),
-      image404Path
-    );
-  }
+  const necessaryImages = ["404.jpg", "profile_picture.png"];
+
+  necessaryImages.forEach((image) => {
+    const imagePath = path.join(IMAGE_DIRECTORY, image);
+    if (!fs.existsSync(imagePath)) {
+      fs.copyFileSync(
+        path.join(__dirname, "../", "../", "public", "assets", "images", image),
+        imagePath
+      );
+    }
+  });
 };
