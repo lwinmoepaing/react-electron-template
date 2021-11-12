@@ -41,10 +41,12 @@ app
     const mainApp = createBrowser();
     // Call Backend Api default Port 5050
     mainApp.once("ready-to-show", () => {
-      setTimeout(() => {
-        splash.destroy();
-        mainApp.show();
-      }, 1000);
+      server(() => {
+        setTimeout(() => {
+          splash.destroy();
+          mainApp.show();
+        }, 1000);
+      });
     });
   })
   .then(() => new Notification({ silent: true })); // Fixed First Time Noti Off
@@ -83,13 +85,11 @@ function createBrowser() {
   window.loadFile(`public/index.html`);
 
   // window.webContents.openDevTools();
-  isDev && window.webContents.openDevTools();
-  // Call Backend
-  const backend = server();
 
-  ipcListener(window, backend, app);
+  ipcListener(window);
 
   window.webContents.on("did-finish-load", () => {
+    isDev && window.webContents.openDevTools();
     window.webContents.send(VERSION_CODE.SEND_VERSION, app.getVersion());
   });
 

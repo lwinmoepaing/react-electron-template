@@ -119,7 +119,6 @@ app.use(errorHandler);
  */
 console.log(routerEndPoints(app));
 
-module.exports = () => {
-  server(app);
-  return server;
+module.exports = (cb) => {
+  server(app, cb);
 };

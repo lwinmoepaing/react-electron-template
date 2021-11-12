@@ -4,7 +4,7 @@ const fs = require("fs");
 // module.exports = () => {
 // Create Logs Directory If Not Exist
 
-module.exports = (app) => {
+module.exports = (app, cb) => {
   const port = normalizePort(process.env.SERVER_PORT || "3000");
   /**
    * Create HTTP server.
@@ -75,6 +75,8 @@ module.exports = (app) => {
     const bind =
       typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
     Console.log(`Listening on ${bind}`);
+
+    if (cb) cb();
   }
   // };
 };

@@ -82,11 +82,9 @@
     ]
   },
   "devDependencies": {
-    "@swc/core": "^1.2.106",
     "electron": "^15.0.0",
     "electron-builder": "^22.13.1",
     "electron-reload": "^2.0.0-alpha.1",
-    "esbuild": "^0.8.57",
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
