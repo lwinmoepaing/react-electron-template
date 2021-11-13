@@ -35,6 +35,7 @@ const config = {
   USER_DATA_DIRECTORY,
   DATABASE_DIRECTORY,
   IMAGE_DIRECTORY,
+  IS_PRODUCTION: isProduction,
 };
 
 module.exports = config;

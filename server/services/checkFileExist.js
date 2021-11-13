@@ -1,10 +1,11 @@
+const path = require("path");
+const fs = require("fs");
 const {
   LOG_DIRECTORY,
   DATABASE_DIRECTORY,
   IMAGE_DIRECTORY,
+  IS_PRODUCTION,
 } = require("../../config/index");
-const path = require("path");
-const fs = require("fs");
 
 module.exports = () => {
   // Check If Exist Directory And Make Directory
@@ -16,7 +17,7 @@ module.exports = () => {
     fs.mkdirSync(DATABASE_DIRECTORY);
   }
 
-  if (!fs.existsSync(path.join(__dirname, "../../storage"))) {
+  if (!IS_PRODUCTION && !fs.existsSync(path.join(__dirname, "../../storage"))) {
     fs.mkdirSync(path.join(__dirname, "../../storage"));
   }
 
