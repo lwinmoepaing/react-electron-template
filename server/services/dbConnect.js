@@ -10,5 +10,6 @@ const connection = require("knex")({
 });
 
 const BookShelf = require("bookshelf")(connection);
-BookShelf.plugin(["visibility"]);
+BookShelf.plugin(["visibility", "pagination"]);
+
 module.exports = BookShelf;

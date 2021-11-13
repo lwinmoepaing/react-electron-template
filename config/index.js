@@ -6,7 +6,10 @@ dotenv.config({ path: path.join(__dirname, "../", ".env") });
 const isProduction =
   // true
   process.env.ENV === "PRODUCTION" || !!electron.app.isPackaged;
-const userDataPath = (electron.app || electron.remote.app).getPath("userData");
+const userDataPath =
+  electron.app || electron.remote
+    ? (electron.app || electron.remote.app).getPath("userData")
+    : path.join(__dirname, "../", "storage");
 // We'll use the `configName` property to set the file name and path.join to bring it all together as a string
 const USER_DATA_DIRECTORY = path.join(userDataPath);
 const LOG_DIRECTORY = isProduction
@@ -37,6 +40,7 @@ const config = {
   DATABASE_DIRECTORY,
   IMAGE_DIRECTORY,
   IS_PRODUCTION: isProduction,
+  DEFAULT_PAGE_SIZE: 5,
 };
 
 module.exports = config;
