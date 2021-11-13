@@ -13,7 +13,7 @@ const errorHandler = require("./lib/errorHandler");
 
 // Importing Services
 const routerService = require("./services/routerService");
-// const Logger = require("./services/logger");
+const Logger = require("./services/logger");
 
 // Dotenv (.env) Configuration
 require("dotenv").config({ path: path.join(__dirname, "../.env") });

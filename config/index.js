@@ -4,6 +4,7 @@ const electron = require("electron");
 
 dotenv.config({ path: path.join(__dirname, "../", ".env") });
 const isProduction =
+  // true
   process.env.ENV === "PRODUCTION" || !!electron.app.isPackaged;
 const userDataPath = (electron.app || electron.remote.app).getPath("userData");
 // We'll use the `configName` property to set the file name and path.join to bring it all together as a string

@@ -11,6 +11,7 @@ module.exports = (cb) => {
   console.log("Calling Check File Exist");
   // Check If Exist Directory And Make Directory
   if (!fs.existsSync(LOG_DIRECTORY)) {
+    console.log("Making Exist: ", LOG_DIRECTORY);
     fs.mkdirSync(LOG_DIRECTORY);
   }
 
