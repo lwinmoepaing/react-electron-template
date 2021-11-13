@@ -1,23 +1,15 @@
 const express = require("express");
-const { IMAGE_DIRECTORY } = require("../../config");
-const path = require("path");
-const fs = require("fs");
-const { errorResponse } = require("../lib/responseHandler");
 const router = express.Router();
+const passport = require("passport");
+const { passUpload } = require("../middleware/imageUpload");
+const ImageController = require("../controller/ImageController");
 
-router.get("/:fileName", (req, res) => {
-  console.log("req.params.fileName", req.params.fileName);
-  try {
-    const imagePath = path.join(IMAGE_DIRECTORY, req.params.fileName);
-    if (!fs.existsSync(imagePath)) {
-      return res.sendFile(path.join(IMAGE_DIRECTORY, "404.jpg"));
-    }
+router.get("/:fileName", ImageController.GET_IMAGE_FILE);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  passUpload,
+  ImageController.SINGLE_UPLOAD
+);
 
-    return res.sendFile(path.join(IMAGE_DIRECTORY, req.params.fileName));
-  } catch (e) {
-    return res
-      .status(400)
-      .json(errorResponse(new Error("Image Not Found"), null));
-  }
-});
 module.exports = router;

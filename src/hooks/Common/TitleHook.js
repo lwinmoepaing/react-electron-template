@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 const { electron } = window;
 
 const TitleHook = (
-  initialTitle = process.env.APP_NAME || "Default Screen Title"
+  initialTitle = process.env.APP_NAME || "LMP Electron Frame"
 ) => {
   const [title, setTitle] = useState("");
 

@@ -39,8 +39,9 @@ app
   .then(() => {
     const splash = createSplashScreen();
     const mainApp = createBrowser();
+
     // Call Backend Api default Port 5050
-    mainApp.once("ready-to-show", () => {
+    mainApp.once("ready-to-show", async () => {
       server(() => {
         splash.destroy();
         mainApp.show();
