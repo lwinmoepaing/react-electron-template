@@ -2,7 +2,7 @@ const path = require("path");
 const dotenv = require("dotenv");
 const electron = require("electron");
 
-dotenv.config({ path: path.join(__dirname, "../../.env") });
+dotenv.config({ path: path.join(__dirname, "../", ".env") });
 const isProduction =
   process.env.ENV === "PRODUCTION" || !!electron.app.isPackaged;
 const userDataPath = (electron.app || electron.remote.app).getPath("userData");

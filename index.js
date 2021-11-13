@@ -9,6 +9,7 @@ const {
 } = require("electron");
 const path = require("path");
 const { VERSION_CODE } = require("./config/constants");
+const checkFileExistService = require("./config/checkFileExist");
 const server = require("./server");
 // Constants
 const ipcListener = require("./utils/ipcListner");
@@ -40,11 +41,17 @@ app
     const splash = createSplashScreen();
     const mainApp = createBrowser();
 
-    // Call Backend Api default Port 5050
-    mainApp.once("ready-to-show", async () => {
-      server(() => {
-        splash.destroy();
-        mainApp.show();
+    // Initial Checking FilesSystem and Build
+    // Log and Db Directory
+    checkFileExistService(() => {
+      mainApp.once("ready-to-show", async () => {
+        // Call Backend Api default Port 5050
+        console.log("Server start calling");
+        server(() => {
+          console.log("Server is Listening! now!!");
+          splash.destroy();
+          mainApp.show();
+        });
       });
     });
   })

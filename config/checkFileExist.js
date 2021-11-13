@@ -5,9 +5,10 @@ const {
   DATABASE_DIRECTORY,
   IMAGE_DIRECTORY,
   IS_PRODUCTION,
-} = require("../../config/index");
+} = require("./index");
 
-module.exports = () => {
+module.exports = (cb) => {
+  console.log("Calling Check File Exist");
   // Check If Exist Directory And Make Directory
   if (!fs.existsSync(LOG_DIRECTORY)) {
     fs.mkdirSync(LOG_DIRECTORY);
@@ -17,8 +18,11 @@ module.exports = () => {
     fs.mkdirSync(DATABASE_DIRECTORY);
   }
 
-  if (!IS_PRODUCTION && !fs.existsSync(path.join(__dirname, "../../storage"))) {
-    fs.mkdirSync(path.join(__dirname, "../../storage"));
+  if (
+    !IS_PRODUCTION &&
+    !fs.existsSync(path.join(__dirname, "../", "storage"))
+  ) {
+    fs.mkdirSync(path.join(__dirname, "../", "storage"));
   }
 
   if (!fs.existsSync(IMAGE_DIRECTORY)) {
@@ -27,7 +31,10 @@ module.exports = () => {
 
   const databasePath = path.join(DATABASE_DIRECTORY, "database.db3");
   if (!fs.existsSync(databasePath)) {
-    fs.copyFileSync(path.join(__dirname, "data", "database.db3"), databasePath);
+    fs.copyFileSync(
+      path.join(__dirname, "../", "server", "data", "database.db3"),
+      databasePath
+    );
   }
 
   const necessaryImages = ["404.jpg", "profile_picture.png"];
@@ -36,9 +43,11 @@ module.exports = () => {
     const imagePath = path.join(IMAGE_DIRECTORY, image);
     if (!fs.existsSync(imagePath)) {
       fs.copyFileSync(
-        path.join(__dirname, "../", "../", "public", "assets", "images", image),
+        path.join(__dirname, "../", "public", "assets", "images", image),
         imagePath
       );
     }
   });
+
+  if (cb) cb();
 };

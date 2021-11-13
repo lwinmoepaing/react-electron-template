@@ -13,13 +13,10 @@ const errorHandler = require("./lib/errorHandler");
 
 // Importing Services
 const routerService = require("./services/routerService");
-const Logger = require("./services/logger");
-const checkFileExistService = require("./services/checkFileExist");
+// const Logger = require("./services/logger");
 
 // Dotenv (.env) Configuration
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
-
-checkFileExistService();
 
 // Require Locale Passport Config
 require("./services/passport")(passport);
@@ -36,9 +33,9 @@ if (process.env.ENV !== "PRODUCTION") {
   app.use(morgan("tiny"));
 }
 // else {
-app.use(Logger);
-app.use(Logger.notFoundLog);
-app.use(Logger.errorLog);
+// app.use(Logger);
+// app.use(Logger.notFoundLog);
+// app.use(Logger.errorLog);
 // }
 
 /**
