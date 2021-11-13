@@ -16,7 +16,7 @@ const IsAuthMiddleware = () => {
 
   useEffect(() => {
     if (!user) {
-      checkOfflineUser();
+      checkOfflineUser(); // When App Restart checking localforage userLogined
     }
 
     isInitLanguage();
@@ -31,14 +31,13 @@ const IsAuthMiddleware = () => {
       const token = await localForage.getItem(localStoreKeys.token);
       setIsCheckingUser(false);
       if (!offlineUser) return;
-
-      dispatch({
-        type: profileActions.UPDATE_PROFILE,
-        param: JSON.parse(offlineUser),
-      });
       dispatch({
         type: profileActions.UPDATE_TOKEN,
         param: JSON.parse(token),
+      });
+      dispatch({
+        type: profileActions.UPDATE_PROFILE,
+        param: JSON.parse(offlineUser),
       });
     } catch (e) {
       console.log(e.message);

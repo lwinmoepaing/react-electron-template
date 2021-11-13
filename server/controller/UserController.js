@@ -44,11 +44,31 @@ const getPermissionByRoleId = (roleID) => {
 
 module.exports.GET_ALL_USERS = async (req, res) => {
   try {
-    const users = await new User().fetchAll({
+    const totalUsers = await new User().count();
+
+    const users = await User.forge().fetchPage({
       withRelated: ["role", "permissions"],
       columns: [...userDefaultColumns],
+      page: 1,
+      pageSize: 5,
     });
-    res.status(200).json(successResponse(users));
+
+    res.status(200).json({
+      ...successResponse(users),
+      pagination: {
+        totalCount: totalUsers,
+      },
+    });
+  } catch (e) {
+    console.log("error", e);
+    res.status(401).json(errorResponse(e));
+  }
+};
+
+module.exports.GET_TOTAL_COUNT = async (req, res) => {
+  try {
+    const count = await new User().count();
+    res.status(200).json(successResponse(count));
   } catch (e) {
     console.log("error", e);
     res.status(401).json(errorResponse(e));

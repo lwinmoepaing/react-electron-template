@@ -13,7 +13,7 @@ exports.seed = function (knex) {
             "$2b$10$88FkB7OiWKon9fMurSM.0OVzy.1Pa8zjkZzOI.DGToInLOpoB5t5a", // 123456
           phone_no: "09",
           address: "",
-          profile_picture: "profile_picture",
+          profile_picture: "profile_picture.png",
           role_id: "1",
         },
         // {

@@ -1,11 +1,12 @@
 const multer = require("multer");
 const path = require("path");
 const { uuid } = require("uuidv4");
+const { IMAGE_DIRECTORY } = require("../../config");
 const { errorResponse } = require("../lib/responseHandler");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, `${__dirname}/../public/images`);
+    cb(null, IMAGE_DIRECTORY);
   },
   filename: function (req, file, cb) {
     const fileName = `${uuid()}${path.extname(file.originalname)}`;

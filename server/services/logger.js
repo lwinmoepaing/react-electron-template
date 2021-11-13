@@ -4,6 +4,11 @@ const fs = require("fs");
 const moment = require("moment-timezone");
 const { LOG_DIRECTORY } = require("../../config");
 
+if (!fs.existsSync(LOG_DIRECTORY)) {
+  console.log("Making Exist: ", LOG_DIRECTORY);
+  fs.mkdirSync(LOG_DIRECTORY);
+}
+
 const accessLogStream = (fileName) => {
   const customLogDir = path.join(
     LOG_DIRECTORY,

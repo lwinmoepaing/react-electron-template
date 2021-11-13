@@ -9,6 +9,7 @@ const {
 } = require("electron");
 const path = require("path");
 const { VERSION_CODE } = require("./config/constants");
+const checkFileExistService = require("./config/checkFileExist");
 const server = require("./server");
 // Constants
 const ipcListener = require("./utils/ipcListner");
@@ -34,17 +35,28 @@ if (isMac) {
   app.dock.setIcon(dockIcon);
 }
 
+if (process.platform === "win32") {
+  app.setAppUserModelId(app.name);
+}
+
 app
   .whenReady()
   .then(() => {
     const splash = createSplashScreen();
     const mainApp = createBrowser();
-    // Call Backend Api default Port 5050
-    mainApp.once("ready-to-show", () => {
-      setTimeout(() => {
-        splash.destroy();
-        mainApp.show();
-      }, 1000);
+
+    // Initial Checking FilesSystem and Build
+    // Log and Db Directory
+    checkFileExistService(() => {
+      mainApp.once("ready-to-show", async () => {
+        // Call Backend Api default Port 5050
+        console.log("Server start calling");
+        server(() => {
+          console.log("Server is Listening! now!!");
+          splash.destroy();
+          mainApp.show();
+        });
+      });
     });
   })
   .then(() => new Notification({ silent: true })); // Fixed First Time Noti Off
@@ -82,14 +94,10 @@ function createBrowser() {
 
   window.loadFile(`public/index.html`);
 
-  // window.webContents.openDevTools();
-  isDev && window.webContents.openDevTools();
-  // Call Backend
-  const backend = server();
-
-  ipcListener(window, backend, app);
+  ipcListener(window);
 
   window.webContents.on("did-finish-load", () => {
+    isDev && window.webContents.openDevTools();
     window.webContents.send(VERSION_CODE.SEND_VERSION, app.getVersion());
   });
 

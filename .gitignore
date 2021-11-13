@@ -6,3 +6,5 @@
 
 /server/logs/*
 /logs/**/*
+
+/storage/*

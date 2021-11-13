@@ -14,7 +14,7 @@ const { DATABASE_DIRECTORY } = require("../config");
  * @param {app} electronApp
  * Server
  */
-module.exports = (window, server, electronApp) => {
+module.exports = (window) => {
   // When Order Noti Send From Frontend
   ipcMain.on(NOTI_CODE.SEND, (_, params) => {
     const { title, body, icon } = params;
