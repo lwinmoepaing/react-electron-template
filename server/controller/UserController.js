@@ -1,6 +1,7 @@
 const DB = require("../services/dbConnect");
 const { successResponse, errorResponse } = require("../lib/responseHandler");
 const User = require("../model/UserModel");
+const Permission = require("../model/PermissionModel");
 const bcrypt = require("bcrypt");
 const Joi = require("@hapi/joi");
 const passport = require("passport");
@@ -8,6 +9,7 @@ const jwt = require("jsonwebtoken");
 // Self Import
 const { JWT_SECRET } = require("../../config");
 const { MANAGE_ERROR_MESSAGE } = require("../lib/helper");
+const permissions = require("../../constant/permissions.json");
 
 const userDefaultColumns = [
   "id",
@@ -22,6 +24,23 @@ const userDefaultColumns = [
 /**
  * User Lists
  */
+const getPermissionByRoleId = (roleID) => {
+  const AdminRoles = Object.keys(permissions) // Oject
+    .reduce((current, next) => {
+      return [...current, ...permissions[next]]; // return []
+    }, []);
+
+  const EmployeeRoles = permissions.EMPLOYEE_PERMISSION;
+
+  switch (roleID) {
+    case "1":
+      return AdminRoles;
+    case "2":
+      return EmployeeRoles;
+    default:
+      return EmployeeRoles;
+  }
+};
 
 module.exports.GET_ALL_USERS = async (req, res) => {
   try {
@@ -29,6 +48,16 @@ module.exports.GET_ALL_USERS = async (req, res) => {
       withRelated: ["role", "permissions"],
       columns: [...userDefaultColumns],
     });
+    res.status(200).json(successResponse(users));
+  } catch (e) {
+    console.log("error", e);
+    res.status(401).json(errorResponse(e));
+  }
+};
+
+module.exports.USER_TOTAL_COUNT = async (req, res) => {
+  try {
+    const users = await new User().count();
     res.status(200).json(successResponse(users));
   } catch (e) {
     console.log("error", e);
@@ -64,10 +93,6 @@ module.exports.GET_ME = async (req, res) => {
   }
 };
 
-/**
- * CREATE USER
- */
-
 module.exports.CREATE_USER = async (req, res) => {
   const { error } = await Auth_Register_Validator(req);
   if (error) {
@@ -94,22 +119,36 @@ module.exports.CREATE_USER = async (req, res) => {
       const salt = await bcrypt.genSalt(10);
       const password = await bcrypt.hash(req.body.password, salt);
 
-      const userId = await DB.knex
+      let userId = await DB.knex
         .insert({
           ...req.body,
           password,
         })
-        .returning("id")
         .into("users");
 
-      console.log("userId", userId);
+      userId = userId.length === 1 ? userId[0] : 0;
+
+      const permissionList = await new Permission().fetchAll({});
+      const permission = getPermissionByRoleId(req.body.role_id);
+      const permissionForThisUser = permissionList
+        .toJSON()
+        .filter((pr) => permission.includes(pr.name));
+
+      await DB.knex
+        .insert(
+          permissionForThisUser.map((value, index) => {
+            return { permission_id: value.id, user_id: userId };
+          })
+        )
+        .into("permissions_users");
 
       res.status(200).json(
         successResponse(
           {
-            id: userId.length === 1 ? userId[0] : 0,
+            id: userId,
             ...req.body,
             password,
+            permissions: permissionForThisUser,
           },
           "Register Successful"
         )
@@ -119,10 +158,6 @@ module.exports.CREATE_USER = async (req, res) => {
     }
   }
 };
-
-/**
- * Login User
- */
 
 module.exports.LOGIN_USER = async (req, res) => {
   const { error } = await Auth_Login_Validator(req);
@@ -153,6 +188,17 @@ module.exports.LOGIN_USER = async (req, res) => {
   })(req, res);
 };
 
+module.exports.UPDATE_USER = async (req, res) => {
+  const { error } = await Auth_Update_Validator(req);
+
+  if (error) {
+    res.status(400).json(MANAGE_ERROR_MESSAGE(error));
+    return;
+  }
+
+  res.status(200).json(successResponse("hello"));
+};
+
 /**
  * All Validator Here
  */
@@ -173,6 +219,15 @@ const Auth_Login_Validator = ({ body }) => {
   const schema = Joi.object().keys({
     unique_name: Joi.string().min(3).max(30).required(),
     password: Joi.string().required(),
+  });
+  return schema.validate(body, { abortEarly: false });
+};
+
+const Auth_Update_Validator = ({ body }) => {
+  const schema = Joi.object().keys({
+    user_name: Joi.string().min(3).max(30).required(),
+    phone_no: Joi.string().pattern(phRegex).required(),
+    address: Joi.string(),
   });
   return schema.validate(body, { abortEarly: false });
 };

@@ -53,7 +53,7 @@ export default function CheckVersionHook() {
   };
 
   const changeNumericFormat = useCallback(
-    (version) => Number(version.replace(/\./g, "")),
+    (version) => (version ? Number(version.replace(/\./g, "")) : ""),
     []
   );
 
@@ -64,8 +64,8 @@ export default function CheckVersionHook() {
       setGetVersionLoading(true);
       const res = await axios.get(process.env.VERSION_URL);
       const nxtVerNumeric = changeNumericFormat(res.data.version);
-      const dbVerNumeric = changeNumericFormat(res.data.dbVersion);
       const curVerNumeric = changeNumericFormat(currentVersion);
+      const dbVerNumeric = changeNumericFormat(res.data.dbVersion);
       setNextVersion(res.data.version);
       setDbUrl(res.data.dbUrl);
       if (dbVerNumeric > curVerNumeric) {
@@ -102,6 +102,7 @@ export default function CheckVersionHook() {
   return {
     currentVersion,
     nextVersion,
+    changeNumericFormat,
     getVersionLoading,
     isReleaseNewVersion,
     versionStatus,

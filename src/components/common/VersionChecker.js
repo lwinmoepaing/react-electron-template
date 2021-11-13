@@ -21,6 +21,7 @@ function VersionChecker() {
     versionUpdateLoading,
     isVersionUpdateError,
     versionUpdateErrorMessage,
+    changeNumericFormat,
     checkVersionRelease,
     updateVersionRelease,
   } = CheckVersionHook();
@@ -88,11 +89,13 @@ function VersionChecker() {
               </Typography>
             )}
 
-            {nextVersion === currentVersion && !getVersionLoading && (
-              <Typography color="text.secondary" sx={{ fontSize: 12 }}>
-                Already Updated Version
-              </Typography>
-            )}
+            {changeNumericFormat(currentVersion) >=
+              changeNumericFormat(nextVersion) &&
+              !getVersionLoading && (
+                <Typography color="text.secondary" sx={{ fontSize: 12 }}>
+                  Already Updated Version!
+                </Typography>
+              )}
           </CardContent>
           <CardActions>
             <Button

@@ -18,8 +18,8 @@ exports.seed = function (knex) {
         },
         // {
         //   id: 2,
-        //   unique_name: "staff",
-        //   user_name: "Staff",
+        //   unique_name: "Employee",
+        //   user_name: "Employee",
         //   password: "123456",
         //   phone_no: "09",
         //   address: "",
