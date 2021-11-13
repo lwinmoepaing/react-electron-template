@@ -29,13 +29,12 @@ app.use(passport.initialize());
  * HTTP request logger middleware for node.js
  * @doc : https://github.com/expressjs/morgan#readme
  */
-if (process.env.ENV !== "PRODUCTION") {
-  app.use(morgan("tiny"));
-}
-// else {
-// app.use(Logger);
-// app.use(Logger.notFoundLog);
-// app.use(Logger.errorLog);
+// if (process.env.ENV !== "PRODUCTION") {
+// app.use(morgan("tiny"));
+// } else {
+app.use(Logger);
+app.use(Logger.notFoundLog);
+app.use(Logger.errorLog);
 // }
 
 /**
