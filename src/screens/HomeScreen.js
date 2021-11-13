@@ -7,8 +7,6 @@ const HomeScreen = () => {
   const notiMessage = "My custom Noti Message";
   const { t } = useTranslation();
   const [count, setCount] = useState(0);
-  const [clickedMes] = useState("");
-  const [closedMes] = useState("");
 
   // Use Custom Hooks
 
@@ -16,15 +14,13 @@ const HomeScreen = () => {
 
   const onSendNoti = useCallback(() => {
     const cusMessage = count + 1 + " - " + notiMessage;
-    sendNotification({ body: cusMessage }, () => {});
+    sendNotification({ title: "LWIN", body: cusMessage }, () => {});
     setCount(count + 1);
   }, [count, setCount]);
 
   return (
     <Container>
       <button onClick={onSendNoti}>Test Notification</button>
-      {clickedMes && <p>{clickedMes}</p>}
-      {closedMes && <p>{closedMes}</p>}
     </Container>
   );
 };

@@ -35,6 +35,10 @@ if (isMac) {
   app.dock.setIcon(dockIcon);
 }
 
+if (process.platform === "win32") {
+  app.setAppUserModelId(app.name);
+}
+
 app
   .whenReady()
   .then(() => {
