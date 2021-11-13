@@ -29,7 +29,7 @@ export default function LoginScreen() {
   return isLogin ? (
     <Redirect to={"/home"} />
   ) : (
-    <div>
+    <div style={{ borderTop: "1px solid #dfdfdf" }}>
       <LoginForm />
       <VersionChecker />
     </div>

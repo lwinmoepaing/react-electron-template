@@ -80,6 +80,7 @@ export default function LoginScreen() {
                   name="password"
                   id="password"
                   label="Password"
+                  isEnterSubmit
                 />
                 <FormSubmitButton
                   disabled={loginLoading}

@@ -83,8 +83,6 @@ function createBrowser() {
 
   window.loadFile(`public/index.html`);
 
-  // window.webContents.openDevTools();
-
   ipcListener(window);
 
   window.webContents.on("did-finish-load", () => {
