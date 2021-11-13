@@ -36,6 +36,16 @@ module.exports.GET_ALL_USERS = async (req, res) => {
   }
 };
 
+module.exports.GET_TOTAL_COUNT = async (req, res) => {
+  try {
+    const count = await new User().count();
+    res.status(200).json(successResponse(count));
+  } catch (e) {
+    console.log("error", e);
+    res.status(401).json(errorResponse(e));
+  }
+};
+
 module.exports.GET_USER_BY_ID = async (req, res) => {
   const { id } = req.params;
   try {
