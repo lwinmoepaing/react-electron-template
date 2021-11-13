@@ -27,3 +27,45 @@
   align-items: center;
   text-align: center;
 }
+
+.MuiTableRow-root {
+  border-spacing: "0px 4px";
+}
+
+.MuiTableRow-root td:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.MuiTableRow-root td:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.MuiTableRow-root td {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.MuiTableRow-root {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  border-radius: 8px;
+  background-color: #fbfbfb;
+}
+
+.MuiTableRow-root th:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.MuiTableRow-root th:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.MuiTableRow-root th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: rgb(240, 247, 255);
+}

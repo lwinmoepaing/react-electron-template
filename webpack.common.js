@@ -58,7 +58,11 @@ module.exports = {
       },
     ],
   },
-  plugins: [new DotEnv()],
+  plugins: [
+    new DotEnv({
+      path: path.join(__dirname, ".env"),
+    }),
+  ],
   resolve: {
     extensions: [".js", ".jsx"],
   },

@@ -7,9 +7,10 @@ const Joi = require("@hapi/joi");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 // Self Import
-const { JWT_SECRET } = require("../../config");
-const { MANAGE_ERROR_MESSAGE } = require("../lib/helper");
+const { JWT_SECRET, DEFAULT_PAGE_SIZE } = require("../../config");
+const { MANAGE_ERROR_MESSAGE, CHECK_VALID_PAGE } = require("../lib/helper");
 const permissions = require("../../constant/permissions.json");
+const paginateHelper = require("../lib/paginateHelper");
 
 const userDefaultColumns = [
   "id",
@@ -45,18 +46,25 @@ const getPermissionByRoleId = (roleID) => {
 module.exports.GET_ALL_USERS = async (req, res) => {
   try {
     const totalUsers = await new User().count();
+    const page = CHECK_VALID_PAGE(req.query.page);
+    const paginator = paginateHelper({
+      page,
+      perPage: DEFAULT_PAGE_SIZE,
+      totalRows: totalUsers,
+    });
 
-    const users = await User.forge().fetchPage({
+    const users = await new User().orderBy("id", "DESC").fetchPage({
       withRelated: ["role", "permissions"],
       columns: [...userDefaultColumns],
-      page: 1,
-      pageSize: 5,
+      page: page,
+      pageSize: DEFAULT_PAGE_SIZE,
     });
 
     res.status(200).json({
       ...successResponse(users),
       pagination: {
         totalCount: totalUsers,
+        ...paginator,
       },
     });
   } catch (e) {

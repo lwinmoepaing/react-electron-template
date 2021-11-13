@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import Container from "../components/template/Container";
+import TestTable from "../components/common/TestTable";
 import NotificationHook from "../hooks/common/NotificationHook";
 
 const HomeScreen = () => {
@@ -20,7 +21,7 @@ const HomeScreen = () => {
 
   return (
     <Container>
-      <button onClick={onSendNoti}>Test Notification</button>
+      <TestTable />
     </Container>
   );
 };

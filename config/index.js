@@ -40,7 +40,7 @@ const config = {
   DATABASE_DIRECTORY,
   IMAGE_DIRECTORY,
   IS_PRODUCTION: isProduction,
-  DEFAULT_PAGE_SIZE: 5,
+  DEFAULT_PAGE_SIZE: 10,
 };
 
 module.exports = config;

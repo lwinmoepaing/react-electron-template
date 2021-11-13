@@ -70,4 +70,8 @@ module.exports = {
 
     return schema.validate({ id });
   },
+
+  CHECK_VALID_PAGE: (page) => {
+    return isNaN(page) ? 1 : +page <= 0 ? 1 : +page;
+  },
 };
