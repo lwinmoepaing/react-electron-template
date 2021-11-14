@@ -7,10 +7,10 @@ import Button from "@mui/material/Button";
 const HomeScreen = () => {
   const { fetchUser, userList, userListLoading, isUserFetchingError, page } =
     UserHook();
+
   useEffect(() => {
-    setTimeout(() => {
-      fetchUser({});
-    }, 1500);
+    fetchUser({});
+    return () => {};
   }, []);
 
   useEffect(() => {

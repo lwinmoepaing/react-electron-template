@@ -16,6 +16,7 @@ import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import { useSelector } from "react-redux";
 
 const rows = [];
 
@@ -146,6 +147,7 @@ function EnhancedTableHead(props) {
 
 export default function UserTable(props) {
   const { isShowSelectBox = false, userList = [], loading = false } = props;
+  const profile = useSelector(({ profile }) => profile);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("");
   const [selected, setSelected] = React.useState([]);
@@ -252,14 +254,34 @@ export default function UserTable(props) {
                       <TableCell align="right">{row.phone_no}</TableCell>
                       <TableCell align="right">{row.role.name}</TableCell>
                       <TableCell align="right">
-                        <IconButton className="ActionPrimary" size="small">
-                          <VisibilityIcon color="primary" />
+                        <IconButton
+                          className="ActionPrimary"
+                          size="small"
+                          color="primary"
+                        >
+                          <VisibilityIcon />
                         </IconButton>
-                        <IconButton className="ActionWarning" size="small">
-                          <ModeEditOutlineOutlinedIcon color="warning" />
+                        <IconButton
+                          className="ActionWarning"
+                          size="small"
+                          color="warning"
+                        >
+                          <ModeEditOutlineOutlinedIcon />
                         </IconButton>
-                        <IconButton className="ActionDanger" size="small">
-                          <DeleteIcon color="error" />
+                        <IconButton
+                          disabled={row.id === profile.data.id}
+                          className={
+                            row.id === profile.data.id
+                              ? "ActionDefault"
+                              : "ActionDanger"
+                          }
+                          size="small"
+                          // color={
+                          //   row.id === profile.data.id ? "secondary" : "default"
+                          // }
+                          color="error"
+                        >
+                          <DeleteIcon />
                         </IconButton>
                       </TableCell>
                     </TableRow>

@@ -1,6 +1,9 @@
 import * as React from "react";
+import { useEffect } from "react";
 import { useHistory } from "react-router";
 import { styled, useTheme } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -21,8 +24,7 @@ import TitleHook from "../../hooks/common/TitleHook";
 import AuthHook from "../../hooks/auth/AuthHook";
 import LanguageHook from "../../hooks/common/LanguageHook";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-
-import { useTranslation } from "react-i18next";
+import { appActions } from "../../store/reducers/appReducer";
 
 const drawerWidth = 240;
 
@@ -127,15 +129,18 @@ function AppBarWrapper() {
   const { setChangeLanguage } = LanguageHook();
   const history = useHistory();
   const theme = useTheme();
+  const open = useSelector(({ app }) => app.isOpenDrawer);
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [open, setOpen] = React.useState(true);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+  useEffect(() => {
+    console.log("isOpen", open);
+  }, [open]);
 
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const toggleDrawer = () => {
+    dispatch({
+      type: appActions.TOGGLE_DRAWER,
+    });
   };
 
   const onLogout = async () => {
@@ -163,7 +168,7 @@ function AppBarWrapper() {
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={handleDrawerOpen}
+              onClick={toggleDrawer}
               edge="start"
               sx={{
                 marginRight: "36px",
@@ -185,38 +190,43 @@ function AppBarWrapper() {
           <Typography variant="h6" noWrap component="div">
             {title}
           </Typography>
-          <IconButton color="inherit" onClick={handleDrawerClose}>
+          <IconButton color="inherit" onClick={toggleDrawer}>
             <ChevronLeftIcon />
           </IconButton>
         </DrawerHeader>
 
         <Divider />
         <List style={listContainerStyle}>
-          {["Inbox", "Starred"].map((text, index) => (
-            <ListItem button key={text} style={listStyle}>
-              <ListItemIcon>
-                {index % 2 === 0 ? (
-                  <InboxIcon color="primary" style={iconStyle} />
-                ) : (
-                  <MailIcon color="primary" style={iconStyle} />
-                )}
-              </ListItemIcon>
-              <ListItemText primary={text} sx={listTextStyle} />
-            </ListItem>
-          ))}
+          <ListItem
+            button
+            style={listStyle}
+            onClick={() => history.push("/home")}
+          >
+            <ListItemIcon>
+              <InboxIcon color="primary" style={iconStyle} />
+            </ListItemIcon>
+            <ListItemText primary={"Home"} sx={listTextStyle} />
+          </ListItem>
         </List>
 
         <Divider />
         <List style={listContainerStyle}>
-          <ListItem button style={listStyle} onClick={onLogout}>
+          <ListItem
+            button
+            style={listStyle}
+            onClick={() => history.push("/about")}
+          >
             <ListItemIcon>
               <InfoOutlinedIcon
+                color="primary"
                 style={{
                   ...iconStyle,
                 }}
               />
             </ListItemIcon>
-
+            <ListItemText primary="About" sx={listTextStyle} />
+          </ListItem>
+          <ListItem button style={listStyle} onClick={onLogout}>
             <ListItemIcon>
               <Logout
                 style={{
