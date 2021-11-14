@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
 // Self Import
 const { JWT_SECRET, DEFAULT_PAGE_SIZE } = require("../../config");
 const { MANAGE_ERROR_MESSAGE, CHECK_VALID_PAGE } = require("../lib/helper");
-const permissions = require("../../constant/permissions.json");
+const permissions = require("../data/permissions.json");
 const paginateHelper = require("../lib/paginateHelper");
 
 const userDefaultColumns = [

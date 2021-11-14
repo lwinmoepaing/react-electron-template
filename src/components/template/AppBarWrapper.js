@@ -20,7 +20,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import TitleHook from "../../hooks/common/TitleHook";
 import AuthHook from "../../hooks/auth/AuthHook";
 import LanguageHook from "../../hooks/common/LanguageHook";
-import Icon from "@mui/material/Icon";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import { useTranslation } from "react-i18next";
 
@@ -209,6 +209,14 @@ function AppBarWrapper() {
         <Divider />
         <List style={listContainerStyle}>
           <ListItem button style={listStyle} onClick={onLogout}>
+            <ListItemIcon>
+              <InfoOutlinedIcon
+                style={{
+                  ...iconStyle,
+                }}
+              />
+            </ListItemIcon>
+
             <ListItemIcon>
               <Logout
                 style={{

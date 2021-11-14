@@ -1,4 +1,4 @@
-const permissions = require("../../../constant/permissions.json");
+const permissions = require("../permissions.json");
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex("permissions")
