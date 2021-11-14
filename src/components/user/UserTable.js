@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,7 +17,7 @@ import IconButton from "@mui/material/IconButton";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-import { useSelector } from "react-redux";
+import Pagination from "@mui/material/Pagination";
 
 const rows = [];
 
@@ -146,7 +147,14 @@ function EnhancedTableHead(props) {
 }
 
 export default function UserTable(props) {
-  const { isShowSelectBox = false, userList = [], loading = false } = props;
+  const {
+    isShowSelectBox = false,
+    userList = [],
+    loading = false,
+    pagination,
+    onChangePage = () => {},
+  } = props;
+
   const profile = useSelector(({ profile }) => profile);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("");
@@ -276,9 +284,6 @@ export default function UserTable(props) {
                               : "ActionDanger"
                           }
                           size="small"
-                          // color={
-                          //   row.id === profile.data.id ? "secondary" : "default"
-                          // }
                           color="error"
                         >
                           <DeleteIcon />
@@ -306,6 +311,14 @@ export default function UserTable(props) {
           </TableBody>
         </Table>
       </TableContainer>
+      {!loading && pagination && (
+        <Pagination
+          count={pagination.totalPage}
+          page={pagination.currentPage}
+          onChange={onChangePage}
+          sx={{ mt: 1 }}
+        />
+      )}
     </Box>
   );
 }

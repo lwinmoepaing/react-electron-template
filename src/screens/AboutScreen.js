@@ -6,9 +6,6 @@ import Container from "../components/template/Container";
 const AboutScreen = () => {
   const profile = useSelector(({ profile }) => profile);
   const [user, setUser] = useState(null);
-  useEffect(() => {
-    console.log(profile);
-  }, [profile]);
 
   return (
     <Container withNavbar>

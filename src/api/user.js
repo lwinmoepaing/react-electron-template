@@ -9,5 +9,5 @@ export const fetchUserRequest = async ({ query, page }) => {
     queryParams.query = query;
   }
 
-  return axios.get("/users", queryParams);
+  return axios.get("/users", { params: queryParams });
 };

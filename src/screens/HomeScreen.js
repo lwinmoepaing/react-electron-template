@@ -5,24 +5,33 @@ import UserTable from "../components/user/UserTable";
 import Button from "@mui/material/Button";
 
 const HomeScreen = () => {
-  const { fetchUser, userList, userListLoading, isUserFetchingError, page } =
-    UserHook();
+  const {
+    fetchUser,
+    pagination,
+    userList,
+    userListLoading,
+    isUserFetchingError,
+    page,
+  } = UserHook();
+
+  const onChangePage = (event, value) => {
+    fetchUser({ pageParam: value });
+  };
 
   useEffect(() => {
+    // Initial Fetching All Users
     fetchUser({});
     return () => {};
   }, []);
 
-  useEffect(() => {
-    console.log("UserList", userList);
-  }, [userList]);
-
   return (
     <Container>
-      <Button size="small" onClick={() => fetchUser({})} variant="contained">
-        Refresh
-      </Button>
-      <UserTable userList={userList} loading={userListLoading} />
+      <UserTable
+        userList={userList}
+        loading={userListLoading}
+        pagination={pagination}
+        onChangePage={onChangePage}
+      />
     </Container>
   );
 };

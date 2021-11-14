@@ -133,10 +133,6 @@ function AppBarWrapper() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    console.log("isOpen", open);
-  }, [open]);
-
   const toggleDrawer = () => {
     dispatch({
       type: appActions.TOGGLE_DRAWER,
