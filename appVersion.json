@@ -1,6 +1,6 @@
 {
-  "version": "0.0.4",
-  "dbVersion": "0.0.4",
+  "version": "0.0.5",
+  "dbVersion": "0.0.5",
   "dbUrl": "https://raw.githubusercontent.com/lwinmoepaing/react-electron-template/main/server/data/database.db3",
   "isForceUpdate": false
 }
