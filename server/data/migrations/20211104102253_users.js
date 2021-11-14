@@ -14,10 +14,12 @@ exports.up = function (knex) {
 
     table.string("address");
 
+    table.integer("fixed_salary").defaultsTo(0).notNullable();
+
     table
       .string("profile_picture")
       .notNullable()
-      .defaultsTo("default_profile.png");
+      .defaultsTo("profile_picture.png");
 
     table
       .integer("role_id")
