@@ -1,27 +1,28 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useTranslation } from "react-i18next";
+import UserHook from "../hooks/user/UserHook";
 import Container from "../components/template/Container";
-import TestTable from "../components/common/TestTable";
-import NotificationHook from "../hooks/common/NotificationHook";
+import UserTable from "../components/user/UserTable";
+import Button from "@mui/material/Button";
 
 const HomeScreen = () => {
-  const notiMessage = "My custom Noti Message";
-  const { t } = useTranslation();
-  const [count, setCount] = useState(0);
+  const { fetchUser, userList, userListLoading, isUserFetchingError, page } =
+    UserHook();
+  useEffect(() => {
+    setTimeout(() => {
+      fetchUser({});
+    }, 1500);
+  }, []);
 
-  // Use Custom Hooks
-
-  const { sendNotification } = NotificationHook({});
-
-  const onSendNoti = useCallback(() => {
-    const cusMessage = count + 1 + " - " + notiMessage;
-    sendNotification({ title: "LWIN", body: cusMessage }, () => {});
-    setCount(count + 1);
-  }, [count, setCount]);
+  useEffect(() => {
+    console.log("UserList", userList);
+  }, [userList]);
 
   return (
     <Container>
-      <TestTable />
+      <Button size="small" onClick={() => fetchUser({})} variant="contained">
+        Refresh
+      </Button>
+      <UserTable userList={userList} loading={userListLoading} />
     </Container>
   );
 };

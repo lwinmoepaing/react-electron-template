@@ -99,6 +99,7 @@ const listContainerStyle = {
   paddingLeft: 4,
   paddingRight: 4,
 };
+
 const listStyle = {
   borderRadius: 4,
   paddingTop: 2,
@@ -112,6 +113,12 @@ const iconStyle = {
   backgroundColor: "#f0f7ff",
   padding: 4,
   borderRadius: 4,
+};
+
+const listTextStyle = {
+  "& span": {
+    fontSize: 14,
+  },
 };
 
 function AppBarWrapper() {
@@ -194,14 +201,7 @@ function AppBarWrapper() {
                   <MailIcon color="primary" style={iconStyle} />
                 )}
               </ListItemIcon>
-              <ListItemText
-                primary={text}
-                sx={{
-                  "& span": {
-                    fontSize: 14,
-                  },
-                }}
-              />
+              <ListItemText primary={text} sx={listTextStyle} />
             </ListItem>
           ))}
         </List>
@@ -218,14 +218,7 @@ function AppBarWrapper() {
                 }}
               />
             </ListItemIcon>
-            <ListItemText
-              primary="Logout"
-              sx={{
-                "& span": {
-                  fontSize: 14,
-                },
-              }}
-            />
+            <ListItemText primary="Logout" sx={listTextStyle} />
           </ListItem>
         </List>
       </Drawer>

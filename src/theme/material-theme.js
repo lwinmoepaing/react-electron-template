@@ -7,6 +7,12 @@ const theme = createTheme({
     secondary: {
       main: "#326eb3",
     },
+    warning: {
+      main: "#FF9800",
+    },
+    danger: {
+      main: "#fb7c7c",
+    },
   },
   //custom theme variables
   //   bg: {

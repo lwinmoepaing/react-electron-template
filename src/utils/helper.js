@@ -12,3 +12,6 @@ export const cleanAllLocalData = () => {
 export const arrayConcatToString = (data) => {
   return typeof data === "string" ? data : data.map((item) => item).join`,`;
 };
+
+export const delay = (secTimer = 1) =>
+  new Promise((res, rej) => setTimeout(() => res(true), secTimer * 1000));

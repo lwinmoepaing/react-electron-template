@@ -69,3 +69,23 @@
   padding-bottom: 12px;
   background-color: rgb(240, 247, 255);
 }
+
+.TableLoading {
+  width: 70px;
+  height: 70px;
+  margin: 1rem auto 0.5rem auto;
+}
+
+.ActionPrimary {
+  background-color: #d3e8f9 !important;
+  margin-right: 4px !important;
+}
+.ActionWarning {
+  background-color: #fff5d2 !important;
+  margin-right: 4px !important;
+}
+
+.ActionDanger {
+  background-color: #ffe6e6 !important;
+  margin-right: 4px !important;
+}

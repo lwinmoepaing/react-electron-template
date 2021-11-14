@@ -8,7 +8,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Checkbox from "@mui/material/Checkbox";
+import Avatar from "@mui/material/Avatar";
 import { visuallyHidden } from "@mui/utils";
+import BlueCatLoading from "../loading/BlueCatLoading";
+import { Typography } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+
+const rows = [];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -42,34 +51,40 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: "name",
+    id: "id",
     numeric: false,
     disablePadding: false,
-    label: "Dessert (100g serving)",
+    label: "#Id",
   },
   {
-    id: "calories",
-    numeric: true,
-    disablePadding: false,
-    label: "Calories",
+    id: "profile_picture",
+    numeric: false,
+    disablePadding: true,
+    label: "Avatar",
   },
   {
-    id: "fat",
+    id: "user_name",
     numeric: true,
     disablePadding: false,
-    label: "Fat (g)",
+    label: "Name",
   },
   {
-    id: "carbs",
+    id: "phone_no",
     numeric: true,
     disablePadding: false,
-    label: "Carbs (g)",
+    label: "Phone",
   },
   {
-    id: "protein",
+    id: "role_id",
     numeric: true,
     disablePadding: false,
-    label: "Protein (g)",
+    label: "Role",
+  },
+  {
+    id: "action",
+    numeric: true,
+    disablePadding: false,
+    label: "Action",
   },
 ];
 
@@ -129,8 +144,8 @@ function EnhancedTableHead(props) {
   );
 }
 
-export default function EnhancedTable(props) {
-  const { isShowSelectBox = false } = props;
+export default function UserTable(props) {
+  const { isShowSelectBox = false, userList = [], loading = false } = props;
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("");
   const [selected, setSelected] = React.useState([]);
@@ -143,7 +158,7 @@ export default function EnhancedTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = userList.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -192,46 +207,79 @@ export default function EnhancedTable(props) {
             orderBy={orderBy}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={rows.length}
+            rowCount={userList.length}
             isShowSelectBox={isShowSelectBox}
           />
           <TableBody>
-            {stableSort(rows, getComparator(order, orderBy)).map(
-              (row, index) => {
-                const isItemSelected = isSelected(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
+            {!loading &&
+              stableSort(userList, getComparator(order, orderBy)).map(
+                (row, index) => {
+                  const isItemSelected = isSelected(row.id);
+                  const labelId = `enhanced-table-checkbox-${index}`;
 
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.name}
-                    selected={isItemSelected}
-                  >
-                    {isShowSelectBox && (
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          onClick={(event) => handleClick(event, row.name)}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.id}
+                      selected={isItemSelected}
+                    >
+                      {isShowSelectBox && (
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            onClick={(event) => handleClick(event, row.id)}
+                            inputProps={{
+                              "aria-labelledby": labelId,
+                            }}
+                          />
+                        </TableCell>
+                      )}
+                      <TableCell id={labelId} scope="row">
+                        {row.id}
+                      </TableCell>
+                      <TableCell align="right">
+                        <Avatar
+                          alt="Remy Sharp"
+                          sx={{ width: 24, height: 24 }}
+                          src={`http:localhost:5050/api/images/${row.profile_picture}`}
                         />
                       </TableCell>
-                    )}
-                    <TableCell id={labelId} scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
-                  </TableRow>
-                );
-              }
+                      <TableCell align="right">{row.user_name}</TableCell>
+                      <TableCell align="right">{row.phone_no}</TableCell>
+                      <TableCell align="right">{row.role.name}</TableCell>
+                      <TableCell align="right">
+                        <IconButton className="ActionPrimary" size="small">
+                          <VisibilityIcon color="primary" />
+                        </IconButton>
+                        <IconButton className="ActionWarning" size="small">
+                          <ModeEditOutlineOutlinedIcon color="warning" />
+                        </IconButton>
+                        <IconButton className="ActionDanger" size="small">
+                          <DeleteIcon color="error" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                }
+              )}
+            {loading && (
+              <TableRow>
+                <TableCell
+                  colSpan={headCells.length}
+                  sx={{ textAlign: "center" }}
+                >
+                  <div className="TableLoading">
+                    <BlueCatLoading />
+                  </div>
+                  <Typography sx={{ marginBottom: 1, marginTop: 2 }}>
+                    Loading ...
+                  </Typography>
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

@@ -69,11 +69,15 @@ export default function AuthHook() {
   };
 
   const logoutUser = async () => {
+    setLogoutLoading(true);
+
     await cleanAllLocalData();
 
     dispatch({
       type: profileActions.LOGOUT_PROFILE,
     });
+
+    setLogoutLoading(false);
   };
 
   return {

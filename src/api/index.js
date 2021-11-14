@@ -1,7 +1,7 @@
 import axios from "axios";
 const API_URL =
-  process.env.SERVER_NAME + ":" + process.env.SERVER_PORT ||
-  "http://localhost:5050";
+  process.env.SERVER_NAME + ":" + process.env.SERVER_PORT + "/api" ||
+  "http://localhost:5050/api";
 
 export default () => {
   const axiosOptions = {
