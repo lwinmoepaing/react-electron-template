@@ -1,8 +1,7 @@
-import * as React from "react";
-import { useEffect } from "react";
+import React from "react";
+import { useCallback } from "react";
 import { useHistory } from "react-router";
 import { styled, useTheme } from "@mui/material/styles";
-import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -19,7 +18,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import Logout from "@mui/icons-material/Logout";
-import MailIcon from "@mui/icons-material/Mail";
 import TitleHook from "../../hooks/common/TitleHook";
 import AuthHook from "../../hooks/auth/AuthHook";
 import LanguageHook from "../../hooks/common/LanguageHook";
@@ -131,19 +129,18 @@ function AppBarWrapper() {
   const theme = useTheme();
   const open = useSelector(({ app }) => app.isOpenDrawer);
   const dispatch = useDispatch();
-  const { t } = useTranslation();
 
-  const toggleDrawer = () => {
+  const toggleDrawer = useCallback(() => {
     dispatch({
       type: appActions.TOGGLE_DRAWER,
     });
-  };
+  }, [dispatch]);
 
-  const onLogout = async () => {
+  const onLogout = useCallback(async () => {
     await setChangeLanguage("en");
     await logoutUser();
     history.replace("/");
-  };
+  }, [history]);
 
   return (
     <>

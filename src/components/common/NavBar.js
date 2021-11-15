@@ -5,10 +5,8 @@ import { useTranslation } from "react-i18next";
 
 import AuthHook from "../../hooks/auth/AuthHook";
 // Components
-import BackButton from "../common/BackButton";
 import LanguageToggle from "./LanguageToggle";
 import LanguageHook from "../../hooks/common/LanguageHook";
-import OnlineStatusHook from "../../hooks/common/OnlineStatusHook";
 
 const Navbar = () => {
   const { logoutUser } = AuthHook();

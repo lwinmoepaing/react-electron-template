@@ -14,7 +14,8 @@
     "make:macos": "electron-builder --mac",
     "make:win": "electron-builder --win --x64",
     "make:win-single": "electron-builder --win portable",
-    "deploy": "electron-builder --win --x64 --p always"
+    "deploy": "electron-builder --win --x64 --p always",
+    "lint": "eslint src"
   },
   "keywords": [],
   "author": "Lwin Moe Paing",
@@ -82,9 +83,12 @@
     ]
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "electron": "^15.0.0",
     "electron-builder": "^22.13.1",
     "electron-reload": "^2.0.0-alpha.1",
+    "eslint": "^6.5.1",
+    "eslint-plugin-react": "^7.27.0",
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {

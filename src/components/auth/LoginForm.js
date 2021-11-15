@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import * as Yup from "yup";
 import { Form, FormField, FormSubmitButton } from "../form";
 import AuthHook from "../../hooks/auth/AuthHook";
@@ -32,8 +32,6 @@ export default function LoginScreen() {
   const onSubmitLogin = (values) => {
     loginUser(values);
   };
-
-  const [open, setOpen] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {

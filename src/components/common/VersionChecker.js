@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 
 function VersionChecker() {
-  const { electron } = window;
   const {
     currentVersion,
     nextVersion,

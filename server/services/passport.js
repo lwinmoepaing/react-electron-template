@@ -62,7 +62,7 @@ module.exports = (passport) => {
       bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) throw err;
 
-        console.log("password, user.password", password, user.password);
+        // console.log("password, user.password", password, user.password);
         if (isMatch) {
           return cb(null, user);
         } else {

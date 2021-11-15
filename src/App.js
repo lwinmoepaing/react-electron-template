@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React from "react";
 import { Provider } from "react-redux";
 // import { ThemeProvider } from "styled-components";
 import Routes from "./routes/Routes";

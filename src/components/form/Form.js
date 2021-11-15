@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Formik } from "formik";
 import React from "react";
 
@@ -13,7 +14,7 @@ export default function Form({
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      {(formik) => {
+      {(_formik) => {
         return <>{children}</>;
       }}
     </Formik>

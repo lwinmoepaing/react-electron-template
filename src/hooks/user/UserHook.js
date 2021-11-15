@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { fetchUserRequest } from "../../api/user";
 import { arrayConcatToString, delay } from "../../utils/helper";
 
@@ -17,7 +17,7 @@ function UserHook() {
       if (userListLoading) return;
       setUserListLoading(true);
       setIsUserFetchingError(false);
-      await delay(2);
+      await delay(1);
       try {
         const response = await fetchUserRequest({
           query: queryParam,
