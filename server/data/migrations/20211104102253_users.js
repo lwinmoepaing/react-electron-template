@@ -8,7 +8,7 @@ exports.up = function (knex) {
 
     table.string("password").notNullable();
 
-    table.string("phone_no").notNullable();
+    table.string("phone_no").notNullable().index();
 
     table.text("note");
 

@@ -19,8 +19,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import Pagination from "@mui/material/Pagination";
 
-const rows = [];
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -61,12 +59,18 @@ const headCells = [
   {
     id: "profile_picture",
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: "Avatar",
   },
   {
+    id: "unique_name",
+    numeric: false,
+    disablePadding: false,
+    label: "Unique Name",
+  },
+  {
     id: "user_name",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Name",
   },
@@ -78,7 +82,7 @@ const headCells = [
   },
   {
     id: "role_id",
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: "Role",
   },
@@ -251,16 +255,17 @@ export default function UserTable(props) {
                       <TableCell id={labelId} scope="row">
                         {row.id}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell>
                         <Avatar
                           alt="Remy Sharp"
                           sx={{ width: 24, height: 24 }}
                           src={`http:localhost:5050/api/images/${row.profile_picture}`}
                         />
                       </TableCell>
-                      <TableCell align="right">{row.user_name}</TableCell>
+                      <TableCell>{row.unique_name}</TableCell>
+                      <TableCell>{row.user_name}</TableCell>
                       <TableCell align="right">{row.phone_no}</TableCell>
-                      <TableCell align="right">{row.role.name}</TableCell>
+                      <TableCell>{row.role.name}</TableCell>
                       <TableCell align="right">
                         <IconButton
                           className="ActionPrimary"

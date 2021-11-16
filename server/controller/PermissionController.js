@@ -1,4 +1,3 @@
-const DB = require("../services/dbConnect");
 const { successResponse, errorResponse } = require("../lib/responseHandler");
 const Permission = require("../model/PermissionModel");
 // Self Import

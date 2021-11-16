@@ -15,7 +15,7 @@
     "make:win": "electron-builder --win --x64",
     "make:win-single": "electron-builder --win portable",
     "deploy": "electron-builder --win --x64 --p always",
-    "lint": "eslint src"
+    "lint": "eslint server"
   },
   "keywords": [],
   "author": "Lwin Moe Paing",

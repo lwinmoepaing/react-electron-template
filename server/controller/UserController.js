@@ -14,6 +14,7 @@ const paginateHelper = require("../lib/paginateHelper");
 
 const userDefaultColumns = [
   "id",
+  "unique_name",
   "user_name",
   "role_id",
   "phone_no",
@@ -45,7 +46,36 @@ const getPermissionByRoleId = (roleID) => {
 
 module.exports.GET_ALL_USERS = async (req, res) => {
   try {
-    const totalUsers = await new User().count();
+    let { query } = req.query;
+    query = query ? JSON.parse(query) : {};
+    const [userPaginateQuery, userFetch] = [new User(), new User()];
+
+    if (query.id) {
+      userPaginateQuery.where({ id: query.id });
+      userFetch.where({ id: query.id });
+    }
+
+    if (query.unique_name) {
+      userPaginateQuery.where({ unique_name: query.unique_name });
+      userFetch.where({ unique_name: query.unique_name });
+    }
+
+    if (query.user_name) {
+      userPaginateQuery.where("user_name", "LIKE", `%${query.user_name}%`);
+      userFetch.where("user_name", "LIKE", `%${query.user_name}%`);
+    }
+
+    if (query.phone_no) {
+      userPaginateQuery.where("phone_no", "LIKE", `%${query.phone_no}%`);
+      userFetch.where("phone_no", "LIKE", `%${query.phone_no}%`);
+    }
+
+    if (query.role_id) {
+      userPaginateQuery.where({ role_id: query.role_id });
+      userFetch.where({ role_id: query.role_id });
+    }
+
+    const totalUsers = await userPaginateQuery.count();
     const page = CHECK_VALID_PAGE(req.query.page);
     const paginator = paginateHelper({
       page,
@@ -53,7 +83,7 @@ module.exports.GET_ALL_USERS = async (req, res) => {
       totalRows: totalUsers,
     });
 
-    const users = await new User().orderBy("id", "DESC").fetchPage({
+    const users = await userFetch.orderBy("id", "DESC").fetchPage({
       withRelated: ["role", "permissions"],
       columns: [...userDefaultColumns],
       page: page,
@@ -164,7 +194,7 @@ module.exports.CREATE_USER = async (req, res) => {
 
       await DB.knex
         .insert(
-          permissionForThisUser.map((value, index) => {
+          permissionForThisUser.map((value) => {
             return { permission_id: value.id, user_id: userId };
           })
         )
@@ -182,6 +212,7 @@ module.exports.CREATE_USER = async (req, res) => {
         )
       );
     } catch (e) {
+      console.log("errors", e);
       res.status(400).json(errorResponse(e));
     }
   }
@@ -210,7 +241,7 @@ module.exports.LOGIN_USER = async (req, res) => {
         return res.json({ ...successResponse(user), token });
       });
     } catch (e) {
-      console.log(e);
+      console.log("errors", e);
       res.status(400).json(errorResponse(e));
     }
   })(req, res);
