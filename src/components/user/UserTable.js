@@ -18,6 +18,9 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import Pagination from "@mui/material/Pagination";
+import Chip from "@mui/material/Chip";
+import Grid from "@mui/material/Grid";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -317,12 +320,22 @@ export default function UserTable(props) {
         </Table>
       </TableContainer>
       {!loading && pagination && (
-        <Pagination
-          count={pagination.totalPage}
-          page={pagination.currentPage}
-          onChange={onChangePage}
-          sx={{ mt: 1 }}
-        />
+        <Grid container spacing={2}>
+          <Grid item xs={4}>
+            <Chip
+              avatar={<AccountCircleRoundedIcon />}
+              label={"Total Users: " + pagination.totalCount}
+            />
+          </Grid>
+          <Grid item xs={8}>
+            <Pagination
+              count={pagination.totalPage}
+              page={pagination.currentPage}
+              onChange={onChangePage}
+              sx={{ display: "flex", justifyContent: "flex-end" }}
+            />
+          </Grid>
+        </Grid>
       )}
     </Box>
   );

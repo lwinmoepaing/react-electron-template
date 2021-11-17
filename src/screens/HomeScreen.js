@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import UserHook from "../hooks/user/UserHook";
 import Container from "../components/template/Container";
 import UserTable from "../components/user/UserTable";
-import Button from "@mui/material/Button";
+import UserAdvancedSearch from "../components/user/UserAdvancedSearch";
 
 const HomeScreen = () => {
   const {
@@ -10,12 +10,19 @@ const HomeScreen = () => {
     pagination,
     userList,
     userListLoading,
-    isUserFetchingError,
-    page,
+    query,
+    setQuery,
+    // isUserFetchingError,
+    // page,
   } = UserHook();
 
   const onChangePage = (event, value) => {
-    fetchUser({ pageParam: value });
+    fetchUser({ pageParam: value, queryParam: query });
+  };
+
+  const onSearchQuery = (query) => {
+    setQuery(query);
+    fetchUser({ pageParam: 1, queryParam: query });
   };
 
   useEffect(() => {
@@ -26,6 +33,7 @@ const HomeScreen = () => {
 
   return (
     <Container>
+      <UserAdvancedSearch onSearch={onSearchQuery} loading={userListLoading} />
       <UserTable
         userList={userList}
         loading={userListLoading}
