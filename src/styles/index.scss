@@ -78,18 +78,22 @@
 
 .ActionPrimary {
   background-color: #d3e8f9 !important;
-  margin-right: 4px !important;
+  margin-left: 3px !important;
+  transform: scale(0.8);
 }
 .ActionWarning {
   background-color: #fff5d2 !important;
-  margin-right: 4px !important;
+  margin-left: 3px !important;
+  transform: scale(0.8);
 }
 
 .ActionDefault {
-  margin-right: 4px !important;
+  margin-left: 3px !important;
+  transform: scale(0.8);
 }
 
 .ActionDanger {
   background-color: #ffe6e6 !important;
-  margin-right: 4px !important;
+  margin-left: 3px !important;
+  transform: scale(0.8);
 }
