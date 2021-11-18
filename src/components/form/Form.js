@@ -13,6 +13,7 @@ export default function Form({
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      enableReinitialize
     >
       {(_formik) => {
         return <>{children}</>;

@@ -5,8 +5,14 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 
 export default function FormField(props) {
-  const { handleChange, setFieldTouched, errors, touched, handleSubmit } =
-    useFormikContext();
+  const {
+    handleChange,
+    setFieldTouched,
+    errors,
+    touched,
+    handleSubmit,
+    values,
+  } = useFormikContext();
 
   const { name, isEnterSubmit = false, ...rest } = props;
 
@@ -25,6 +31,7 @@ export default function FormField(props) {
         size="small"
         sx={{ mb: touched[name] && errors[name] ? 1 : 0 }}
         {...rest}
+        value={values[name]}
         onKeyPress={handleKeyPress}
       />
       {touched[name] && errors[name] && (
