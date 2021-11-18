@@ -11,6 +11,9 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import RotateLeftRoundedIcon from "@mui/icons-material/RotateLeftRounded";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 
 function UserAdvancedSearch(props) {
   const { onSearch, loading = false } = props;
@@ -37,7 +40,6 @@ function UserAdvancedSearch(props) {
         values[key] = query[key];
       }
     });
-    console.log(values);
     if (onSearch) {
       onSearch(values);
     }
@@ -49,6 +51,25 @@ function UserAdvancedSearch(props) {
       setQuery({
         ...query,
         [name]: value.trim(),
+      });
+    },
+    [query]
+  );
+
+  const handleKeyPress = useCallback(
+    (event) => {
+      if (event.key === "Enter") {
+        searchQuery();
+      }
+    },
+    [searchQuery]
+  );
+
+  const clearForm = useCallback(
+    (name) => {
+      setQuery({
+        ...query,
+        [name]: "",
       });
     },
     [query]
@@ -86,6 +107,21 @@ function UserAdvancedSearch(props) {
               size="small"
               value={query.id}
               onChange={(e) => handleForm(e, "id")}
+              onKeyPress={handleKeyPress}
+              sx={{
+                "& .MuiInputBase-root": {
+                  paddingRight: 0,
+                },
+              }}
+              InputProps={{
+                endAdornment: query.id.trim() && (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => clearForm("id")}>
+                      <ClearRoundedIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Grid>
           <Grid item xs={3}>
@@ -97,6 +133,21 @@ function UserAdvancedSearch(props) {
               size="small"
               value={query.unique_name}
               onChange={(e) => handleForm(e, "unique_name")}
+              onKeyPress={handleKeyPress}
+              sx={{
+                "& .MuiInputBase-root": {
+                  paddingRight: 0,
+                },
+              }}
+              InputProps={{
+                endAdornment: query.unique_name.trim() && (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => clearForm("unique_name")}>
+                      <ClearRoundedIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Grid>
           <Grid item xs={3}>
@@ -108,6 +159,21 @@ function UserAdvancedSearch(props) {
               size="small"
               value={query.phone_no}
               onChange={(e) => handleForm(e, "phone_no")}
+              onKeyPress={handleKeyPress}
+              sx={{
+                "& .MuiInputBase-root": {
+                  paddingRight: 0,
+                },
+              }}
+              InputProps={{
+                endAdornment: query.phone_no.trim() && (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => clearForm("phone_no")}>
+                      <ClearRoundedIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Grid>
           <Grid item xs={3}>
@@ -131,6 +197,21 @@ function UserAdvancedSearch(props) {
               size="small"
               value={query.user_name}
               onChange={(e) => handleForm(e, "user_name")}
+              onKeyPress={handleKeyPress}
+              sx={{
+                "& .MuiInputBase-root": {
+                  paddingRight: 0,
+                },
+              }}
+              InputProps={{
+                endAdornment: query.user_name.trim() && (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => clearForm("user_name")}>
+                      <ClearRoundedIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Grid>
           <Grid item xs={6}>
