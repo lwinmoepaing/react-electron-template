@@ -10,8 +10,10 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   userController.GET_ME
 );
-router.get("/:id", userController.GET_USER_BY_ID);
 router.post("/login", userController.LOGIN_USER);
 router.post("/register", userController.CREATE_USER);
+router.get("/:id", userController.GET_USER_BY_ID);
+router.put("/:id", userController.UPDATE_USER);
+router.delete("/:id", userController.DELETE_USER);
 
 module.exports = router;

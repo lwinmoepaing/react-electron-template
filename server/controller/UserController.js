@@ -218,6 +218,83 @@ module.exports.CREATE_USER = async (req, res) => {
   }
 };
 
+module.exports.UPDATE_USER = async (req, res) => {
+  console.log("Udate User Function Start..");
+  const { error } = await Auth_Update_Validator(req);
+  const { id } = req.params;
+  if (error) {
+    res.status(400).json(MANAGE_ERROR_MESSAGE(error));
+    return;
+  }
+
+  try {
+    const existingUser = await User.where({
+      id,
+    }).fetch({
+      require: true,
+      withRelated: ["role", "permissions"],
+      columns: [...userDefaultColumns],
+    });
+
+    // Need To Check
+    const isNeedCheckUniqueName =
+      existingUser.toJSON().unique_name !== req.body.unique_name;
+
+    // console.log("isNeedCheckUniqueName", isNeedCheckUniqueName);
+
+    if (isNeedCheckUniqueName) {
+      // console.log("Inside Need to check");
+      const isAlreadyRegistered = await User.where({
+        unique_name: req.body.unique_name,
+      })
+        .fetch({
+          require: true,
+          withRelated: ["role", "permissions"],
+          columns: [...userDefaultColumns],
+        })
+        .catch((e) => console.log(e.message));
+
+      if (isAlreadyRegistered) {
+        // console.log("isAlreadyRegistered", isAlreadyRegistered.toJSON());
+        return res
+          .status(400)
+          .json(errorResponse(new Error("Unique Name is Already Registered")));
+      }
+    }
+
+    // After Checking UniqueName
+    // console.log("After checking... Unqiue Name");
+    const updateUser = await existingUser.save(req.body);
+    // console.log("Updating.. Request Body");
+    return res.status(200).json(successResponse(updateUser.toJSON()));
+  } catch (e) {
+    console.log("errors", e);
+    res.status(400).json(errorResponse(e));
+  }
+};
+
+module.exports.DELETE_USER = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const existingUser = await User.where({
+      id,
+    }).fetch({
+      require: true,
+      withRelated: ["role", "permissions"],
+      columns: [...userDefaultColumns],
+    });
+
+    if (existingUser) {
+      await new User({ id }).destroy({ hardDelete: true });
+      return res.status(200).json(successResponse(existingUser.toJSON()));
+    } else {
+      return res.status(400).json(errorResponse(new Error("Not Found User.")));
+    }
+  } catch (e) {
+    res.status(400).json(errorResponse(e));
+  }
+};
+
 module.exports.LOGIN_USER = async (req, res) => {
   const { error } = await Auth_Login_Validator(req);
 
@@ -247,17 +324,6 @@ module.exports.LOGIN_USER = async (req, res) => {
   })(req, res);
 };
 
-module.exports.UPDATE_USER = async (req, res) => {
-  const { error } = await Auth_Update_Validator(req);
-
-  if (error) {
-    res.status(400).json(MANAGE_ERROR_MESSAGE(error));
-    return;
-  }
-
-  res.status(200).json(successResponse("hello"));
-};
-
 /**
  * All Validator Here
  */
@@ -284,8 +350,26 @@ const Auth_Login_Validator = ({ body }) => {
 
 const Auth_Update_Validator = ({ body }) => {
   const schema = Joi.object().keys({
+    unique_name: Joi.string().min(3).max(30).required(),
     user_name: Joi.string().min(3).max(30).required(),
-    phone_no: Joi.string().pattern(phRegex).required(),
+    phone_no: Joi.string()
+      .pattern(phRegex)
+      .required()
+      .error((errors) => {
+        errors.forEach((err) => {
+          switch (err.code) {
+            case "any.empty":
+              err.message = "Phone Number should not be empty!";
+              break;
+            case "string.pattern.base":
+              err.message = `Phone Number is not valid.`;
+              break;
+            default:
+              break;
+          }
+        });
+        return errors;
+      }),
     address: Joi.string(),
   });
   return schema.validate(body, { abortEarly: false });
