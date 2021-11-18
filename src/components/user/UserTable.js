@@ -159,6 +159,7 @@ export default function UserTable(props) {
     userList = [],
     loading = false,
     pagination,
+    onAction = () => {},
     onChangePage = () => {},
   } = props;
 
@@ -274,6 +275,7 @@ export default function UserTable(props) {
                           className="ActionPrimary"
                           size="small"
                           color="primary"
+                          onClick={() => onAction({ item: row, type: "view" })}
                         >
                           <VisibilityIcon />
                         </IconButton>
@@ -281,6 +283,7 @@ export default function UserTable(props) {
                           className="ActionWarning"
                           size="small"
                           color="warning"
+                          onClick={() => onAction({ item: row, type: "edit" })}
                         >
                           <ModeEditOutlineOutlinedIcon />
                         </IconButton>
@@ -293,6 +296,9 @@ export default function UserTable(props) {
                           }
                           size="small"
                           color="error"
+                          onClick={() =>
+                            onAction({ item: row, type: "delete" })
+                          }
                         >
                           <DeleteIcon />
                         </IconButton>
@@ -323,7 +329,9 @@ export default function UserTable(props) {
         <Grid container spacing={2}>
           <Grid item xs={4}>
             <Chip
-              avatar={<AccountCircleRoundedIcon />}
+              variant="outlined"
+              color="primary"
+              icon={<AccountCircleRoundedIcon />}
               label={"Total Users: " + pagination.totalCount}
             />
           </Grid>

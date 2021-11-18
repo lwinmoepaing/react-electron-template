@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import testingUser from "../../data/testingUser.json";
 import { profileActions } from "../../store/reducers/profile";
 import { requestLogin } from "../../api/auth";
 import * as localForage from "localforage";
@@ -14,9 +13,6 @@ export default function AuthHook() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const dispatch = useDispatch();
-
-  const delay = (secTimer = 1) =>
-    new Promise((res, rej) => setTimeout(() => res(true), secTimer * 1000));
 
   const loginUser = async (body) => {
     if (loginLoading) return;
