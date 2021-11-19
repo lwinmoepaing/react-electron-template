@@ -4,7 +4,10 @@ import Container from "../components/template/Container";
 import UserTable from "../components/user/UserTable";
 import UserAdvancedSearch from "../components/user/UserAdvancedSearch";
 import UserDialog from "../components/user/UserDialog";
-
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import Typography from "@mui/material/Typography";
 const HomeScreen = () => {
   const {
     fetchUser,
@@ -55,6 +58,26 @@ const HomeScreen = () => {
 
   return (
     <Container>
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          mb: 1,
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant="h6" sx={{ top: 2, position: "relative" }}>
+          User List{" "}
+        </Typography>
+        <Button
+          variant="contained"
+          size="small"
+          startIcon={<PersonAddIcon />}
+          onClick={() => onAction({ item: null, type: "create" })}
+        >
+          Create User
+        </Button>
+      </Box>
       <UserAdvancedSearch onSearch={onSearchQuery} loading={userListLoading} />
       <UserTable
         userList={userList}
