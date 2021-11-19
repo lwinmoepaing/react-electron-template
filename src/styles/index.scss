@@ -29,7 +29,7 @@
 }
 
 .MuiTableRow-root {
-  border-spacing: "0px 2px";
+  // border-spacing: "0px 2px";
 }
 
 .MuiTableRow-root td:first-child {
@@ -48,8 +48,8 @@
 }
 
 .MuiTableRow-root {
-  margin-top: 2px;
-  margin-bottom: 2px;
+  // margin-top: 2px;
+  // margin-bottom: 2px;
   border-radius: 8px;
   background-color: #fbfbfb;
 }
@@ -79,21 +79,21 @@
 .ActionPrimary {
   background-color: #d3e8f9 !important;
   margin-left: 3px !important;
-  transform: scale(0.8);
+  // transform: scale(0.8);
 }
 .ActionWarning {
   background-color: #fff5d2 !important;
   margin-left: 3px !important;
-  transform: scale(0.8);
+  // transform: scale(0.8);
 }
 
 .ActionDefault {
   margin-left: 3px !important;
-  transform: scale(0.8);
+  // transform: scale(0.8);
 }
 
 .ActionDanger {
   background-color: #ffe6e6 !important;
   margin-left: 3px !important;
-  transform: scale(0.8);
+  // transform: scale(0.8);
 }
