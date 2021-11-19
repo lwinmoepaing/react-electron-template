@@ -334,7 +334,7 @@ const Auth_Register_Validator = ({ body }) => {
     unique_name: Joi.string().min(3).max(30).required(),
     user_name: Joi.string().min(3).max(30).required(),
     password: Joi.string().min(6).required(),
-    phone_no: Joi.string().pattern(phRegex).required(),
+    phone_no: Joi.string().pattern(phRegex).required().error(phErrorHandler),
     address: Joi.string(),
     role_id: Joi.string().required(),
   });
@@ -352,25 +352,24 @@ const Auth_Update_Validator = ({ body }) => {
   const schema = Joi.object().keys({
     unique_name: Joi.string().min(3).max(30).required(),
     user_name: Joi.string().min(3).max(30).required(),
-    phone_no: Joi.string()
-      .pattern(phRegex)
-      .required()
-      .error((errors) => {
-        errors.forEach((err) => {
-          switch (err.code) {
-            case "any.empty":
-              err.message = "Phone Number should not be empty!";
-              break;
-            case "string.pattern.base":
-              err.message = `Phone Number is not valid.`;
-              break;
-            default:
-              break;
-          }
-        });
-        return errors;
-      }),
+    phone_no: Joi.string().pattern(phRegex).required().error(phErrorHandler),
     address: Joi.string(),
   });
   return schema.validate(body, { abortEarly: false });
 };
+
+function phErrorHandler(errors) {
+  errors.forEach((err) => {
+    switch (err.code) {
+      case "any.empty":
+        err.message = "Phone Number should not be empty!";
+        break;
+      case "string.pattern.base":
+        err.message = `Phone Number is not valid.`;
+        break;
+      default:
+        break;
+    }
+  });
+  return errors;
+}
