@@ -16,6 +16,10 @@ export const getUserByIdRequest = async (id) => {
   return axios.get(`/users/${id}`);
 };
 
+export const createUserRequest = async (body) => {
+  return axios.post(`/users/register`, { ...body });
+};
+
 export const updateUserByIdRequest = async (id, body) => {
   return axios.put(`/users/${id}`, { ...body });
 };
