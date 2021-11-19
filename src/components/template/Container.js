@@ -18,7 +18,7 @@ export default function Container(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <AppBarWrapper />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 1.5 }}>
         <DrawerHeader />
         {children}
       </Box>
