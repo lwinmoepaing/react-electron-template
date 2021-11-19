@@ -88,7 +88,15 @@ function UserAdvancedSearch(props) {
   );
 
   return (
-    <Accordion>
+    <Accordion
+      sx={{
+        "&.Mui-expanded": {
+          marginTop: "0",
+          mb: 1,
+        },
+      }}
+      square={false}
+    >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"

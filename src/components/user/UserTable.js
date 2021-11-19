@@ -38,6 +38,11 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
+const tableIconStyle = {
+  width: 18,
+  height: 18,
+};
+
 // This method is created for cross-browser compatibility, if you don't
 // need to support IE11, you can use Array.prototype.sort() directly
 function stableSort(array, comparator) {
@@ -215,7 +220,7 @@ export default function UserTable(props) {
             [`& .${tableCellClasses.root}`]: {
               borderBottom: "none",
             },
-            borderSpacing: "0px 8px",
+            borderSpacing: "0px 5px",
             borderCollapse: "separate",
           }}
         >
@@ -277,7 +282,7 @@ export default function UserTable(props) {
                           color="primary"
                           onClick={() => onAction({ item: row, type: "view" })}
                         >
-                          <VisibilityIcon />
+                          <VisibilityIcon sx={tableIconStyle} />
                         </IconButton>
                         <IconButton
                           className="ActionWarning"
@@ -285,7 +290,7 @@ export default function UserTable(props) {
                           color="warning"
                           onClick={() => onAction({ item: row, type: "edit" })}
                         >
-                          <ModeEditOutlineOutlinedIcon />
+                          <ModeEditOutlineOutlinedIcon sx={tableIconStyle} />
                         </IconButton>
                         <IconButton
                           disabled={row.id === profile.data.id}
@@ -300,7 +305,7 @@ export default function UserTable(props) {
                             onAction({ item: row, type: "delete" })
                           }
                         >
-                          <DeleteIcon />
+                          <DeleteIcon sx={tableIconStyle} />
                         </IconButton>
                       </TableCell>
                     </TableRow>

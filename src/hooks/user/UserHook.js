@@ -133,9 +133,16 @@ function UserHook() {
       const isExistUser = userList.some((u) => u.id === user?.id);
       if (isExistUser) {
         setUserList(userList.filter((u) => u.id !== user.id));
+
+        if (pagination && pagination?.totalCount) {
+          setPagination({
+            ...pagination,
+            totalCount: pagination.totalCount - 1,
+          });
+        }
       }
     },
-    [setUserList, userList]
+    [setUserList, userList, pagination]
   );
 
   return {

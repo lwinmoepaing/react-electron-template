@@ -4,7 +4,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Zoom from "@mui/material/Zoom";
-import { Form, FormField, FormSubmitButton } from "../form";
+import { Form, FormField, FormSelector, FormSubmitButton } from "../form";
 import LinearProgress from "@mui/material/LinearProgress";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
@@ -20,10 +20,36 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function UserDialog(props) {
-  const { open, onClose, methodType, item, onUpdatedUser, onDeletedUser } =
-    props;
-  const { getUserById, user, getUserByIdLoading } = UserHook();
+  const initialValues = useMemo(
+    () => ({
+      id: "",
+      unique_name: "",
+      user_name: "",
+      role_id: "1",
+      password: "",
+      phone_no: "",
+      note: "",
+      address: "",
+    }),
+    []
+  );
+
   const {
+    open,
+    onClose,
+    methodType,
+    item,
+    onUpdatedUser,
+    onDeletedUser,
+    onCreatedUser,
+  } = props;
+
+  const { getUserById, user, getUserByIdLoading } = UserHook();
+
+  const {
+    createdUserLoading,
+    isCreatedUserError,
+    errorMessageCreatedUser,
     updateUserLoading,
     isUpdateUserError,
     errorMessageUpdateUser,
@@ -32,14 +58,46 @@ export default function UserDialog(props) {
     errorMessageDeletedUser,
     setIsUpdateUserError,
     setIsDeleteUserError,
+    setIsCreatedUserError,
     updateUserById,
+    createUser,
     deleteUserById,
   } = UserFormHook();
+
+  const [userForm, setUserForm] = useState(initialValues);
+  const [isSuccessMessage, setIsSuccessMessage] = useState(false);
+
+  const roles = useMemo(
+    () => [
+      { key: "Admin", value: "1" },
+      { key: "Employee", value: "2" },
+    ],
+    []
+  );
+
+  const isView = useMemo(() => methodType === "view", [methodType]);
+  const isEdit = useMemo(() => methodType === "edit", [methodType]);
+  const isCreate = useMemo(() => methodType === "create", [methodType]);
+  const isDelete = useMemo(() => methodType === "delete", [methodType]);
+  const validationSchema = useMemo(() => {
+    const validator = {
+      unique_name: Yup.string().required().label("Name"),
+      user_name: Yup.string().required().label("User Name"),
+      phone_no: Yup.string().required().label("Phone Number"),
+    };
+
+    if (isCreate) {
+      validator.password = Yup.string().min(6).required().label("Password");
+      validator.role_id = Yup.string().required().label("Role");
+    }
+    return Yup.object().shape(validator);
+  }, [isCreate]);
 
   useEffect(() => {
     // when calling everytime popup if editing we'll fetching
     if (open) {
-      setUserForm(initialValues);
+      console.log("Setting", initialValues);
+      setUserForm({ ...initialValues });
     }
 
     if (open && item) {
@@ -61,38 +119,24 @@ export default function UserDialog(props) {
     }
   }, [user]);
 
-  const initialValues = {
-    id: "",
-    unique_name: "",
-    user_name: "",
-    role_id: "",
-    phone_no: "",
-    note: "",
-    address: "",
-  };
-
-  const [userForm, setUserForm] = useState(initialValues);
-  const [isSuccessMessage, setIsSuccessMessage] = useState(false);
-
-  const validationSchema = Yup.object().shape({
-    unique_name: Yup.string().required().label("Name"),
-    user_name: Yup.string().required().label("User Name"),
-    phone_no: Yup.string().required().label("Phone Number"),
-  });
-
-  const isView = useMemo(() => methodType === "view", [methodType]);
-  const isEdit = useMemo(() => methodType === "edit", [methodType]);
-  const isCreate = useMemo(() => methodType === "create", [methodType]);
-  const isDelete = useMemo(() => methodType === "delete", [methodType]);
-
   const handleClose = useCallback(() => {
-    if (getUserByIdLoading || deleteUserLoading || updateUserLoading) {
+    if (
+      getUserByIdLoading ||
+      deleteUserLoading ||
+      updateUserLoading ||
+      createdUserLoading
+    ) {
       return;
     }
     if (onClose) {
       onClose();
     }
-  }, [onClose, getUserByIdLoading, deleteUserLoading, updateUserLoading]);
+  }, [
+    onClose,
+    getUserByIdLoading,
+    deleteUserLoading,
+    updateUserLoading || createdUserLoading,
+  ]);
 
   const handleCloseErrorMessage = useCallback(
     (event, reason) => {
@@ -102,8 +146,9 @@ export default function UserDialog(props) {
 
       setIsUpdateUserError(false);
       setIsDeleteUserError(false);
+      setIsCreatedUserError(false);
     },
-    [setIsUpdateUserError, setIsDeleteUserError]
+    [setIsUpdateUserError, setIsDeleteUserError, setIsCreatedUserError]
   );
 
   const handleCloseSuccessMessage = useCallback(
@@ -135,8 +180,20 @@ export default function UserDialog(props) {
 
         return;
       }
+
+      if (isCreate) {
+        const { unique_name, user_name, phone_no, password, role_id } = values;
+        const body = { unique_name, user_name, phone_no, password, role_id };
+        const isDone = await createUser(body);
+        if (isDone.isSuccess) {
+          setIsSuccessMessage(true);
+          handleClose();
+          onCreatedUser && onCreatedUser();
+        }
+        return;
+      }
     },
-    [isEdit, handleClose, onUpdatedUser]
+    [isEdit, isCreate, handleClose, onUpdatedUser]
   );
 
   const onDeleteHandler = useCallback(async () => {
@@ -155,12 +212,9 @@ export default function UserDialog(props) {
     <>
       <Dialog
         disableEscapeKeyDown
-        disablePortal
         open={open}
         TransitionComponent={Transition}
-        keepMounted
         onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
       >
         {getUserByIdLoading && (
           <LinearProgress color={isDelete ? "error" : "primary"} />
@@ -183,13 +237,37 @@ export default function UserDialog(props) {
                 type="text"
                 name="unique_name"
                 id="unique_name"
-                label="Name"
+                label="Unique Name"
                 InputProps={{
                   readOnly: isView,
                 }}
                 disabled={getUserByIdLoading}
                 isEnterSubmit
               />
+
+              {isCreate && (
+                <>
+                  <FormField
+                    type="password"
+                    name="password"
+                    id="password"
+                    label="Password"
+                    InputProps={{
+                      readOnly: isView,
+                    }}
+                    disabled={getUserByIdLoading}
+                    isEnterSubmit
+                  />
+
+                  <FormSelector
+                    name="role_id"
+                    id="role_id"
+                    label="Role"
+                    options={roles}
+                  />
+                </>
+              )}
+
               <FormField
                 type="text"
                 name="user_name"
@@ -215,7 +293,11 @@ export default function UserDialog(props) {
               {!isView && (
                 <FormSubmitButton
                   disabled={getUserByIdLoading}
-                  loading={getUserByIdLoading || updateUserLoading}
+                  loading={
+                    getUserByIdLoading ||
+                    updateUserLoading ||
+                    createdUserLoading
+                  }
                 />
               )}
             </Form>
@@ -259,7 +341,7 @@ export default function UserDialog(props) {
       <Stack spacing={2} sx={{ width: "100%" }}>
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          open={isUpdateUserError || isDeleteUserError}
+          open={isUpdateUserError || isDeleteUserError || isCreatedUserError}
           autoHideDuration={3000}
           onClose={handleCloseErrorMessage}
         >
@@ -268,6 +350,7 @@ export default function UserDialog(props) {
             severity="error"
             sx={{ width: "100%" }}
           >
+            {isCreatedUserError && errorMessageCreatedUser}
             {isUpdateUserError && errorMessageUpdateUser}
             {isDeleteUserError && errorMessageDeletedUser}
           </Alert>
