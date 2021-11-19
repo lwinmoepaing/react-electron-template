@@ -40,18 +40,21 @@ exports.seed = function (knex) {
 
   const users = [
     3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-  ].map((ids) =>
-    user(
+  ].map((ids) => {
+    const userName = getName();
+    const uniqueName = userName.toLowerCase().replace(/ /g, "") + ids;
+
+    return user(
       ids,
-      getName().toLowerCase().replace(/ /g, "") + ids,
-      getName(),
+      uniqueName,
+      userName,
       password,
       "094200592" + ids,
       "addr" + ids,
       profile_picture,
       randomMinMax(1, 2)
-    )
-  );
+    );
+  });
   // console.log(users);
   // Deletes ALL existing entries
   return knex("users")
