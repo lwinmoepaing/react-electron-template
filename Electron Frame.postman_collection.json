@@ -26,7 +26,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"unique_name\": \"adminZ\",\n    \"user_name\": \"Employeee Paing\",\n    \"phone_no\": \"0944444444\",\n    \"password\": \"123456\",\n    \"role_id\": \"1\"\n}"
+							"raw": "{\n    \"unique_name\": \"employee z\",\n    \"user_name\": \"Employeee Paing\",\n    \"phone_no\": \"0944444444\",\n    \"password\": \"123456\",\n    \"role_id\": \"2\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/users/register",
@@ -94,16 +94,29 @@
 				},
 				{
 					"name": "Get User By Paginate",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
-							"raw": "{{url}}/users",
+							"raw": "{{url}}/users?page=1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -114,6 +127,72 @@
 					"request": {
 						"method": "GET",
 						"header": [],
+						"url": {
+							"raw": "{{url}}/users/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User By Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"unique_name\": \"employee z\",\n    \"user_name\": \"Employeee Paing\",\n    \"phone_no\": \"0944444444\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/users/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User By Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"unique_name\": \"employee z\",\n    \"user_name\": \"Employeee Paing\",\n    \"phone_no\": \"0944444444\"\n}"
+						},
 						"url": {
 							"raw": "{{url}}/users/1",
 							"host": [
