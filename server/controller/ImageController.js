@@ -1,9 +1,6 @@
-const DB = require("../services/dbConnect");
 const { IMAGE_DIRECTORY } = require("../../config");
 const path = require("path");
-const Joi = require("@hapi/joi");
 const fs = require("fs");
-const { MANAGE_ERROR_MESSAGE } = require("../lib/helper");
 const { errorResponse, successResponse } = require("../lib/responseHandler");
 
 // Control Respond Image File if Exist

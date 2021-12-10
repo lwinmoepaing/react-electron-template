@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -53,7 +53,7 @@ export default function CheckVersionHook() {
   };
 
   const changeNumericFormat = useCallback(
-    (version) => (version ? Number(version.replace(/\./g, "")) : ""),
+    (version) => (version ? Number(version.replace(/\./g, "")) : 0),
     []
   );
 

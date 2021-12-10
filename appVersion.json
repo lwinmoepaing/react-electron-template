@@ -2,5 +2,6 @@
   "version": "0.0.7",
   "dbVersion": "0.0.7",
   "dbUrl": "https://raw.githubusercontent.com/lwinmoepaing/react-electron-template/main/server/data/database.db3",
+  "logDbUrl": "https://raw.githubusercontent.com/lwinmoepaing/react-electron-template/main/server/data/logdatabase.db3",
   "isForceUpdate": false
 }

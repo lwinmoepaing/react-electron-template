@@ -1,10 +1,10 @@
 const https = require("https");
 const fs = require("fs");
-const { ipcMain, Notification, BrowserWindow, app } = require("electron");
+const { ipcMain, Notification } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const path = require("path");
-const Downloader = require("nodejs-file-downloader");
-const electronDL = require("electron-dl");
+// const Downloader = require("nodejs-file-downloader");
+// const electronDL = require("electron-dl");
 
 const { NOTI_CODE, VERSION_CODE } = require("../config/constants");
 const { DATABASE_DIRECTORY } = require("../config");
@@ -25,7 +25,7 @@ module.exports = (window) => {
 
     notification.show();
 
-    notification.on("click", (event, arg) => {
+    notification.on("click", () => {
       window.webContents.send(NOTI_CODE.NOTI_WHEN_CLICK, params);
     });
 
@@ -44,7 +44,7 @@ module.exports = (window) => {
   });
 
   // When Updating Request From Frontend
-  ipcMain.on(VERSION_CODE.REQUEST_UPDATE, (_, params) => {
+  ipcMain.on(VERSION_CODE.REQUEST_UPDATE, () => {
     versionUpdate();
   });
 
@@ -97,11 +97,11 @@ module.exports = (window) => {
     //   sendVersionUpdateMessage("Checking for update...");
     // });
 
-    autoUpdater.on("update-available", (info) => {
+    autoUpdater.on("update-available", () => {
       sendVersionUpdateMessage("Update available.");
     });
 
-    autoUpdater.on("update-not-available", (info) => {
+    autoUpdater.on("update-not-available", () => {
       sendVersionUpdateMessage("Update not available.");
       window.webContents.send(VERSION_CODE.FINISHED_UPDATE);
     });
@@ -126,7 +126,7 @@ module.exports = (window) => {
       );
     });
 
-    autoUpdater.on("update-downloaded", (info) => {
+    autoUpdater.on("update-downloaded", () => {
       sendVersionUpdateMessage("Update downloaded");
       window.webContents.send(VERSION_CODE.FINISHED_UPDATE);
       autoUpdater.quitAndInstall();
@@ -141,7 +141,7 @@ module.exports = (window) => {
     try {
       // Fetching
       const file = fs.createWriteStream(path.join(directory, "database.db3"));
-      const request = https
+      https
         .get(url, function (response) {
           response.pipe(file);
           if (cb) cb();
@@ -149,22 +149,6 @@ module.exports = (window) => {
         .on("error", (err) => {
           if (cb) cb(err.message);
         });
-
-      // Electron-dl
-      // await electronDL.download(window, url, {
-      //   directory: directory,
-      //   filename: "updated_database.db3",
-      // });
-
-      // nodejs-file-downloader
-      // const downloader = new Downloader({
-      //   url, //If the file name already exists, a new file with the name 200MB1.zip is created.
-      //   directory: directory, //This folder will be created, if it doesn't exist.
-      //   fileName: "updated_database.db3",
-      // });
-
-      // await downloader.download(); //Downloader.download() returns a promise.
-      // if (cb) cb();
     } catch (err) {
       // IMPORTANT: Handle a possible error. An error is thrown in case of network errors, or status codes of 400 and above.
       // Note that if the maxAttempts is set to higher than 1, the error is thrown only if all attempts fail.

@@ -15,6 +15,9 @@
     "make:win": "electron-builder --win --x64",
     "make:win-single": "electron-builder --win portable",
     "deploy": "electron-builder --win --x64 --p always",
+    "migrate:db": "knex migrate:latest",
+    "migrate:dblog": "knex --knexfile=knexLogfile.js migrate:latest",
+    "migrate:dblogmake": "knex --knexfile=knexLogfile.js migrate:make",
     "lint": "eslint server"
   },
   "keywords": [],

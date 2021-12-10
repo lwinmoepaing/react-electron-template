@@ -38,6 +38,14 @@ module.exports = (cb) => {
     );
   }
 
+  const logDbPath = path.join(DATABASE_DIRECTORY, "logdatabase.db3");
+  if (!fs.existsSync(logDbPath)) {
+    fs.copyFileSync(
+      path.join(__dirname, "../", "server", "data", "logdatabase.db3"),
+      logDbPath
+    );
+  }
+
   const necessaryImages = ["404.jpg", "profile_picture.png"];
 
   necessaryImages.forEach((image) => {
