@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   updateUserByIdRequest,
   deleteUserByIdRequest,
@@ -7,6 +8,13 @@ import {
 import { arrayConcatToString, delay } from "../../utils/helper";
 
 function UserFormHook() {
+  const auth = useSelector((state) => state.profile);
+
+  // useEffect(() => {
+  //   console.log("auth");
+  //   console.log(auth);
+  // }, [auth]);
+
   // Created User Form States
   const [createdUser, setCreatedUser] = useState(null);
   const [createdUserLoading, setCreatedUserLoading] = useState(false);
@@ -33,7 +41,7 @@ function UserFormHook() {
       setIsCreatedUserError(false);
       await delay(0.4);
       try {
-        const response = await createUserRequest(body);
+        const response = await createUserRequest(body, auth?.token);
         const users = response.data.data;
         setCreatedUser(users);
         setIsCreatedUserError(false);
@@ -77,7 +85,7 @@ function UserFormHook() {
         };
       }
     },
-    [createdUserLoading]
+    [createdUserLoading, auth]
   );
 
   const updateUserById = useCallback(
@@ -88,7 +96,7 @@ function UserFormHook() {
       setUpdateUserLoading(true);
       await delay(0.4);
       try {
-        const response = await updateUserByIdRequest(id, body);
+        const response = await updateUserByIdRequest(id, body, auth?.token);
         const users = response.data.data;
         setUpdateUser(users);
         setIsUpdateUserError(false);

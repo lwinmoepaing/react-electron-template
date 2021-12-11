@@ -10,9 +10,13 @@ exports.up = function (knex) {
 
     table.integer("object_id", 150).notNullable();
 
+    table.varchar("object_name", 255).notNullable();
+
     table.varchar("table_name", 255).notNullable().index();
 
-    table.text("attachment", 255).notNullable().default('{message:"",data:{}}'); // Json
+    table.varchar("message").notNullable().default("");
+
+    table.text("attachment").notNullable().default('{message:"",data:[]}'); // Json
 
     table.timestamps(true, true);
   });

@@ -18,10 +18,15 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import Logout from "@mui/icons-material/Logout";
+import Collapse from "@mui/material/Collapse";
 import TitleHook from "../../hooks/common/TitleHook";
 import AuthHook from "../../hooks/auth/AuthHook";
 import LanguageHook from "../../hooks/common/LanguageHook";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
 import { appActions } from "../../store/reducers/appReducer";
 
 const drawerWidth = 240;
@@ -128,6 +133,7 @@ function AppBarWrapper() {
   const history = useHistory();
   const theme = useTheme();
   const open = useSelector(({ app }) => app.isOpenDrawer);
+  const openLog = useSelector(({ app }) => app.isOpenLogToggle);
   const dispatch = useDispatch();
 
   const toggleDrawer = useCallback(() => {
@@ -136,11 +142,27 @@ function AppBarWrapper() {
     });
   }, [dispatch]);
 
+  const toggleLog = useCallback(() => {
+    dispatch({
+      type: appActions.LOG_TOGGLE,
+    });
+  }, [dispatch]);
+
   const onLogout = useCallback(async () => {
     await setChangeLanguage("en");
     await logoutUser();
     history.replace("/");
   }, [history]);
+
+  const linkTo = useCallback(
+    (url) => {
+      if (history.location.pathname === url) {
+        return;
+      }
+      return history.push(url);
+    },
+    [history]
+  );
 
   return (
     <>
@@ -190,11 +212,7 @@ function AppBarWrapper() {
 
         <Divider />
         <List style={listContainerStyle}>
-          <ListItem
-            button
-            style={listStyle}
-            onClick={() => history.push("/home")}
-          >
+          <ListItem button style={listStyle} onClick={() => linkTo("/home")}>
             <ListItemIcon>
               <InboxIcon color="primary" style={iconStyle} />
             </ListItemIcon>
@@ -204,11 +222,44 @@ function AppBarWrapper() {
 
         <Divider />
         <List style={listContainerStyle}>
-          <ListItem
-            button
-            style={listStyle}
-            onClick={() => history.push("/about")}
-          >
+          <ListItem button style={listStyle} onClick={toggleLog}>
+            <ListItemIcon>
+              <ReceiptLongIcon
+                color="primary"
+                style={{
+                  ...iconStyle,
+                }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Logs" sx={listTextStyle} />
+            {openLog ? (
+              <ExpandLess fontSize={"6"} color="primary" />
+            ) : (
+              <ExpandMore fontSize={"6"} color="primary" />
+            )}
+          </ListItem>
+          <Collapse in={openLog} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem
+                button
+                sx={open ? { pl: 4 } : {}}
+                style={listStyle}
+                onClick={() => {}}
+              >
+                <ListItemIcon>
+                  <ContactMailIcon
+                    color="primary"
+                    style={{
+                      ...iconStyle,
+                    }}
+                  />
+                </ListItemIcon>
+                <ListItemText primary="User Logs" sx={listTextStyle} />
+              </ListItem>
+            </List>
+          </Collapse>
+
+          <ListItem button style={listStyle} onClick={() => linkTo("/about")}>
             <ListItemIcon>
               <InfoOutlinedIcon
                 color="primary"
@@ -219,6 +270,7 @@ function AppBarWrapper() {
             </ListItemIcon>
             <ListItemText primary="About" sx={listTextStyle} />
           </ListItem>
+
           <ListItem button style={listStyle} onClick={onLogout}>
             <ListItemIcon>
               <Logout

@@ -66,6 +66,7 @@ export default function UserDialog(props) {
 
   const [userForm, setUserForm] = useState(initialValues);
   const [isSuccessMessage, setIsSuccessMessage] = useState(false);
+  const [isNotDirtyEdit, setIsNotDirtyEdit] = useState(false);
 
   const roles = useMemo(
     () => [
@@ -101,7 +102,7 @@ export default function UserDialog(props) {
     }
 
     if (open && item) {
-      getUserById(item.id);
+      getUserById(item?.id);
     }
   }, [open, item]);
 
@@ -143,12 +144,17 @@ export default function UserDialog(props) {
       if (reason === "clickaway") {
         return;
       }
-
       setIsUpdateUserError(false);
       setIsDeleteUserError(false);
       setIsCreatedUserError(false);
+      setIsNotDirtyEdit(false);
     },
-    [setIsUpdateUserError, setIsDeleteUserError, setIsCreatedUserError]
+    [
+      setIsUpdateUserError,
+      setIsDeleteUserError,
+      setIsCreatedUserError,
+      setIsNotDirtyEdit,
+    ]
   );
 
   const handleCloseSuccessMessage = useCallback(
@@ -162,10 +168,30 @@ export default function UserDialog(props) {
     [setIsSuccessMessage]
   );
 
+  const checkIsDirty = useCallback(
+    (values) => {
+      const toCheckKeys = ["phone_no", "unique_name", "user_name"];
+
+      const isEverySame = toCheckKeys.every(
+        (key) => userForm[key]?.trim() === values[key]?.trim()
+      );
+
+      return !isEverySame;
+    },
+    [userForm]
+  );
+
   const onSubmitHandler = useCallback(
     async (values) => {
       if (isEdit) {
         const { id, unique_name, user_name, phone_no } = values;
+
+        const isDirty = checkIsDirty(values);
+        if (!isDirty) {
+          setIsNotDirtyEdit(true);
+          return;
+        }
+
         const isDone = await updateUserById(id, {
           unique_name,
           user_name,
@@ -193,7 +219,7 @@ export default function UserDialog(props) {
         return;
       }
     },
-    [isEdit, isCreate, handleClose, onUpdatedUser]
+    [isEdit, isCreate, handleClose, onUpdatedUser, checkIsDirty]
   );
 
   const onDeleteHandler = useCallback(async () => {
@@ -316,7 +342,7 @@ export default function UserDialog(props) {
         {isDelete && (
           <DialogActions>
             <LoadingButton
-              loading={getUserByIdLoading || deleteUserLoading}
+              loading={deleteUserLoading}
               size="small"
               variant="outlined"
               onClick={handleClose}
@@ -341,7 +367,12 @@ export default function UserDialog(props) {
       <Stack spacing={2} sx={{ width: "100%" }}>
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          open={isUpdateUserError || isDeleteUserError || isCreatedUserError}
+          open={
+            isUpdateUserError ||
+            isDeleteUserError ||
+            isCreatedUserError ||
+            isNotDirtyEdit
+          }
           autoHideDuration={3000}
           onClose={handleCloseErrorMessage}
         >
@@ -353,6 +384,7 @@ export default function UserDialog(props) {
             {isCreatedUserError && errorMessageCreatedUser}
             {isUpdateUserError && errorMessageUpdateUser}
             {isDeleteUserError && errorMessageDeletedUser}
+            {isNotDirtyEdit && "All values are same."}
           </Alert>
         </Snackbar>
       </Stack>
@@ -369,9 +401,9 @@ export default function UserDialog(props) {
             severity="success"
             sx={{ width: "100%" }}
           >
-            {isEdit && "This user was successfully updated."}
-            {isCreate && "This user was successfully created."}
-            {isDelete && "This user was successfully deleted."}
+            {isEdit && "Successfully updated."}
+            {isCreate && "Successfully created."}
+            {isDelete && "Successfully deleted."}
           </Alert>
         </Snackbar>
       </Stack>

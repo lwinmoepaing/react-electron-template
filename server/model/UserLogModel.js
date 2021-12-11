@@ -1,7 +1,7 @@
-const knex = require("../services/dbConnect");
+const knex = require("../services/logDbConnect");
 // Defining models
-const User = knex.model("User", {
+const UserLog = knex.model("UserLog", {
   tableName: "user_action_logs",
 });
 
-module.exports = User;
+module.exports = UserLog;

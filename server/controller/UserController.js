@@ -1,16 +1,25 @@
 const DB = require("../services/dbConnect");
 const { successResponse, errorResponse } = require("../lib/responseHandler");
 const User = require("../model/UserModel");
+const UserLog = require("../model/UserLogModel");
 const Permission = require("../model/PermissionModel");
 const bcrypt = require("bcrypt");
 const Joi = require("@hapi/joi");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 // Self Import
-const { JWT_SECRET, DEFAULT_PAGE_SIZE } = require("../../config");
+const { JWT_SECRET, DEFAULT_PAGE_SIZE, TABLE } = require("../../config");
 const { MANAGE_ERROR_MESSAGE, CHECK_VALID_PAGE } = require("../lib/helper");
 const permissions = require("../data/permissions.json");
 const paginateHelper = require("../lib/paginateHelper");
+
+const userActionTypes = {
+  CREATE_USER: "CREATE_USER",
+  SELF_REGISTER: "SELF_REGISTER",
+  UPDATE_USER: "UPDATE_USER",
+};
+
+const USER_TABLE = TABLE.USER_TABLE;
 
 const userDefaultColumns = [
   "id",
@@ -22,6 +31,68 @@ const userDefaultColumns = [
   "address",
   "profile_picture",
 ];
+
+const Log = {
+  UserCreate: async ({ authUser, objectUser }) => {
+    const message = `${objectUser.user_name} [#${objectUser.id}] is created by ${authUser.user_name} [#${authUser.id}]`;
+    return new UserLog({
+      user_id: authUser.id,
+      user_name: authUser.user_name,
+      object_id: objectUser.id,
+      object_name: objectUser.user_name,
+      action_type: userActionTypes.CREATE_USER,
+      table_name: USER_TABLE,
+      message: message,
+      attachment: JSON.stringify({
+        message,
+        data: [],
+      }),
+    }).save();
+  },
+  UserUpdate: async ({ authUser, objectUser, body }) => {
+    const isUpdateSelf = authUser.id === objectUser.id;
+    const toCheckKeys = ["phone_no", "unique_name", "user_name"];
+    const changesData = toCheckKeys.reduce((cur, key) => {
+      const updateObj = {
+        fieldName: key,
+        oldValue: objectUser[key],
+        newValue: body[key],
+      };
+
+      console.log("objKey", objectUser[key]);
+      console.log("bodyKey", body[key]);
+
+      return objectUser[key] !== body[key] ? [...cur, updateObj] : [...cur];
+    }, []);
+    // phone_no [0999] to [08888],
+    const updateDataMessage = changesData
+      .map(
+        (data) => `${data.fieldName} : [${data.oldValue}]to[${data.newValue}] `
+      )
+      .join(", ");
+
+    const message = isUpdateSelf
+      ? `${objectUser.user_name} [#${objectUser.id}] is update by himself/herself`
+      : `${objectUser.user_name} [#${objectUser.id}] is updated by ${authUser.user_name} [#${authUser.id}]`;
+
+    const logData = {
+      user_id: authUser.id,
+      user_name: authUser.user_name,
+      object_id: objectUser.id,
+      object_name: objectUser.user_name,
+      action_type: userActionTypes.UPDATE_USER,
+      table_name: USER_TABLE,
+      message: message,
+      attachment: JSON.stringify({
+        message,
+        updateDataMessage,
+        data: changesData,
+      }),
+    };
+    console.log(logData);
+    return new UserLog(logData).save();
+  },
+};
 
 /**
  * User Lists
@@ -153,6 +224,7 @@ module.exports.GET_ME = async (req, res) => {
 
 module.exports.CREATE_USER = async (req, res) => {
   const { error } = await Auth_Register_Validator(req);
+  const { user: authUser } = req; // Auth User
   if (error) {
     res.status(400).json(MANAGE_ERROR_MESSAGE(error));
     return;
@@ -182,9 +254,16 @@ module.exports.CREATE_USER = async (req, res) => {
           ...req.body,
           password,
         })
-        .into("users");
+        .into(USER_TABLE);
 
       userId = userId.length === 1 ? userId[0] : 0;
+      await Log.UserCreate({
+        authUser,
+        objectUser: {
+          id: userId,
+          user_name: req.body.user_name,
+        },
+      });
 
       const permissionList = await new Permission().fetchAll({});
       const permission = getPermissionByRoleId(req.body.role_id);
@@ -220,6 +299,7 @@ module.exports.CREATE_USER = async (req, res) => {
 
 module.exports.UPDATE_USER = async (req, res) => {
   console.log("Udate User Function Start..");
+  const { user: authUser } = req; // Auth User
   const { error } = await Auth_Update_Validator(req);
   const { id } = req.params;
   if (error) {
@@ -263,9 +343,16 @@ module.exports.UPDATE_USER = async (req, res) => {
     }
 
     // After Checking UniqueName
+    const objectUser = { ...existingUser.toJSON() };
     // console.log("After checking... Unqiue Name");
     const updateUser = await existingUser.save(req.body);
     // console.log("Updating.. Request Body");
+    await Log.UserUpdate({
+      authUser,
+      objectUser,
+      body: req.body,
+    });
+
     return res.status(200).json(successResponse(updateUser.toJSON()));
   } catch (e) {
     console.log("errors", e);
@@ -347,7 +434,6 @@ const Auth_Login_Validator = ({ body }) => {
   });
   return schema.validate(body, { abortEarly: false });
 };
-
 const Auth_Update_Validator = ({ body }) => {
   const schema = Joi.object().keys({
     unique_name: Joi.string().min(3).max(30).required(),
@@ -357,7 +443,6 @@ const Auth_Update_Validator = ({ body }) => {
   });
   return schema.validate(body, { abortEarly: false });
 };
-
 function phErrorHandler(errors) {
   errors.forEach((err) => {
     switch (err.code) {

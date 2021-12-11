@@ -29,6 +29,10 @@ console.log("IMAGE_DIRECTORY", IMAGE_DIRECTORY);
 // const env = process.env.NODE_ENV || 'development'
 const JWT_SECRET = process.env.JWT_SECRET || "jwt_secret";
 
+const TABLE = {
+  USER_TABLE: "users",
+};
+
 const config = {
   API_VERSION: "/api",
   API_URL: "http://localhost:5050/api",
@@ -41,6 +45,7 @@ const config = {
   IMAGE_DIRECTORY,
   IS_PRODUCTION: isProduction,
   DEFAULT_PAGE_SIZE: 10,
+  TABLE,
 };
 
 module.exports = config;

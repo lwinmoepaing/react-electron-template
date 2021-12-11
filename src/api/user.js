@@ -16,12 +16,30 @@ export const getUserByIdRequest = async (id) => {
   return axios.get(`/users/${id}`);
 };
 
-export const createUserRequest = async (body) => {
-  return axios.post(`/users/register`, { ...body });
+export const createUserRequest = async (body, token) => {
+  return axios.post(
+    `/users/register`,
+    {
+      ...body,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
 
-export const updateUserByIdRequest = async (id, body) => {
-  return axios.put(`/users/${id}`, { ...body });
+export const updateUserByIdRequest = async (id, body, token) => {
+  return axios.put(
+    `/users/${id}`,
+    { ...body },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
 
 export const deleteUserByIdRequest = async (id) => {
