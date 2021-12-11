@@ -152,7 +152,7 @@ function UserFormHook() {
       setIsDeleteUserError(false);
       await delay(0.3);
       try {
-        await deleteUserByIdRequest(id);
+        await deleteUserByIdRequest(id, auth?.token);
         setIsDeleteUserError(false);
         setDeleteUserLoading(false);
         return true;

@@ -1,4 +1,11 @@
 import axios from "axios";
+
+const manageAuthorize = (token) => ({
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+
 // User Api
 export const fetchUserRequest = async ({ query, page }) => {
   const queryParams = {
@@ -17,31 +24,13 @@ export const getUserByIdRequest = async (id) => {
 };
 
 export const createUserRequest = async (body, token) => {
-  return axios.post(
-    `/users/register`,
-    {
-      ...body,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return axios.post(`/users/register`, { ...body }, manageAuthorize(token));
 };
 
 export const updateUserByIdRequest = async (id, body, token) => {
-  return axios.put(
-    `/users/${id}`,
-    { ...body },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return axios.put(`/users/${id}`, { ...body }, manageAuthorize(token));
 };
 
-export const deleteUserByIdRequest = async (id) => {
-  return axios.delete(`/users/${id}`);
+export const deleteUserByIdRequest = async (id, token) => {
+  return axios.delete(`/users/${id}`, manageAuthorize(token));
 };

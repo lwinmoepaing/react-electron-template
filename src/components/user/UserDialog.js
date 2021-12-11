@@ -230,7 +230,6 @@ export default function UserDialog(props) {
         handleClose();
         onDeletedUser && onDeletedUser(user);
       }
-      console.log(isDone);
     }
   }, [user, onDeletedUser, handleClose]);
 

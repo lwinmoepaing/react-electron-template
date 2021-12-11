@@ -221,7 +221,8 @@ function AppBarWrapper() {
         </List>
 
         <Divider />
-        <List style={listContainerStyle}>
+
+        <List style={listContainerStyle} sx={{ pt: 0, pb: 0 }}>
           <ListItem button style={listStyle} onClick={toggleLog}>
             <ListItemIcon>
               <ReceiptLongIcon
@@ -258,7 +259,11 @@ function AppBarWrapper() {
               </ListItem>
             </List>
           </Collapse>
+        </List>
 
+        <Divider />
+
+        <List style={listContainerStyle}>
           <ListItem button style={listStyle} onClick={() => linkTo("/about")}>
             <ListItemIcon>
               <InfoOutlinedIcon

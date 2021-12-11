@@ -17,6 +17,7 @@ const userActionTypes = {
   CREATE_USER: "CREATE_USER",
   SELF_REGISTER: "SELF_REGISTER",
   UPDATE_USER: "UPDATE_USER",
+  DELETE_USER: "DELETE_USER",
 };
 
 const USER_TABLE = TABLE.USER_TABLE;
@@ -49,6 +50,22 @@ const Log = {
       }),
     }).save();
   },
+  UserDeleted: async ({ authUser, objectUser }) => {
+    const message = `${objectUser.user_name} [#${objectUser.id}] is deleted by ${authUser.user_name} [#${authUser.id}]`;
+    return new UserLog({
+      user_id: authUser.id,
+      user_name: authUser.user_name,
+      object_id: objectUser.id,
+      object_name: objectUser.user_name,
+      action_type: userActionTypes.DELETE_USER,
+      table_name: USER_TABLE,
+      message: message,
+      attachment: JSON.stringify({
+        message,
+        data: [],
+      }),
+    }).save();
+  },
   UserUpdate: async ({ authUser, objectUser, body }) => {
     const isUpdateSelf = authUser.id === objectUser.id;
     const toCheckKeys = ["phone_no", "unique_name", "user_name"];
@@ -58,9 +75,6 @@ const Log = {
         oldValue: objectUser[key],
         newValue: body[key],
       };
-
-      console.log("objKey", objectUser[key]);
-      console.log("bodyKey", body[key]);
 
       return objectUser[key] !== body[key] ? [...cur, updateObj] : [...cur];
     }, []);
@@ -89,7 +103,6 @@ const Log = {
         data: changesData,
       }),
     };
-    console.log(logData);
     return new UserLog(logData).save();
   },
 };
@@ -362,6 +375,7 @@ module.exports.UPDATE_USER = async (req, res) => {
 
 module.exports.DELETE_USER = async (req, res) => {
   const { id } = req.params;
+  const { user: authUser } = req;
   try {
     const existingUser = await User.where({
       id,
@@ -373,6 +387,7 @@ module.exports.DELETE_USER = async (req, res) => {
 
     if (existingUser) {
       await new User({ id }).destroy({ hardDelete: true });
+      await Log.UserDeleted({ authUser, objectUser: existingUser.toJSON() });
       return res.status(200).json(successResponse(existingUser.toJSON()));
     } else {
       return res.status(400).json(errorResponse(new Error("Not Found User.")));
