@@ -45,6 +45,7 @@ const config = {
   IMAGE_DIRECTORY,
   IS_PRODUCTION: isProduction,
   DEFAULT_PAGE_SIZE: 10,
+  DEFAULT_LOG_PAGE_SIZE: 20,
   TABLE,
 };
 

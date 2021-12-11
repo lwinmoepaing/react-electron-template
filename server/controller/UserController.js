@@ -35,7 +35,7 @@ const userDefaultColumns = [
 
 const Log = {
   UserCreate: async ({ authUser, objectUser }) => {
-    const message = `${objectUser.user_name} [#${objectUser.id}] is created by ${authUser.user_name} [#${authUser.id}]`;
+    const message = `${objectUser.user_name} [#${objectUser.id}] is created by ${authUser.user_name} [#${authUser.id}].`;
     return new UserLog({
       user_id: authUser.id,
       user_name: authUser.user_name,
@@ -51,7 +51,7 @@ const Log = {
     }).save();
   },
   UserDeleted: async ({ authUser, objectUser }) => {
-    const message = `${objectUser.user_name} [#${objectUser.id}] is deleted by ${authUser.user_name} [#${authUser.id}]`;
+    const message = `${objectUser.user_name} [#${objectUser.id}] is deleted by ${authUser.user_name} [#${authUser.id}].`;
     return new UserLog({
       user_id: authUser.id,
       user_name: authUser.user_name,
@@ -86,8 +86,8 @@ const Log = {
       .join(", ");
 
     const message = isUpdateSelf
-      ? `${objectUser.user_name} [#${objectUser.id}] is update by himself/herself`
-      : `${objectUser.user_name} [#${objectUser.id}] is updated by ${authUser.user_name} [#${authUser.id}]`;
+      ? `${objectUser.user_name} [#${objectUser.id}] is update by himself/herself.`
+      : `${objectUser.user_name} [#${objectUser.id}] is updated by ${authUser.user_name} [#${authUser.id}].`;
 
     const logData = {
       user_id: authUser.id,

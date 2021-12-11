@@ -1,4 +1,4 @@
-const { DEFAULT_PAGE_SIZE, TABLE } = require("../../config");
+const { DEFAULT_LOG_PAGE_SIZE, TABLE } = require("../../config");
 const { CHECK_VALID_PAGE } = require("../lib/helper");
 const paginateHelper = require("../lib/paginateHelper");
 const { successResponse, errorResponse } = require("../lib/responseHandler");
@@ -16,13 +16,13 @@ module.exports.GET_ALL_USER_LOG = async (req, res) => {
     const page = CHECK_VALID_PAGE(req.query.page);
     const paginator = paginateHelper({
       page,
-      perPage: DEFAULT_PAGE_SIZE,
+      perPage: DEFAULT_LOG_PAGE_SIZE,
       totalRows: totalLogs,
     });
 
     const users = await userFetch.orderBy("id", "DESC").fetchPage({
       page: page,
-      pageSize: DEFAULT_PAGE_SIZE,
+      pageSize: DEFAULT_LOG_PAGE_SIZE,
     });
 
     res.status(200).json({
