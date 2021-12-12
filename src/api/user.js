@@ -1,10 +1,5 @@
 import axios from "axios";
-
-const manageAuthorize = (token) => ({
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});
+import { manageAuthorize } from "../utils/helper";
 
 // User Api
 export const fetchUserRequest = async ({ query, page }) => {

@@ -97,10 +97,8 @@ export default function UserDialog(props) {
   useEffect(() => {
     // when calling everytime popup if editing we'll fetching
     if (open) {
-      console.log("Setting", initialValues);
       setUserForm({ ...initialValues });
     }
-
     if (open && item) {
       getUserById(item?.id);
     }

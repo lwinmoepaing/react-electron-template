@@ -245,7 +245,7 @@ function AppBarWrapper() {
                 button
                 sx={open ? { pl: 4 } : {}}
                 style={listStyle}
-                onClick={() => {}}
+                onClick={() => linkTo("/logs/user-logs")}
               >
                 <ListItemIcon>
                   <ContactMailIcon

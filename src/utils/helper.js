@@ -13,5 +13,11 @@ export const arrayConcatToString = (data) => {
   return typeof data === "string" ? data : data.map((item) => item).join`,`;
 };
 
-export const delay = (secTimer = 1) =>
+export const delay = (secTimer = 0.7) =>
   new Promise((res, rej) => setTimeout(() => res(true), secTimer * 1000));
+
+export const manageAuthorize = (token) => ({
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});

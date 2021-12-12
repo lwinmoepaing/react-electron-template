@@ -1,42 +1,38 @@
 import { useCallback, useState } from "react";
-import { fetchUserRequest } from "../../api/user";
+import { fetchUserLogsRequest } from "../../api/log";
 import { arrayConcatToString, delay } from "../../utils/helper";
 
 function UserHook() {
   // Get User List Stage
-  const [userListLoading, setUserListLoading] = useState(false);
+  const [userLogsLoading, setUserLogsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState({});
   const [pagination, setPagination] = useState(null);
-  const [userList, setUserList] = useState([]);
+  const [userLogs, setUserLogs] = useState([]);
   // Error Handling
-  const [isUserFetchingError, setIsUserFetchingError] = useState(false);
+  const [isUserLogFetchingError, setIsUserLogFetchingError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Get User By Id States
-  const [user, setUser] = useState(null);
-
-  const fetchUserLog = useCallback(
+  const fetchUserLogs = useCallback(
     async ({ queryParam = null, pageParam = null }) => {
-      if (userListLoading) return;
-      setUserListLoading(true);
-      setIsUserFetchingError(false);
-      setUser(null);
-      await delay(1);
+      if (userLogsLoading) return;
+      setUserLogsLoading(true);
+      setIsUserLogFetchingError(false);
+      await delay();
       try {
-        const response = await fetchUserRequest({
+        const response = await fetchUserLogsRequest({
           query: queryParam,
           page: pageParam,
         });
         const users = response.data.data;
 
         setPagination(response.data.pagination);
-        setUserList(users);
-        setUserListLoading(false);
+        setUserLogs(users);
+        setUserLogsLoading(false);
       } catch (err) {
         console.log(err);
-        setUserListLoading(false);
-        setIsUserFetchingError(true);
+        setUserLogsLoading(false);
+        setIsUserLogFetchingError(true);
         if (
           err.response &&
           err.response.status >= 400 &&
@@ -62,21 +58,20 @@ function UserHook() {
         }
       }
     },
-    [userListLoading]
+    [userLogsLoading]
   );
 
   return {
     pagination,
-    userList,
-    userListLoading,
+    userLogs,
+    userLogsLoading,
     query,
-    isUserFetchingError,
+    isUserLogFetchingError,
     errorMessage,
     page,
-    user,
     setPage,
     setQuery,
-    fetchUserLog,
+    fetchUserLogs,
   };
 }
 

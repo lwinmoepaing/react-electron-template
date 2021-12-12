@@ -8,6 +8,9 @@ import IsAuthMiddleware from "../hooks/middleware/IsAuthMiddleware";
 import HomeScreen from "../screens/HomeScreen";
 import AboutScreen from "../screens/AboutScreen";
 
+// Log Screens
+import UserLogScreen from "../screens/Log/UserLogScreen";
+
 const AuthRoute = ({ children, ...rest }) => {
   const user = useSelector(({ profile }) => profile.data);
   const onlyChildren = React.Children.only(children);
@@ -37,6 +40,9 @@ const Routes = () => {
         </Route>
         <AuthRoute exact path={"/home"}>
           <HomeScreen />
+        </AuthRoute>
+        <AuthRoute exact path={"/logs/user-logs"}>
+          <UserLogScreen />
         </AuthRoute>
         <AuthRoute exact path={"/about"}>
           <AboutScreen />
