@@ -4,7 +4,7 @@ import { Redirect } from "react-router";
 import LoginForm from "../components/auth/LoginForm";
 import VersionChecker from "../components/common/VersionChecker";
 
-const DEFAULT_REDIRECT = "/logs/user-logs"; // Redirect when logout
+const DEFAULT_REDIRECT = "/home"; // Redirect when logout
 
 export default function LoginScreen() {
   const [isLogin, setIsLogin] = useState(false);

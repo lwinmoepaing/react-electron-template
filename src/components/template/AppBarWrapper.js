@@ -225,12 +225,28 @@ function AppBarWrapper() {
         <List style={listContainerStyle} sx={{ pt: 0, pb: 0 }}>
           <ListItem button style={listStyle} onClick={toggleLog}>
             <ListItemIcon>
-              <ReceiptLongIcon
-                color="primary"
-                style={{
-                  ...iconStyle,
-                }}
-              />
+              {open ? (
+                <ReceiptLongIcon
+                  color="primary"
+                  style={{
+                    ...iconStyle,
+                  }}
+                />
+              ) : openLog ? (
+                <ExpandLess
+                  style={{
+                    ...iconStyle,
+                  }}
+                  color="primary"
+                />
+              ) : (
+                <ExpandMore
+                  style={{
+                    ...iconStyle,
+                  }}
+                  color="primary"
+                />
+              )}
             </ListItemIcon>
             <ListItemText primary="Logs" sx={listTextStyle} />
             {openLog ? (
